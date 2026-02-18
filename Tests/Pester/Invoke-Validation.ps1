@@ -183,4 +183,4 @@ if (-not $NoResultFile) {
 }
 
 # Run Pester with the configuration
-Invoke-Pester -Configuration $cfg
+Invoke-Pester -Configuration $cfgc

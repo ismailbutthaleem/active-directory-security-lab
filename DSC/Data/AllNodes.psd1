@@ -1,9 +1,11 @@
 @{
     AllNodes = @(
         @{
-            NodeName   = 'localhost'
-            Role       = 'DC'
-            DomainName = 'bolton.barmbuzz.test'
+            NodeName   = 'localhostt'
+            Role       = 'RootDC'
+
+            DomainName = 'bolton.corp'
+            NetBIOSName = 'BOLTON'
         }
     )
 }
