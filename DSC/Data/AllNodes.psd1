@@ -1,7 +1,7 @@
 @{
     AllNodes = @(
         @{
-            NodeName   = 'localhostt'
+            NodeName   = 'localhost'
             Role       = 'RootDC'
 
             DomainName = 'bolton.corp'
