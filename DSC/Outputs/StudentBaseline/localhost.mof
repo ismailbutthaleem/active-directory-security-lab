@@ -1,0 +1,52 @@
+/*
+@TargetNode='localhost'
+@GeneratedBy=ismail
+@GenerationDate=02/18/2026 01:49:48
+@GenerationHost=DESKTOP-4KDR5HC
+*/
+
+instance of MSFT_FileDirectoryConfiguration as $MSFT_FileDirectoryConfiguration1ref
+{
+DestinationPath = "C:\\TEST";
+ ModuleName = "PSDesiredStateConfiguration";
+ ResourceID = "[File]TestFolder";
+ SourceInfo = "C:\\Users\\ismail\\Desktop\\repo\\DSC\\Configurations\\StudentConfig.ps1::19::9::File";
+ Ensure = "Present";
+ Type = "Directory";
+
+ModuleVersion = "1.0";
+ ConfigurationName = "StudentBaseline";
+};
+instance of MSFT_FileDirectoryConfiguration as $MSFT_FileDirectoryConfiguration2ref
+{
+DestinationPath = "C:\\TEST\\test.txt";
+ ModuleName = "PSDesiredStateConfiguration";
+ ResourceID = "[File]TestFile";
+ SourceInfo = "C:\\Users\\ismail\\Desktop\\repo\\DSC\\Configurations\\StudentConfig.ps1::26::9::File";
+ Ensure = "Present";
+ Type = "File";
+ Contents = "Proof-of-life: DSC created this file.";
+
+ModuleVersion = "1.0";
+DependsOn = {
+    "[File]TestFolder"};
+ ConfigurationName = "StudentBaseline";
+};
+instance of OMI_ConfigurationDocument
+
+                    {
+ Version="2.0.0";
+
+                        MinimumCompatibleVersion = "1.0.0";
+
+                        CompatibleVersionAdditionalProperties= {"Omi_BaseResource:ConfigurationName"};
+
+                        Author="ismail";
+
+                        GenerationDate="02/18/2026 01:49:48";
+
+                        GenerationHost="DESKTOP-4KDR5HC";
+
+                        Name="StudentBaseline";
+
+                    };

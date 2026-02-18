@@ -1,0 +1,92 @@
+**********************
+PowerShell transcript start
+Start time: 20260218014908
+Username: DESKTOP-4KDR5HC\ismail
+RunAs User: DESKTOP-4KDR5HC\ismail
+Configuration Name: 
+Machine: DESKTOP-4KDR5HC (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -WorkingDirectory ~
+Process ID: 2856
+PSVersion: 7.5.4
+PSEdition: Core
+GitCommitId: 7.5.4
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+[+] Transcript started: Evidence\\Transcripts\\20260218_014908_Run_BuildMain.txt
+[+] Admin privileges confirmed.
+
+[Phase 1] Prerequisites...
+[*] Invoke-BarmBuzz-OneShots: LCM then Network
+--- [STAFF-ONLY] Configuring Persistent LCM Settings ---
+[*] Applying persistent automation settings...
+ConnectionError: The client cannot connect to the destination specified in the request. Verify that the service on the destination is running and is accepting requests. Consult the logs and documentation for the WS-Management service running on the destination, most commonly IIS or WinRM. If the destination is the WinRM service, run the following command on the destination to analyze and configure the WinRM service: "winrm quickconfig".
+ConnectionError: The client cannot connect to the destination specified in the request. Verify that the service on the destination is running and is accepting requests. Consult the logs and documentation for the WS-Management service running on the destination, most commonly IIS or WinRM. If the destination is the WinRM service, run the following command on the destination to analyze and configure the WinRM service: "winrm quickconfig".
+[+] LCM configured. Server is now reboot-ready.
+[*] Ensuring DSC modules are installed/pinned (PSResourceGet) ...
+    -> GroupPolicyDsc@1.0.3 already present (skipping).
+    -> Pester@5.7.1 already present (skipping).
+    -> PSDesiredStateConfiguration@2.0.7 already present (skipping).
+    -> ActiveDirectoryDsc@6.6.0 already present (skipping).
+[+] DSC module baseline ensured at C:\\Program Files\\WindowsPowerShell\\Modules.
+--- BarmBuzz Network, PSRemoting & RSAT Prep ---
+[*] Checking Network Connection Profiles (all connected NICs)...
+    Changing 'Unidentified network' (Idx 13) from Public -> Private
+    Changing 'Network' (Idx 9) from Public -> Private
+
+[*] Configuring Windows Remote Management (WinRM)...
+WARNING: PowerShell remoting has been enabled only for PowerShell 6+ configurations and does not affect Windows PowerShell remoting configurations. Run this cmdlet in Windows PowerShell to affect all PowerShell remoting configurations.
+
+WinRM service type changed successfully. 
+WinRM service started.
+
+WinRM firewall exception enabled. 
+Configured LocalAccountTokenFilterPolicy to grant administrative rights remotely to local users.
+
+[*] Verifying Connectivity...
+    [+] WinRM is responding! (Protocol Version: OS: 0.0.0 SP: 0.0 Stack: 3.0)
+    [+] Ready for Orchestration.
+
+[*] Ensuring RSAT tools (AD + GPO) are installed...
+WARNING: RSAT install (client) may have failed. StdErr: Try {
+    Add-WindowsCapability -Online -Name RSAT.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0 -ErrorAction Stop | Out-Null
+    Add-WindowsCapability -Online -Name Rsat.GroupPolicy.Management.Tools~~~~0.0.1.0 -ErrorAction Stop | Out-Null
+    Write-Output ''RSAT capabilities installed (client).''
+} Catch { Write-Error $_ } : The term 'client' is not recognized as the name of a cmdlet, function, script file, or 
+operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try 
+again.
+    + CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException
+    + FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException
+[+] Network/Remoting/RSAT baseline complete.
+[*] LCM already configured (skipping).
+[*] Network already configured (skipping).
+[+] Phase 1 complete.
+
+[Phase 2] Compile + Apply DSC...
+[+] Found configuration: StudentBaseline
+[*] Compiling -> DSC\\Outputs\\StudentBaseline
+
+    Directory: C:\Users\ismail\Desktop\repo\DSC\Outputs\StudentBaseline
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---          18/02/2026    01:49           1575 localhost.mof
+[+] Compilation complete.
+[*] Applying configuration (waits until complete)...
+[+] Apply complete.
+
+[Phase 3] Validation...
+[*] Pester validation will be added later.
+
+[+] BUILD SUCCESS
+[*] Next steps (commit outputs + evidence):
+    git add DSC\Outputs Evidence
+    git commit -m \ Build 20260218_014908\
+**********************
+PowerShell transcript end
+End time: 20260218014949
+**********************
