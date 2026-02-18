@@ -1,31 +1,31 @@
 /*
 @TargetNode='localhost'
-@GeneratedBy=ismail
-@GenerationDate=02/18/2026 01:49:48
-@GenerationHost=DESKTOP-4KDR5HC
+@GeneratedBy=Administrator
+@GenerationDate=02/18/2026 02:45:08
+@GenerationHost=SERVER25-DC-01
 */
 
 instance of MSFT_FileDirectoryConfiguration as $MSFT_FileDirectoryConfiguration1ref
 {
-DestinationPath = "C:\\TEST";
- ModuleName = "PSDesiredStateConfiguration";
- ResourceID = "[File]TestFolder";
- SourceInfo = "C:\\Users\\ismail\\Desktop\\repo\\DSC\\Configurations\\StudentConfig.ps1::19::9::File";
- Ensure = "Present";
+ModuleName = "PSDesiredStateConfiguration";
  Type = "Directory";
+ ResourceID = "[File]TestFolder";
+ Ensure = "Present";
+ SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::19::9::File";
+ DestinationPath = "C:\\TEST";
 
 ModuleVersion = "1.0";
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_FileDirectoryConfiguration as $MSFT_FileDirectoryConfiguration2ref
 {
-DestinationPath = "C:\\TEST\\test.txt";
+Contents = "Proof-of-life: DSC created this file.";
  ModuleName = "PSDesiredStateConfiguration";
- ResourceID = "[File]TestFile";
- SourceInfo = "C:\\Users\\ismail\\Desktop\\repo\\DSC\\Configurations\\StudentConfig.ps1::26::9::File";
- Ensure = "Present";
  Type = "File";
- Contents = "Proof-of-life: DSC created this file.";
+ ResourceID = "[File]TestFile";
+ Ensure = "Present";
+ SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::26::9::File";
+ DestinationPath = "C:\\TEST\\test.txt";
 
 ModuleVersion = "1.0";
 DependsOn = {
@@ -41,11 +41,11 @@ instance of OMI_ConfigurationDocument
 
                         CompatibleVersionAdditionalProperties= {"Omi_BaseResource:ConfigurationName"};
 
-                        Author="ismail";
+                        Author="Administrator";
 
-                        GenerationDate="02/18/2026 01:49:48";
+                        GenerationDate="02/18/2026 02:45:08";
 
-                        GenerationHost="DESKTOP-4KDR5HC";
+                        GenerationHost="SERVER25-DC-01";
 
                         Name="StudentBaseline";
 
