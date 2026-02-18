@@ -162,11 +162,65 @@ try {
 
     Write-Host "[+] Phase 1 complete." -ForegroundColor Green
 
+    # ═══════════════════════════════════════════════════════════════════════════
+    # CREDENTIAL PROMPT (Secure runtime injection)
+    # ═══════════════════════════════════════════════════════════════════════════
+    #
+    # WHY PROMPT HERE?
+    # - Credentials are sensitive - they NEVER appear in source code, Git, or config files
+    # - We prompt at runtime and inject into the DSC configuration
+    # - This is the "orchestrator pattern" - credentials flow through the build, not the repo
+    #
+    # TWO CREDENTIALS REQUIRED FOR DC PROMOTION:
+    # 1. DomainAdminCredential - The account performing the promotion (local Administrator)
+    #    After promotion, this becomes the first Domain Administrator
+    # 2. DsrmCredential - Directory Services Restore Mode password (emergency recovery)
+    #
+    # PASSWORD REQUIREMENTS:
+    # - Minimum 8 characters
+    # - Meets Windows complexity requirements (uppercase, lowercase, number/symbol)
+    # - WRITE THEM DOWN AND STORE SECURELY
+    #
+    # ═══════════════════════════════════════════════════════════════════════════
+    
+    Write-Host "`n[Credential] Domain Administrator Password Required..." -ForegroundColor Yellow
+    Write-Host "[*] This is the LOCAL Administrator account that will perform the promotion." -ForegroundColor Gray
+    Write-Host "[*] After promotion, this becomes BARMBUZZ\\Administrator (Domain Admin)." -ForegroundColor Gray
+    
+    # Prompt for local Administrator password
+    $AdminPassword = Read-Host -Prompt "Enter local Administrator password" -AsSecureString
+    
+    # Create PSCredential for the promotion account
+    # Username is "Administrator" (local admin on standalone server)
+    $DomainAdminCredential = New-Object System.Management.Automation.PSCredential(
+        "Administrator",
+        $AdminPassword
+    )
+    
+    Write-Host "[+] Domain Admin credential captured (not logged)." -ForegroundColor Green
+    
+    Write-Host "`n[Credential] DSRM Password Required..." -ForegroundColor Yellow
+    Write-Host "[*] This password is for Directory Services Restore Mode (DC recovery)." -ForegroundColor Gray
+    Write-Host "[*] Use this to boot into recovery mode if AD database is corrupted." -ForegroundColor Gray
+    Write-Host "[*] Can be same as Admin password, or different for extra security." -ForegroundColor Gray
+    
+    # Prompt for DSRM password securely (masked input)
+    $DsrmPassword = Read-Host -Prompt "Enter DSRM password" -AsSecureString
+    
+    # Create PSCredential object for DSRM
+    $DsrmCredential = New-Object System.Management.Automation.PSCredential(
+        "Administrator",
+        $DsrmPassword
+    )
+    
+    Write-Host "[+] DSRM credential captured (not logged)." -ForegroundColor Green
+
     Write-Host "`n[Phase 2] Compile + Apply DSC..." -ForegroundColor Yellow
 
     # SEPARATION OF CONCERNS
     # - Data (AllNodes.psd1) describes the environment.
     # - Configuration (StudentConfig.ps1) implements resources using that data.
+    # - Credentials flow through the orchestrator, not config files.
     # Dot-sourcing the configuration script makes the Configuration definition available.
 
     $ConfigData = Import-PowerShellDataFile -Path $StudentDataFile
@@ -180,7 +234,12 @@ try {
     $CompileOut = Join-Path $OutputsRoot $ConfigName
     New-FolderIfMissing -Path $CompileOut
     Write-Host "[*] Compiling -> DSC\\Outputs\\$ConfigName" -ForegroundColor Gray
-    & $ConfigName -ConfigurationData $ConfigData -OutputPath $CompileOut
+    
+    # Pass BOTH credentials to the configuration
+    # DomainAdminCredential = Account performing the promotion
+    # DsrmCredential = DSRM recovery password
+    # This is how credentials "flow" through the build without being stored anywhere
+    & $ConfigName -ConfigurationData $ConfigData -DomainAdminCredential $DomainAdminCredential -DsrmCredential $DsrmCredential -OutputPath $CompileOut
     Write-Host "[+] Compilation complete." -ForegroundColor Green
 
     # RESULT: MOF files in DSC\Outputs\StudentBaseline (e.g., localhost.mof)

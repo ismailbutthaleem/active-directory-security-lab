@@ -1,31 +1,31 @@
 /*
 @TargetNode='localhost'
-@GeneratedBy=Administrator
-@GenerationDate=02/18/2026 02:45:08
-@GenerationHost=SERVER25-DC-01
+@GeneratedBy=ismail
+@GenerationDate=02/18/2026 17:36:31
+@GenerationHost=DESKTOP-4KDR5HC
 */
 
 instance of MSFT_FileDirectoryConfiguration as $MSFT_FileDirectoryConfiguration1ref
 {
 ModuleName = "PSDesiredStateConfiguration";
+ DestinationPath = "C:\\TEST";
+ SourceInfo = "C:\\Users\\ismail\\Desktop\\repo\\DSC\\Configurations\\StudentConfig.ps1::19::9::File";
  Type = "Directory";
  ResourceID = "[File]TestFolder";
  Ensure = "Present";
- SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::19::9::File";
- DestinationPath = "C:\\TEST";
 
 ModuleVersion = "1.0";
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_FileDirectoryConfiguration as $MSFT_FileDirectoryConfiguration2ref
 {
-Contents = "Proof-of-life: DSC created this file.";
- ModuleName = "PSDesiredStateConfiguration";
+ModuleName = "PSDesiredStateConfiguration";
+ Contents = "Proof-of-life: DSC created this file.";
+ DestinationPath = "C:\\TEST\\test.txt";
+ SourceInfo = "C:\\Users\\ismail\\Desktop\\repo\\DSC\\Configurations\\StudentConfig.ps1::26::9::File";
  Type = "File";
  ResourceID = "[File]TestFile";
  Ensure = "Present";
- SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::26::9::File";
- DestinationPath = "C:\\TEST\\test.txt";
 
 ModuleVersion = "1.0";
 DependsOn = {
@@ -41,11 +41,11 @@ instance of OMI_ConfigurationDocument
 
                         CompatibleVersionAdditionalProperties= {"Omi_BaseResource:ConfigurationName"};
 
-                        Author="Administrator";
+                        Author="ismail";
 
-                        GenerationDate="02/18/2026 02:45:08";
+                        GenerationDate="02/18/2026 17:36:31";
 
-                        GenerationHost="SERVER25-DC-01";
+                        GenerationHost="DESKTOP-4KDR5HC";
 
                         Name="StudentBaseline";
 

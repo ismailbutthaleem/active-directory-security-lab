@@ -1,0 +1,59 @@
+**********************
+PowerShell transcript start
+Start time: 20260218173626
+Username: DESKTOP-4KDR5HC\ismail
+RunAs User: DESKTOP-4KDR5HC\ismail
+Configuration Name: 
+Machine: DESKTOP-4KDR5HC (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoProfile -ExecutionPolicy Bypass -Command Import-Module 'c:\Users\ismail\.vscode\extensions\ms-vscode.powershell-2025.4.0\modules\PowerShellEditorServices\PowerShellEditorServices.psd1'; Start-EditorServices -HostName 'Visual Studio Code Host' -HostProfileId 'Microsoft.VSCode' -HostVersion '2025.4.0' -BundledModulesPath 'c:\Users\ismail\.vscode\extensions\ms-vscode.powershell-2025.4.0\modules' -EnableConsoleRepl -StartupBanner "PowerShell Extension v2025.4.0
+Copyright (c) Microsoft Corporation.
+
+https://aka.ms/vscode-powershell
+Type 'help' to get help.
+" -LogLevel 'Warning' -LogPath 'c:\Users\ismail\AppData\Roaming\Code\logs\20260218T170822\window1\exthost\ms-vscode.powershell' -SessionDetailsPath 'c:\Users\ismail\AppData\Roaming\Code\User\globalStorage\ms-vscode.powershell\sessions\PSES-VSCode-11096-443456.json' -FeatureFlags @() 
+Process ID: 12160
+PSVersion: 7.5.4
+PSEdition: Core
+GitCommitId: 7.5.4
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+[+] Transcript started: Evidence\\Transcripts\\20260218_173626_Run_BuildMain.txt
+[+] Admin privileges confirmed.
+
+[Phase 1] Prerequisites...
+[*] Invoke-BarmBuzz-OneShots: LCM then Network
+[*] LCM already configured (flag present).
+[*] Network already configured (flag present).
+[*] LCM already configured (skipping).
+[*] Network already configured (skipping).
+[+] Phase 1 complete.
+
+[Phase 2] Compile + Apply DSC...
+[+] Found configuration: StudentBaseline
+[*] Compiling -> DSC\\Outputs\\StudentBaseline
+
+    Directory: C:\Users\ismail\Desktop\repo\DSC\Outputs\StudentBaseline
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---          18/02/2026    17:36           1575 localhost.mof
+[+] Compilation complete.
+[*] Applying configuration (waits until complete)...
+[+] Apply complete.
+
+[Phase 3] Validation...
+[*] Pester validation will be added later.
+
+[+] BUILD SUCCESS
+[*] Next steps (commit outputs + evidence):
+    git add DSC\Outputs Evidence
+    git commit -m \ Build 20260218_173626\
+**********************
+PowerShell transcript end
+End time: 20260218173641
+**********************

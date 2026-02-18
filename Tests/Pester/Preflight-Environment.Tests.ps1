@@ -36,13 +36,61 @@ $ErrorActionPreference = 'Stop'
 
 Describe "COM5411 IaC Environment Preflight (Dual-Shell)" {
 
-    BeforeAll {
+    # PESTER v5: BeforeDiscovery runs BEFORE test discovery (when Pester scans for tests)
+    # Variables here are used in test names and foreach loops that generate tests
+    # These need to be available when Pester is building the test structure
+    BeforeDiscovery {
+        # STUDENT NOTE: The test harness (Invoke-Validation.ps1) automatically injects
+        # $RepoRoot and $EvidenceDir via the param() block below!
+        # You can access them here during discovery, and again in BeforeAll for test execution
+        param(
+            $RepoRoot,      # Injected by harness: path to repo root
+            $EvidenceDir    # Injected by harness: path to Evidence\Pester
+        )
+        
+        # Variables needed during discovery phase (for foreach loops, test names)
+        $ExpectedModuleRoot = "C:\Program Files\WindowsPowerShell\Modules"
 
-        function Get-RepoRoot {
+        # Versions pinned in your lab baseline
+        # NOTE: PSDesiredStateConfiguration 2.0.7 requires PS 6.1+ and won't load in WinPS 5.1
+        # So we test it separately for PS7 only
+        $Pinned = @{
+            ActiveDirectoryDsc          = [version]'6.6.0'
+            GroupPolicyDsc              = [version]'1.0.3'
+            Pester                      = [version]'5.7.1'
+        }
+
+        # PS7-only modules (won't work in Windows PowerShell 5.1)
+        $PS7OnlyPinned = @{
+            PSDesiredStateConfiguration = [version]'2.0.7'
+        }
+
+        $RequiredUnpinned = @(
+            "ComputerManagementDsc"
+        )
+    }
+
+    # PESTER v5: BeforeAll runs BEFORE tests execute (after discovery is complete)
+    # Variables here need $script: scope to be accessible in test bodies
+    # Functions defined here are available to all tests
+    BeforeAll {
+        # STUDENT NOTE: Receive injected data from the test harness
+        # The harness (Invoke-Validation.ps1) passes RepoRoot and EvidenceDir automatically
+        param(
+            $RepoRoot,      # Injected: repo root path
+            $EvidenceDir    # Injected: Evidence\Pester path
+        )
+        
+        # Store in script scope so all tests can access them
+        $script:repoRoot = $RepoRoot
+        $script:evidenceDir = $EvidenceDir
+
+        # LEGACY FALLBACK: If not injected (running test file directly), calculate it
+        if (-not $script:repoRoot) {
             # Pester file is: Tests\Pester\Preflight-Environment.Tests.ps1
             # Repo root is:   ..\..\ from this file
             $here = Split-Path -Parent $PSCommandPath
-            return (Resolve-Path (Join-Path $here "..\..")).Path
+            $script:repoRoot = (Resolve-Path (Join-Path $here "..\..")).Path
         }
 
         function Test-IsAdmin {
@@ -86,8 +134,11 @@ Describe "COM5411 IaC Environment Preflight (Dual-Shell)" {
         function Get-ModulePathInWinPS {
             param([Parameter(Mandatory)][string]$Name)
 
+            # PESTER v5: Filter by Program Files path to exclude built-in system32 modules
+            # This ensures we're checking the modules installed by Run_BuildMain.ps1
             $cmd = @"
-`$m = Get-Module -ListAvailable -Name '$Name' | Sort-Object Version -Descending | Select-Object -First 1
+`$targetPath = 'C:\Program Files\WindowsPowerShell\Modules'
+`$m = Get-Module -ListAvailable -Name '$Name' | Where-Object { `$_.ModuleBase -like (`$targetPath + '\*') } | Sort-Object Version -Descending | Select-Object -First 1
 if (`$null -eq `$m) { exit 2 }
 Write-Output `$m.Path
 "@
@@ -98,9 +149,23 @@ Write-Output `$m.Path
             param([Parameter(Mandatory)][string]$Name)
 
             $cmd = @"
-`$m = Get-Module -ListAvailable -Name '$Name' | Sort-Object Version -Descending | Select-Object -First 1
+`$targetPath = 'C:\Program Files\WindowsPowerShell\Modules'
+`$m = Get-Module -ListAvailable -Name '$Name' | Where-Object { `$_.ModuleBase -like (`$targetPath + '\*') } | Sort-Object Version -Descending | Select-Object -First 1
 if (`$null -eq `$m) { exit 2 }
 Write-Output (`$m.Version.ToString())
+"@
+            Invoke-WinPS -Command $cmd
+        }
+
+        function Test-ModuleInWinPS {
+            param([Parameter(Mandatory)][string]$Name)
+
+            # PESTER v5: For RSAT modules, don't filter by path (they live in system32)
+            # RSAT tools are installed via Windows Capabilities/Features, not PSGallery
+            $cmd = @"
+`$m = Get-Module -ListAvailable -Name '$Name' | Select-Object -First 1
+if (`$null -eq `$m) { exit 2 }
+Write-Output `$m.Path
 "@
             Invoke-WinPS -Command $cmd
         }
@@ -129,21 +194,28 @@ NEXT STEP (do this first, then re-run Preflight):
             throw $msg
         }
 
-        $RepoRoot = Get-RepoRoot
-        $IsAdmin  = Test-IsAdmin
+        # $script:repoRoot is already set from injected parameter above
+        $script:IsAdmin  = Test-IsAdmin
 
+        # PESTER v5: Re-declare the same variables from BeforeDiscovery with $script: scope
+        # This makes them accessible in test bodies (which run after discovery)
         # Course convention: legacy modules must be visible to Windows PowerShell adapter
-        $ExpectedModuleRoot = "C:\Program Files\WindowsPowerShell\Modules"
+        $script:ExpectedModuleRoot = "C:\Program Files\WindowsPowerShell\Modules"
 
         # Versions pinned in your lab baseline
-        $Pinned = @{
+        # NOTE: PSDesiredStateConfiguration 2.0.7 requires PS 6.1+ and won't load in WinPS 5.1
+        $script:Pinned = @{
             ActiveDirectoryDsc          = [version]'6.6.0'
             GroupPolicyDsc              = [version]'1.0.3'
-            PSDesiredStateConfiguration = [version]'2.0.7'
             Pester                      = [version]'5.7.1'
         }
 
-        $RequiredUnpinned = @(
+        # PS7-only modules (won't work in Windows PowerShell 5.1)
+        $script:PS7OnlyPinned = @{
+            PSDesiredStateConfiguration = [version]'2.0.7'
+        }
+
+        $script:RequiredUnpinned = @(
             "ComputerManagementDsc"
         )
     }
@@ -158,14 +230,14 @@ NEXT STEP (do this first, then re-run Preflight):
         }
 
         It "Should be run as Administrator (recommended for meaningful preflight)" {
-            if (-not $IsAdmin) {
+            if (-not $script:IsAdmin) {
                 Fail-WithRunBuildMain -Problem "You are not running as Administrator." -Details "DSC + WinRM checks require elevation. Right-click PowerShell 7 -> Run as Administrator."
             }
-            $IsAdmin | Should -BeTrue
+            $script:IsAdmin | Should -BeTrue
         }
 
         It "Repo root contains Run_BuildMain.ps1 (orchestrator)" {
-            $path = Join-Path $RepoRoot "Run_BuildMain.ps1"
+            $path = Join-Path $script:RepoRoot "Run_BuildMain.ps1"
             if (-not (Test-Path $path)) {
                 throw "Cannot find Run_BuildMain.ps1 at repo root: $path"
             }
@@ -208,61 +280,87 @@ NEXT STEP (do this first, then re-run Preflight):
 
     Context "DSC resource modules (pinned + placed for adapter visibility)" {
 
-        It "Canonical module root exists: $ExpectedModuleRoot" {
-            if (-not (Test-Path $ExpectedModuleRoot)) {
-                Fail-WithRunBuildMain -Problem "Expected module folder missing: $ExpectedModuleRoot" -Details "Your lab baseline installs DSC modules here so the WindowsPowerShell adapter can see them."
+        It "Canonical module root exists (C:\Program Files\WindowsPowerShell\Modules)" {
+            if (-not (Test-Path $script:ExpectedModuleRoot)) {
+                Fail-WithRunBuildMain -Problem "Expected module folder missing: $script:ExpectedModuleRoot" -Details "Your lab baseline installs DSC modules here so the WindowsPowerShell adapter can see them."
             }
-            Test-Path $ExpectedModuleRoot | Should -BeTrue
+            Test-Path $script:ExpectedModuleRoot | Should -BeTrue
         }
 
-        foreach ($name in $Pinned.Keys) {
-            $ver = $Pinned[$name]
-
-            It "PowerShell 7: $name is installed and pinned to $ver" {
-                $m = Get-TopModuleInCurrentShell -Name $name
-                if (-not $m) {
-                    Fail-WithRunBuildMain -Problem "Module missing in PowerShell 7: $name" -Details "Run_BuildMain.ps1 should install/pin required modules."
-                }
-                ([version]$m.Version) | Should -Be $ver
+        # PESTER v5: Use -ForEach parameter instead of foreach loops around It blocks
+        # Variables from BeforeDiscovery are used here (no $script: prefix needed)
+        # The hashtable properties become variables inside the It block
+        It "PowerShell 7: <name> is installed and pinned to <ver>" -ForEach @(
+            foreach ($name in $Pinned.Keys) {
+                @{ name = $name; ver = $Pinned[$name] }
             }
-
-            It "Windows PowerShell 5.1: $name is installed, pinned to $ver, and stored under $ExpectedModuleRoot" {
-                $v = Get-ModuleVersionInWinPS -Name $name
-                if ($v.ExitCode -ne 0) {
-                    Fail-WithRunBuildMain -Problem "Module missing in Windows PowerShell 5.1: $name" -Details "Run_BuildMain.ps1 should install/pin modules into $ExpectedModuleRoot."
-                }
-                ([version]$v.StdOut) | Should -Be $ver
-
-                $p = Get-ModulePathInWinPS -Name $name
-                $p.ExitCode | Should -Be 0
-                $p.StdOut | Should -Match ([regex]::Escape($ExpectedModuleRoot))
+        ) {
+            $m = Get-TopModuleInCurrentShell -Name $name
+            if (-not $m) {
+                Fail-WithRunBuildMain -Problem "Module missing in PowerShell 7: $name" -Details "Run_BuildMain.ps1 should install/pin required modules."
             }
+            ([version]$m.Version) | Should -Be $ver
         }
 
-        foreach ($name in $RequiredUnpinned) {
-
-            It "PowerShell 7: $name is installed" {
-                $m = Get-TopModuleInCurrentShell -Name $name
-                if (-not $m) {
-                    Fail-WithRunBuildMain -Problem "Module missing in PowerShell 7: $name" -Details "Run_BuildMain.ps1 should install required modules."
-                }
-                $m | Should -Not -BeNullOrEmpty
+        It "Windows PowerShell 5.1: <name> is installed, pinned to <ver>, and stored under WindowsPowerShell\Modules" -ForEach @(
+            foreach ($name in $Pinned.Keys) {
+                @{ name = $name; ver = $Pinned[$name] }
             }
-
-            It "Windows PowerShell 5.1: $name is installed under $ExpectedModuleRoot" {
-                $p = Get-ModulePathInWinPS -Name $name
-                if ($p.ExitCode -ne 0) {
-                    Fail-WithRunBuildMain -Problem "Module missing in Windows PowerShell 5.1: $name" -Details "Run_BuildMain.ps1 should install required modules into $ExpectedModuleRoot."
-                }
-                $p.StdOut | Should -Match ([regex]::Escape($ExpectedModuleRoot))
+        ) {
+            $v = Get-ModuleVersionInWinPS -Name $name
+            if ($v.ExitCode -ne 0) {
+                Fail-WithRunBuildMain -Problem "Module missing in Windows PowerShell 5.1: $name" -Details "Run_BuildMain.ps1 should install/pin modules into $script:ExpectedModuleRoot."
             }
+            ([version]$v.StdOut) | Should -Be $ver
+
+            $p = Get-ModulePathInWinPS -Name $name
+            $p.ExitCode | Should -Be 0
+            $p.StdOut | Should -Match ([regex]::Escape($script:ExpectedModuleRoot))
+        }
+
+        # PESTER v5: Separate test for modules that only work in PS7 (not WinPS 5.1)
+        # PSDesiredStateConfiguration 2.0.7 requires PowerShell 6.1+
+        It "PowerShell 7: <name> is installed and pinned to <ver> (PS7-only)" -ForEach @(
+            foreach ($name in $PS7OnlyPinned.Keys) {
+                @{ name = $name; ver = $PS7OnlyPinned[$name] }
+            }
+        ) {
+            $m = Get-TopModuleInCurrentShell -Name $name
+            if (-not $m) {
+                Fail-WithRunBuildMain -Problem "Module missing in PowerShell 7: $name" -Details "Run_BuildMain.ps1 should install/pin required modules."
+            }
+            ([version]$m.Version) | Should -Be $ver
+        }
+
+        It "PowerShell 7: <name> is installed" -ForEach @(
+            foreach ($name in $RequiredUnpinned) {
+                @{ name = $name }
+            }
+        ) {
+            $m = Get-TopModuleInCurrentShell -Name $name
+            if (-not $m) {
+                Fail-WithRunBuildMain -Problem "Module missing in PowerShell 7: $name" -Details "Run_BuildMain.ps1 should install required modules."
+            }
+            $m | Should -Not -BeNullOrEmpty
+        }
+
+        It "Windows PowerShell 5.1: <name> is installed under WindowsPowerShell\Modules" -ForEach @(
+            foreach ($name in $RequiredUnpinned) {
+                @{ name = $name }
+            }
+        ) {
+            $p = Get-ModulePathInWinPS -Name $name
+            if ($p.ExitCode -ne 0) {
+                Fail-WithRunBuildMain -Problem "Module missing in Windows PowerShell 5.1: $name" -Details "Run_BuildMain.ps1 should install required modules into $script:ExpectedModuleRoot."
+            }
+            $p.StdOut | Should -Match ([regex]::Escape($script:ExpectedModuleRoot))
         }
     }
 
     Context "RSAT / admin tooling (AD + GPO management)" {
 
         It "Windows PowerShell 5.1: ActiveDirectory module is available" {
-            $p = Get-ModulePathInWinPS -Name "ActiveDirectory"
+            $p = Test-ModuleInWinPS -Name "ActiveDirectory"
             if ($p.ExitCode -ne 0) {
                 Fail-WithRunBuildMain -Problem "RSAT AD tools missing: ActiveDirectory module not found in Windows PowerShell 5.1." -Details "Run_BuildMain.ps1 should install RSAT (client capabilities or server features)."
             }
@@ -270,7 +368,7 @@ NEXT STEP (do this first, then re-run Preflight):
         }
 
         It "Windows PowerShell 5.1: GroupPolicy module is available" {
-            $p = Get-ModulePathInWinPS -Name "GroupPolicy"
+            $p = Test-ModuleInWinPS -Name "GroupPolicy"
             if ($p.ExitCode -ne 0) {
                 Fail-WithRunBuildMain -Problem "RSAT GPO tools missing: GroupPolicy module not found in Windows PowerShell 5.1." -Details "Run_BuildMain.ps1 should install RSAT/GPMC."
             }

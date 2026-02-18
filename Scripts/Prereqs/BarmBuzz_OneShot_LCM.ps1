@@ -61,7 +61,7 @@ Write-Host "[+] LCM configured. Server is now reboot-ready." -ForegroundColor Gr
 # ---------------------------------------------------------------------------
 Write-Host "[*] Ensuring DSC modules are installed/pinned (PSResourceGet) ..." -ForegroundColor Yellow
 
-function Ensure-PSResourceGet {
+function Test-PSResourceGet {
     if (-not (Get-Module -ListAvailable Microsoft.PowerShell.PSResourceGet)) {
         throw "PSResourceGet missing. Install Microsoft.PowerShell.PSResourceGet before proceeding."
     }
@@ -73,7 +73,7 @@ function Install-PinnedModule {
         [Parameter(Mandatory)][version]$Version,
         [string]$Destination = "C:\\Program Files\\WindowsPowerShell\\Modules"
     )
-    Ensure-PSResourceGet
+    Test-PSResourceGet
     $installed = Get-Module -ListAvailable -Name $Name | Where-Object { $_.Version -eq $Version }
     if ($installed) {
         Write-Host "    -> $Name@$Version already present (skipping)." -ForegroundColor Green

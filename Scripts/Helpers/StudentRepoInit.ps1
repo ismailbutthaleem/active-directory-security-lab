@@ -19,9 +19,9 @@
     Validation will be added later by the tutor under Tests\Pester\.
 
 .USAGE
-    1) Create an empty folder for the repo.
-    2) Open PowerShell in that folder.
-    3) Run:  .\New-BarmBuzzStudentRepo.ps1
+  1) Create an empty folder for the repo.
+  2) Open PowerShell in that folder.
+  3) Run:  .\StudentRepoInit.ps1
 #>
 
 [CmdletBinding()]
@@ -85,7 +85,9 @@ $files = @(
     "Run_BuildMain.ps1",
 
     "Scripts\Prereqs\BarmBuzz_OneShot_LCM.ps1",
+    "Scripts\Prereqs\BarmBuzz_OneShot_Network.ps1",
     "Scripts\Helpers\Invoke-BarmBuzzEvidencePack.ps1",
+    "Scripts\Helpers\Invoke-BarmBuzz-OneShots.ps1",
 
     "DSC\Configurations\StudentConfig.ps1",
     "DSC\Data\AllNodes.psd1",
@@ -151,7 +153,7 @@ You do **NOT** run a random set of commands.
 
 You run **one entry script**:
 
-**`Run-BarmBuzz.ps1`**
+**`Run_BuildMain.ps1`**
 
 That script will do everything in this order:
 1. Environment checks (admin, paths, folder structure)
@@ -267,7 +269,7 @@ You must run builds as Administrator.
 ### Step C: Run the orchestrator (placeholder for now)
 Run:
 
-`.\Run-BarmBuzz.ps1`
+`\.\Run_BuildMain.ps1`
 
 Right now the orchestrator is a placeholder in this scaffold.
 Your tutor will provide the working orchestrator and prerequisite scripts.
@@ -279,7 +281,7 @@ Your tutor will provide the working orchestrator and prerequisite scripts.
 Each week you will:
 1. Edit `AllNodes.psd1` to describe the desired environment (data)
 2. Edit `StudentConfig.ps1` to implement the desired environment (configuration)
-3. Run `Run-BarmBuzz.ps1` to compile/apply
+3. Run `Run_BuildMain.ps1` to compile/apply
 4. Review outputs written into `DSC\Outputs\` and `Evidence\`
 5. Commit the changes and generated outputs to Git
 
