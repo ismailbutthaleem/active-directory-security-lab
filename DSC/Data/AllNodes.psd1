@@ -1,11 +1,27 @@
 @{
     AllNodes = @(
         @{
-            NodeName   = 'localhost'
-            Role       = 'RootDC'
+            NodeName     = 'localhost'
+            Role         = 'RootDC'
 
-            DomainName = 'bolton.corp'
-            NetBIOSName = 'BOLTON'
+            ComputerName = 'SERVER25-DC-01'
+            TimeZone     = 'GMT Standard Time'
+
+            Network = @{
+                InterfaceAlias = 'Ethernet 2'
+                AddressFamily  = 'IPv4'
+                IPAddress      = '192.168.56.107'
+                PrefixLength   = 24
+                DnsServers     = @('192.168.56.107')
+            }
+
+            Features = @{
+                Add = @('AD-Domain-Services','DNS')
+            }
+
+            Baseline = @{
+                PowerPlan = 'High Performance'
+            }
         }
     )
 }
