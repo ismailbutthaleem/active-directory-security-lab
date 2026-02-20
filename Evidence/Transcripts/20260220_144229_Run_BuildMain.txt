@@ -1,0 +1,50 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260220144229
+Username: SERVER25-DC-01\Administrator
+RunAs User: SERVER25-DC-01\Administrator
+Configuration Name: 
+Machine: SERVER25-DC-01 (Microsoft Windows NT 10.0.26100.0)
+Host Application: C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe
+Process ID: 4404
+PSVersion: 5.1.26100.32370
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.32370
+BuildVersion: 10.0.26100.32370
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+[+] Transcript started: Evidence\\Transcripts\\20260220_144229_Run_BuildMain.txt
+[+] Admin privileges confirmed.
+
+[Phase 1] Prerequisites...
+[*] Invoke-BarmBuzz-OneShots: LCM then Network
+[*] LCM already configured (flag present).
+[*] Network already configured (flag present).
+[*] LCM already configured (skipping).
+[*] Network already configured (skipping).
+[+] Phase 1 complete.
+
+[Phase 2] Compile + Apply DSC...
+
+[-] BUILD FAILED
+Message: At C:\Users\Administrator\desktop\repo\COM5411-BarmBuzz\DSC\Configurations\StudentConfig.ps1:12 char:5
++     Import-DscResource -ModuleName NetworkingDsc
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Multiple versions of the module 'NetworkingDsc' were found. You can run 'Get-Module -ListAvailable -FullyQualifiedName NetworkingDsc' to see available versions on the system, and then use the fully qualified name '@{ModuleName="NetworkingDsc"; RequiredVersion="Version"}'.
+
+At C:\Users\Administrator\desktop\repo\COM5411-BarmBuzz\DSC\Configurations\StudentConfig.ps1:50 char:9
++         IPAddress StaticIPv4
++         ~~~~~~~~~
+Undefined DSC resource 'IPAddress'. Use Import-DSCResource to import the resource.
+
+At C:\Users\Administrator\desktop\repo\COM5411-BarmBuzz\DSC\Configurations\StudentConfig.ps1:59 char:9
++         DnsServerAddress DnsClientServers
++         ~~~~~~~~~~~~~~~~
+Undefined DSC resource 'DnsServerAddress'. Use Import-DSCResource to import the resource.
+**********************
+Windows PowerShell transcript end
+End time: 20260220144230
+**********************
