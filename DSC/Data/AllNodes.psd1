@@ -11,7 +11,7 @@
                 InterfaceAlias = 'Ethernet 2'
                 AddressFamily  = 'IPv4'
                 IPAddress      = '192.168.56.107'
-                PrefixLength   = 24
+                SubnetMask     = '255.255.255.0'
                 DnsServers     = @('192.168.56.107')
             }
 
