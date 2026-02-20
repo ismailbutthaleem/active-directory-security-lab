@@ -52,7 +52,7 @@ Configuration StudentBaseline
             IPAddress      = $node.Network.IPAddress
             InterfaceAlias = $node.Network.InterfaceAlias
             AddressFamily  = $node.Network.AddressFamily  
-            PrefixLength   = $node.Network.PrefixLength    
+            SubnetMask  = $node.Network.PrefixLength    
         }
 
         # Bind DNS client to the same interface (critical for AD readiness later)
