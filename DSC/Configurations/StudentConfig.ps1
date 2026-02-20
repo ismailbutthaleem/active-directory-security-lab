@@ -15,6 +15,9 @@ Configuration StudentBaseline
     {
         $node = $ConfigurationData.AllNodes | Where-Object NodeName -eq $Node.NodeName
 
+        # --- Added: local Network map from ConfigurationData (no other behaviour change) ---
+        $Network = $node.Network
+
         File TestFolder
         {
             DestinationPath = 'C:\TEST'
@@ -49,21 +52,20 @@ Configuration StudentBaseline
         # Ensure a deterministic static IPv4 is applied to the intended interface
         IPAddress StaticIPv4
         {
-            IPAddress      = $node.Network.IPAddress
-            InterfaceAlias = $node.Network.InterfaceAlias
-            AddressFamily  = $node.Network.AddressFamily  
-            SubnetMask  = $node.Network.PrefixLength    
+            AddressFamily       = $Network.AddressFamily
+            InterfaceAlias      = $Network.InterfaceAlias
+            IPAddress           = @("$($Network.IPAddress)/$($Network.PrefixLength)")
+            KeepExistingAddress = $false
         }
 
         # Bind DNS client to the same interface (critical for AD readiness later)
         DnsServerAddress DnsClientServers
         {
-            Address        = $node.Network.DnsServers      # e.g. @('192.168.56.10')
-            InterfaceAlias = $node.Network.InterfaceAlias
-            AddressFamily  = $node.Network.AddressFamily
+            Address        = $Network.DnsServers      # e.g. @('192.168.56.10')
+            InterfaceAlias = $Network.InterfaceAlias
+            AddressFamily  = $Network.AddressFamily
             DependsOn      = '[IPAddress]StaticIPv4'
         }
-
 
         foreach ($featureName in $node.Features.Add)
         {
