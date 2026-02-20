@@ -12,7 +12,6 @@ Configuration StudentBaseline
 
     Node $AllNodes.NodeName
     {
-        # $ConfigurationData is available automatically when BuildMain passes -ConfigurationData
         $node = $ConfigurationData.AllNodes | Where-Object NodeName -eq $Node.NodeName
 
         File TestFolder
@@ -40,6 +39,15 @@ Configuration StudentBaseline
         {
             IsSingleInstance = 'Yes'
             TimeZone         = $node.TimeZone
+        }
+
+        foreach ($featureName in $node.Features.Add)
+        {
+            WindowsFeature "Feature_$featureName"
+            {
+                Name   = $featureName
+                Ensure = "Present"
+            }
         }
     }
 }
