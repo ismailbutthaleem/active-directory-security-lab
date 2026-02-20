@@ -5,25 +5,32 @@ STUDENT TASK:
 - DO NOT hardcode passwords here.
 #>
 
-Configuration StudentBaseline {
-    param()
+Configuration StudentBaseline
+{
+    param(
+        [Parameter(Mandatory)]
+        [hashtable]$ConfigurationData
+    )
 
     Import-DscResource -ModuleName PSDesiredStateConfiguration
-    Import-DscResource -ModuleName ComputerManagementDSC
+    Import-DscResource -ModuleName ComputerManagementDsc
     #Import-DscResource -ModuleName ActivedirectoryDSC
 
+    Node $AllNodes.NodeName
+    {
+        # Pull the node object so every resource reads from the Data Plane
+        $node = $ConfigurationData.AllNodes | Where-Object NodeName -eq $Node.NodeName
 
-    Node $AllNodes.NodeName {
-
-        # Ensure C:\TEST exists
-        File TestFolder {
+        # Proof-of-life folder + file (keep)
+        File TestFolder
+        {
             DestinationPath = 'C:\TEST'
             Type            = 'Directory'
             Ensure          = 'Present'
         }
 
-        # Ensure C:\TEST\test.txt exists with content
-        File TestFile {
+        File TestFile
+        {
             DestinationPath = 'C:\TEST\test.txt'
             Type            = 'File'
             Ensure          = 'Present'
@@ -31,5 +38,17 @@ Configuration StudentBaseline {
             DependsOn       = '[File]TestFolder'
         }
 
+        # Baseline control 1: Computer identity
+        Computer SetComputerName
+        {
+            Name = $node.ComputerName
+        }
+
+        # Baseline control 2: Time zone
+        TimeZone SetTimeZone
+        {
+            IsSingleInstance = 'Yes'
+            TimeZone         = $node.TimeZone
+        }
     }
 }
