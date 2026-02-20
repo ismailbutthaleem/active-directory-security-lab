@@ -7,21 +7,14 @@ STUDENT TASK:
 
 Configuration StudentBaseline
 {
-    param(
-        [Parameter(Mandatory)]
-        [hashtable]$ConfigurationData
-    )
-
     Import-DscResource -ModuleName PSDesiredStateConfiguration
     Import-DscResource -ModuleName ComputerManagementDsc
-    #Import-DscResource -ModuleName ActivedirectoryDSC
 
     Node $AllNodes.NodeName
     {
-        # Pull the node object so every resource reads from the Data Plane
+        # $ConfigurationData is available automatically when BuildMain passes -ConfigurationData
         $node = $ConfigurationData.AllNodes | Where-Object NodeName -eq $Node.NodeName
 
-        # Proof-of-life folder + file (keep)
         File TestFolder
         {
             DestinationPath = 'C:\TEST'
@@ -38,13 +31,11 @@ Configuration StudentBaseline
             DependsOn       = '[File]TestFolder'
         }
 
-        # Baseline control 1: Computer identity
         Computer SetComputerName
         {
             Name = $node.ComputerName
         }
 
-        # Baseline control 2: Time zone
         TimeZone SetTimeZone
         {
             IsSingleInstance = 'Yes'
