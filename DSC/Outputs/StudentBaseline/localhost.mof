@@ -1,7 +1,7 @@
 /*
 @TargetNode='localhost'
 @GeneratedBy=Administrator
-@GenerationDate=02/21/2026 01:23:50
+@GenerationDate=02/21/2026 01:50:26
 @GenerationHost=SERVER25-DC-01
 */
 
@@ -80,7 +80,7 @@ instance of MSFT_RoleResource as $MSFT_RoleResource2ref
 {
 ResourceID = "[WindowsFeature]RSATADDS";
  ModuleName = "PsDesiredStateConfiguration";
- Name = "RSAT-AD-Tools";
+ Name = "RSAT-ADDS";
  Ensure = "Present";
  SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::61::9::WindowsFeature";
 
@@ -152,7 +152,7 @@ instance of OMI_ConfigurationDocument
 
                         Author="Administrator";
 
-                        GenerationDate="02/21/2026 01:23:50";
+                        GenerationDate="02/21/2026 01:50:26";
 
                         GenerationHost="SERVER25-DC-01";
 
