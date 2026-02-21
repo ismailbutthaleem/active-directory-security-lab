@@ -1,31 +1,31 @@
 /*
 @TargetNode='localhost'
 @GeneratedBy=Administrator
-@GenerationDate=02/21/2026 03:47:37
+@GenerationDate=02/21/2026 04:02:37
 @GenerationHost=SERVER25-DC-01
 */
 
 instance of MSFT_FileDirectoryConfiguration as $MSFT_FileDirectoryConfiguration1ref
 {
-Type = "Directory";
- ModuleName = "PSDesiredStateConfiguration";
- SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::19::9::File";
+ResourceID = "[File]TestFolder";
  Ensure = "Present";
  DestinationPath = "C:\\TEST";
- ResourceID = "[File]TestFolder";
+ ModuleName = "PSDesiredStateConfiguration";
+ SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::19::9::File";
+ Type = "Directory";
 
 ModuleVersion = "1.0";
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_FileDirectoryConfiguration as $MSFT_FileDirectoryConfiguration2ref
 {
-Contents = "Proof-of-life: DSC created this file.";
- Type = "File";
+ResourceID = "[File]TestFile";
+ Ensure = "Present";
+ Contents = "Proof-of-life: DSC created this file.";
+ DestinationPath = "C:\\TEST\\test.txt";
  ModuleName = "PSDesiredStateConfiguration";
  SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::26::9::File";
- Ensure = "Present";
- DestinationPath = "C:\\TEST\\test.txt";
- ResourceID = "[File]TestFile";
+ Type = "File";
 
 ModuleVersion = "1.0";
 DependsOn = {
@@ -34,31 +34,31 @@ DependsOn = {
 };
 instance of DSC_Computer as $DSC_Computer1ref
 {
-Name = "SERVER25-DC-01";
- ModuleVersion = "10.0.0";
+ResourceID = "[Computer]SetComputerName";
  ModuleName = "ComputerManagementDsc";
- ResourceID = "[Computer]SetComputerName";
+ Name = "SERVER25-DC-01";
+ ModuleVersion = "10.0.0";
  SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::35::9::Computer";
  ConfigurationName = "StudentBaseline";
 };
 instance of DSC_TimeZone as $DSC_TimeZone1ref
 {
-IsSingleInstance = "Yes";
+ResourceID = "[TimeZone]SetTimeZone";
  ModuleName = "ComputerManagementDsc";
+ IsSingleInstance = "Yes";
  SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::40::9::TimeZone";
  ModuleVersion = "10.0.0";
- TimeZone = "GMT Standard Time";
- ResourceID = "[TimeZone]SetTimeZone";
+ TimeZone = "GMT Standard Time";
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_ServiceResource as $MSFT_ServiceResource1ref
 {
 State = "Running";
- ModuleName = "PsDesiredStateConfiguration";
- Name = "W32Time";
- SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::46::9::Service";
- StartupType = "Automatic";
  ResourceID = "[Service]WindowsTime";
+ StartupType = "Automatic";
+ Name = "W32Time";
+ ModuleName = "PsDesiredStateConfiguration";
+ SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::46::9::Service";
 
 ModuleVersion = "1.0";
 DependsOn = {
@@ -67,22 +67,22 @@ DependsOn = {
 };
 instance of MSFT_RoleResource as $MSFT_RoleResource1ref
 {
-ModuleName = "PsDesiredStateConfiguration";
- Name = "AD-Domain-Services";
- SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::54::9::WindowsFeature";
+ResourceID = "[WindowsFeature]ADDS";
  Ensure = "Present";
- ResourceID = "[WindowsFeature]ADDS";
+ Name = "AD-Domain-Services";
+ ModuleName = "PsDesiredStateConfiguration";
+ SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::54::9::WindowsFeature";
 
 ModuleVersion = "1.0";
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_RoleResource as $MSFT_RoleResource2ref
 {
-ModuleName = "PsDesiredStateConfiguration";
- Name = "RSAT-ADDS";
- SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::60::9::WindowsFeature";
+ResourceID = "[WindowsFeature]RSATADDS";
  Ensure = "Present";
- ResourceID = "[WindowsFeature]RSATADDS";
+ Name = "RSAT-ADDS";
+ ModuleName = "PsDesiredStateConfiguration";
+ SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::60::9::WindowsFeature";
 
 ModuleVersion = "1.0";
 DependsOn = {
@@ -91,29 +91,29 @@ DependsOn = {
 };
 instance of DSC_IPAddress as $DSC_IPAddress1ref
 {
-ModuleVersion = "9.1.0";
- ModuleName = "NetworkingDsc";
+ResourceID = "[IPAddress]StaticIPv4";
  IPAddress = {
     "192.168.56.107/24"
 };
- AddressFamily = "IPv4";
- SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::67::9::IPAddress";
  InterfaceAlias = "Ethernet 2";
- KeepExistingAddress = False;
- ResourceID = "[IPAddress]StaticIPv4";
+ AddressFamily = "IPv4";
+ ModuleName = "NetworkingDsc";
+ ModuleVersion = "9.1.0";
+ SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::67::9::IPAddress";
+ KeepExistingAddress = False;
  ConfigurationName = "StudentBaseline";
 };
 instance of DSC_DnsServerAddress as $DSC_DnsServerAddress1ref
 {
-ModuleVersion = "9.1.0";
- ModuleName = "NetworkingDsc";
- AddressFamily = "IPv4";
- SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::75::9::DnsServerAddress";
+ResourceID = "[DnsServerAddress]InternalDNS";
  InterfaceAlias = "Ethernet 2";
  Address = {
     "127.0.0.1"
 };
- ResourceID = "[DnsServerAddress]InternalDNS";
+ AddressFamily = "IPv4";
+ ModuleName = "NetworkingDsc";
+ ModuleVersion = "9.1.0";
+ SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::75::9::DnsServerAddress";
 
 DependsOn = {
     "[IPAddress]StaticIPv4"};
@@ -121,12 +121,12 @@ DependsOn = {
 };
 instance of MSFT_ScriptResource as $MSFT_ScriptResource1ref
 {
-TestScript = "$node = [System.Management.Automation.PSSerializer]::Deserialize('<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\">\n  <Obj RefId=\"0\">\n    <TN RefId=\"0\">\n      <T>System.Collections.Hashtable</T>\n      <T>System.Object</T>\n    </TN>\n    <DCT>\n      <En>\n        <S N=\"Key\">TimeZone</S>\n        <S N=\"Value\">GMT Standard Time</S>\n      </En>\n      <En>\n        <S N=\"Key\">IPv4Address_Internal</S>\n        <S N=\"Value\">192.168.56.107</S>\n      </En>\n      <En>\n        <S N=\"Key\">DomainMode</S>\n        <S N=\"Value\">WinThreshold</S>\n      </En>\n      <En>\n        <S N=\"Key\">PrefixLength_Internal</S>\n        <I32 N=\"Value\">24</I32>\n      </En>\n      <En>\n        <S N=\"Key\">DomainName</S>\n        <S N=\"Value\">bolton.corp</S>\n      </En>\n      <En>\n        <S N=\"Key\">Expect_NAT_Dhcp</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">ForestMode</S>\n        <S N=\"Value\">WinThreshold</S>\n      </En>\n      <En>\n        <S N=\"Key\">Baseline</S>\n        <Obj N=\"Value\" RefId=\"1\">\n          <TNRef RefId=\"0\" />\n          <DCT>\n            <En>\n              <S N=\"Key\">PowerPlan</S>\n              <S N=\"Value\">High Performance</S>\n            </En>\n          </DCT>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">InstallRSATADDS</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">DomainNetBIOSName</S>\n        <S N=\"Value\">BOLTON</S>\n      </En>\n      <En>\n        <S N=\"Key\">InterfaceAlias_NAT</S>\n        <S N=\"Value\">Ethernet</S>\n      </En>\n      <En>\n        <S N=\"Key\">DisableDnsRegistrationOnNat</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">Features</S>\n        <Obj N=\"Value\" RefId=\"2\">\n          <TNRef RefId=\"0\" />\n          <DCT>\n            <En>\n              <S N=\"Key\">Add</S>\n              <Obj N=\"Value\" RefId=\"3\">\n                <TN RefId=\"1\">\n                  <T>System.Object[]</T>\n                  <T>System.Array</T>\n                  <T>System.Object</T>\n                </TN>\n                <LST>\n                  <S>AD-Domain-Services</S>\n                  <S>DNS</S>\n                </LST>\n              </Obj>\n            </En>\n          </DCT>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">DnsServers_Internal</S>\n        <Obj N=\"Value\" RefId=\"4\">\n          <TNRef RefId=\"1\" />\n          <LST>\n            <S>127.0.0.1</S>\n          </LST>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">InstallADDSRole</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">EnsureW32Time</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">Role</S>\n        <S N=\"Value\">DC</S>\n      </En>\n      <En>\n        <S N=\"Key\">ComputerName</S>\n        <S N=\"Value\">SERVER25-DC-01</S>\n      </En>\n      <En>\n        <S N=\"Key\">InterfaceAlias_Internal</S>\n        <S N=\"Value\">Ethernet 2</S>\n      </En>\n      <En>\n        <S N=\"Key\">Network</S>\n        <Obj N=\"Value\" RefId=\"5\">\n          <TNRef RefId=\"0\" />\n          <DCT>\n            <En>\n              <S N=\"Key\">DnsServers</S>\n              <Obj N=\"Value\" RefId=\"6\">\n                <TNRef RefId=\"1\" />\n                <LST>\n                  <S>192.168.56.107</S>\n                </LST>\n              </Obj>\n            </En>\n            <En>\n              <S N=\"Key\">InterfaceAlias</S>\n              <S N=\"Value\">Ethernet 2</S>\n            </En>\n            <En>\n              <S N=\"Key\">AddressFamily</S>\n              <S N=\"Value\">IPv4</S>\n            </En>\n            <En>\n              <S N=\"Key\">PrefixLength</S>\n              <I32 N=\"Value\">24</I32>\n            </En>\n            <En>\n              <S N=\"Key\">IPAddress</S>\n              <S N=\"Value\">192.168.56.107</S>\n            </En>\n          </DCT>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">NodeName</S>\n        <S N=\"Value\">localhost</S>\n      </En>\n    </DCT>\n  </Obj>\n</Objs>')\n\n                (Get-DnsClient -InterfaceAlias $node.InterfaceAlias_NAT).RegisterThisConnectionsAddress -eq $false\n            ";
+TestScript = "$node = [System.Management.Automation.PSSerializer]::Deserialize('<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\">\n  <Obj RefId=\"0\">\n    <TN RefId=\"0\">\n      <T>System.Collections.Hashtable</T>\n      <T>System.Object</T>\n    </TN>\n    <DCT>\n      <En>\n        <S N=\"Key\">IPv4Address_Internal</S>\n        <S N=\"Value\">192.168.56.107</S>\n      </En>\n      <En>\n        <S N=\"Key\">TimeZone</S>\n        <S N=\"Value\">GMT Standard Time</S>\n      </En>\n      <En>\n        <S N=\"Key\">Expect_NAT_Dhcp</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">InstallADDSRole</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">ForestMode</S>\n        <S N=\"Value\">WinThreshold</S>\n      </En>\n      <En>\n        <S N=\"Key\">Baseline</S>\n        <Obj N=\"Value\" RefId=\"1\">\n          <TNRef RefId=\"0\" />\n          <DCT>\n            <En>\n              <S N=\"Key\">PowerPlan</S>\n              <S N=\"Value\">High Performance</S>\n            </En>\n          </DCT>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">ComputerName</S>\n        <S N=\"Value\">SERVER25-DC-01</S>\n      </En>\n      <En>\n        <S N=\"Key\">DisableDnsRegistrationOnNat</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">Network</S>\n        <Obj N=\"Value\" RefId=\"2\">\n          <TNRef RefId=\"0\" />\n          <DCT>\n            <En>\n              <S N=\"Key\">AddressFamily</S>\n              <S N=\"Value\">IPv4</S>\n            </En>\n            <En>\n              <S N=\"Key\">DnsServers</S>\n              <Obj N=\"Value\" RefId=\"3\">\n                <TN RefId=\"1\">\n                  <T>System.Object[]</T>\n                  <T>System.Array</T>\n                  <T>System.Object</T>\n                </TN>\n                <LST>\n                  <S>192.168.56.107</S>\n                </LST>\n              </Obj>\n            </En>\n            <En>\n              <S N=\"Key\">InterfaceAlias</S>\n              <S N=\"Value\">Ethernet 2</S>\n            </En>\n            <En>\n              <S N=\"Key\">PrefixLength</S>\n              <I32 N=\"Value\">24</I32>\n            </En>\n            <En>\n              <S N=\"Key\">IPAddress</S>\n              <S N=\"Value\">192.168.56.107</S>\n            </En>\n          </DCT>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">DomainMode</S>\n        <S N=\"Value\">WinThreshold</S>\n      </En>\n      <En>\n        <S N=\"Key\">DnsServers_Internal</S>\n        <Obj N=\"Value\" RefId=\"4\">\n          <TNRef RefId=\"1\" />\n          <LST>\n            <S>127.0.0.1</S>\n          </LST>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">Role</S>\n        <S N=\"Value\">DC</S>\n      </En>\n      <En>\n        <S N=\"Key\">InterfaceAlias_Internal</S>\n        <S N=\"Value\">Ethernet 2</S>\n      </En>\n      <En>\n        <S N=\"Key\">DomainName</S>\n        <S N=\"Value\">bolton.corp</S>\n      </En>\n      <En>\n        <S N=\"Key\">EnsureW32Time</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">InstallRSATADDS</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">NodeName</S>\n        <S N=\"Value\">localhost</S>\n      </En>\n      <En>\n        <S N=\"Key\">InterfaceAlias_NAT</S>\n        <S N=\"Value\">Ethernet</S>\n      </En>\n      <En>\n        <S N=\"Key\">PrefixLength_Internal</S>\n        <I32 N=\"Value\">24</I32>\n      </En>\n      <En>\n        <S N=\"Key\">DomainNetBIOSName</S>\n        <S N=\"Value\">BOLTON</S>\n      </En>\n      <En>\n        <S N=\"Key\">Features</S>\n        <Obj N=\"Value\" RefId=\"5\">\n          <TNRef RefId=\"0\" />\n          <DCT>\n            <En>\n              <S N=\"Key\">Add</S>\n              <Obj N=\"Value\" RefId=\"6\">\n                <TNRef RefId=\"1\" />\n                <LST>\n                  <S>AD-Domain-Services</S>\n                  <S>DNS</S>\n                </LST>\n              </Obj>\n            </En>\n          </DCT>\n        </Obj>\n      </En>\n    </DCT>\n  </Obj>\n</Objs>')\n\n                (Get-DnsClient -InterfaceAlias $node.InterfaceAlias_NAT).RegisterThisConnectionsAddress -eq $false\n            ";
+ ResourceID = "[Script]DisableNatDnsRegistration";
+ GetScript = "$node = [System.Management.Automation.PSSerializer]::Deserialize('<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\">\n  <Obj RefId=\"0\">\n    <TN RefId=\"0\">\n      <T>System.Collections.Hashtable</T>\n      <T>System.Object</T>\n    </TN>\n    <DCT>\n      <En>\n        <S N=\"Key\">IPv4Address_Internal</S>\n        <S N=\"Value\">192.168.56.107</S>\n      </En>\n      <En>\n        <S N=\"Key\">TimeZone</S>\n        <S N=\"Value\">GMT Standard Time</S>\n      </En>\n      <En>\n        <S N=\"Key\">Expect_NAT_Dhcp</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">InstallADDSRole</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">ForestMode</S>\n        <S N=\"Value\">WinThreshold</S>\n      </En>\n      <En>\n        <S N=\"Key\">Baseline</S>\n        <Obj N=\"Value\" RefId=\"1\">\n          <TNRef RefId=\"0\" />\n          <DCT>\n            <En>\n              <S N=\"Key\">PowerPlan</S>\n              <S N=\"Value\">High Performance</S>\n            </En>\n          </DCT>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">ComputerName</S>\n        <S N=\"Value\">SERVER25-DC-01</S>\n      </En>\n      <En>\n        <S N=\"Key\">DisableDnsRegistrationOnNat</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">Network</S>\n        <Obj N=\"Value\" RefId=\"2\">\n          <TNRef RefId=\"0\" />\n          <DCT>\n            <En>\n              <S N=\"Key\">AddressFamily</S>\n              <S N=\"Value\">IPv4</S>\n            </En>\n            <En>\n              <S N=\"Key\">DnsServers</S>\n              <Obj N=\"Value\" RefId=\"3\">\n                <TN RefId=\"1\">\n                  <T>System.Object[]</T>\n                  <T>System.Array</T>\n                  <T>System.Object</T>\n                </TN>\n                <LST>\n                  <S>192.168.56.107</S>\n                </LST>\n              </Obj>\n            </En>\n            <En>\n              <S N=\"Key\">InterfaceAlias</S>\n              <S N=\"Value\">Ethernet 2</S>\n            </En>\n            <En>\n              <S N=\"Key\">PrefixLength</S>\n              <I32 N=\"Value\">24</I32>\n            </En>\n            <En>\n              <S N=\"Key\">IPAddress</S>\n              <S N=\"Value\">192.168.56.107</S>\n            </En>\n          </DCT>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">DomainMode</S>\n        <S N=\"Value\">WinThreshold</S>\n      </En>\n      <En>\n        <S N=\"Key\">DnsServers_Internal</S>\n        <Obj N=\"Value\" RefId=\"4\">\n          <TNRef RefId=\"1\" />\n          <LST>\n            <S>127.0.0.1</S>\n          </LST>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">Role</S>\n        <S N=\"Value\">DC</S>\n      </En>\n      <En>\n        <S N=\"Key\">InterfaceAlias_Internal</S>\n        <S N=\"Value\">Ethernet 2</S>\n      </En>\n      <En>\n        <S N=\"Key\">DomainName</S>\n        <S N=\"Value\">bolton.corp</S>\n      </En>\n      <En>\n        <S N=\"Key\">EnsureW32Time</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">InstallRSATADDS</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">NodeName</S>\n        <S N=\"Value\">localhost</S>\n      </En>\n      <En>\n        <S N=\"Key\">InterfaceAlias_NAT</S>\n        <S N=\"Value\">Ethernet</S>\n      </En>\n      <En>\n        <S N=\"Key\">PrefixLength_Internal</S>\n        <I32 N=\"Value\">24</I32>\n      </En>\n      <En>\n        <S N=\"Key\">DomainNetBIOSName</S>\n        <S N=\"Value\">BOLTON</S>\n      </En>\n      <En>\n        <S N=\"Key\">Features</S>\n        <Obj N=\"Value\" RefId=\"5\">\n          <TNRef RefId=\"0\" />\n          <DCT>\n            <En>\n              <S N=\"Key\">Add</S>\n              <Obj N=\"Value\" RefId=\"6\">\n                <TNRef RefId=\"1\" />\n                <LST>\n                  <S>AD-Domain-Services</S>\n                  <S>DNS</S>\n                </LST>\n              </Obj>\n            </En>\n          </DCT>\n        </Obj>\n      </En>\n    </DCT>\n  </Obj>\n</Objs>')\n\n                @{ Result = (Get-DnsClient -InterfaceAlias $node.InterfaceAlias_NAT).RegisterThisConnectionsAddress }\n            ";
  ModuleName = "PsDesiredStateConfiguration";
  SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::83::9::Script";
- GetScript = "$node = [System.Management.Automation.PSSerializer]::Deserialize('<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\">\n  <Obj RefId=\"0\">\n    <TN RefId=\"0\">\n      <T>System.Collections.Hashtable</T>\n      <T>System.Object</T>\n    </TN>\n    <DCT>\n      <En>\n        <S N=\"Key\">TimeZone</S>\n        <S N=\"Value\">GMT Standard Time</S>\n      </En>\n      <En>\n        <S N=\"Key\">IPv4Address_Internal</S>\n        <S N=\"Value\">192.168.56.107</S>\n      </En>\n      <En>\n        <S N=\"Key\">DomainMode</S>\n        <S N=\"Value\">WinThreshold</S>\n      </En>\n      <En>\n        <S N=\"Key\">PrefixLength_Internal</S>\n        <I32 N=\"Value\">24</I32>\n      </En>\n      <En>\n        <S N=\"Key\">DomainName</S>\n        <S N=\"Value\">bolton.corp</S>\n      </En>\n      <En>\n        <S N=\"Key\">Expect_NAT_Dhcp</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">ForestMode</S>\n        <S N=\"Value\">WinThreshold</S>\n      </En>\n      <En>\n        <S N=\"Key\">Baseline</S>\n        <Obj N=\"Value\" RefId=\"1\">\n          <TNRef RefId=\"0\" />\n          <DCT>\n            <En>\n              <S N=\"Key\">PowerPlan</S>\n              <S N=\"Value\">High Performance</S>\n            </En>\n          </DCT>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">InstallRSATADDS</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">DomainNetBIOSName</S>\n        <S N=\"Value\">BOLTON</S>\n      </En>\n      <En>\n        <S N=\"Key\">InterfaceAlias_NAT</S>\n        <S N=\"Value\">Ethernet</S>\n      </En>\n      <En>\n        <S N=\"Key\">DisableDnsRegistrationOnNat</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">Features</S>\n        <Obj N=\"Value\" RefId=\"2\">\n          <TNRef RefId=\"0\" />\n          <DCT>\n            <En>\n              <S N=\"Key\">Add</S>\n              <Obj N=\"Value\" RefId=\"3\">\n                <TN RefId=\"1\">\n                  <T>System.Object[]</T>\n                  <T>System.Array</T>\n                  <T>System.Object</T>\n                </TN>\n                <LST>\n                  <S>AD-Domain-Services</S>\n                  <S>DNS</S>\n                </LST>\n              </Obj>\n            </En>\n          </DCT>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">DnsServers_Internal</S>\n        <Obj N=\"Value\" RefId=\"4\">\n          <TNRef RefId=\"1\" />\n          <LST>\n            <S>127.0.0.1</S>\n          </LST>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">InstallADDSRole</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">EnsureW32Time</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">Role</S>\n        <S N=\"Value\">DC</S>\n      </En>\n      <En>\n        <S N=\"Key\">ComputerName</S>\n        <S N=\"Value\">SERVER25-DC-01</S>\n      </En>\n      <En>\n        <S N=\"Key\">InterfaceAlias_Internal</S>\n        <S N=\"Value\">Ethernet 2</S>\n      </En>\n      <En>\n        <S N=\"Key\">Network</S>\n        <Obj N=\"Value\" RefId=\"5\">\n          <TNRef RefId=\"0\" />\n          <DCT>\n            <En>\n              <S N=\"Key\">DnsServers</S>\n              <Obj N=\"Value\" RefId=\"6\">\n                <TNRef RefId=\"1\" />\n                <LST>\n                  <S>192.168.56.107</S>\n                </LST>\n              </Obj>\n            </En>\n            <En>\n              <S N=\"Key\">InterfaceAlias</S>\n              <S N=\"Value\">Ethernet 2</S>\n            </En>\n            <En>\n              <S N=\"Key\">AddressFamily</S>\n              <S N=\"Value\">IPv4</S>\n            </En>\n            <En>\n              <S N=\"Key\">PrefixLength</S>\n              <I32 N=\"Value\">24</I32>\n            </En>\n            <En>\n              <S N=\"Key\">IPAddress</S>\n              <S N=\"Value\">192.168.56.107</S>\n            </En>\n          </DCT>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">NodeName</S>\n        <S N=\"Value\">localhost</S>\n      </En>\n    </DCT>\n  </Obj>\n</Objs>')\n\n                @{ Result = (Get-DnsClient -InterfaceAlias $node.InterfaceAlias_NAT).RegisterThisConnectionsAddress }\n            ";
- SetScript = "$node = [System.Management.Automation.PSSerializer]::Deserialize('<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\">\n  <Obj RefId=\"0\">\n    <TN RefId=\"0\">\n      <T>System.Collections.Hashtable</T>\n      <T>System.Object</T>\n    </TN>\n    <DCT>\n      <En>\n        <S N=\"Key\">TimeZone</S>\n        <S N=\"Value\">GMT Standard Time</S>\n      </En>\n      <En>\n        <S N=\"Key\">IPv4Address_Internal</S>\n        <S N=\"Value\">192.168.56.107</S>\n      </En>\n      <En>\n        <S N=\"Key\">DomainMode</S>\n        <S N=\"Value\">WinThreshold</S>\n      </En>\n      <En>\n        <S N=\"Key\">PrefixLength_Internal</S>\n        <I32 N=\"Value\">24</I32>\n      </En>\n      <En>\n        <S N=\"Key\">DomainName</S>\n        <S N=\"Value\">bolton.corp</S>\n      </En>\n      <En>\n        <S N=\"Key\">Expect_NAT_Dhcp</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">ForestMode</S>\n        <S N=\"Value\">WinThreshold</S>\n      </En>\n      <En>\n        <S N=\"Key\">Baseline</S>\n        <Obj N=\"Value\" RefId=\"1\">\n          <TNRef RefId=\"0\" />\n          <DCT>\n            <En>\n              <S N=\"Key\">PowerPlan</S>\n              <S N=\"Value\">High Performance</S>\n            </En>\n          </DCT>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">InstallRSATADDS</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">DomainNetBIOSName</S>\n        <S N=\"Value\">BOLTON</S>\n      </En>\n      <En>\n        <S N=\"Key\">InterfaceAlias_NAT</S>\n        <S N=\"Value\">Ethernet</S>\n      </En>\n      <En>\n        <S N=\"Key\">DisableDnsRegistrationOnNat</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">Features</S>\n        <Obj N=\"Value\" RefId=\"2\">\n          <TNRef RefId=\"0\" />\n          <DCT>\n            <En>\n              <S N=\"Key\">Add</S>\n              <Obj N=\"Value\" RefId=\"3\">\n                <TN RefId=\"1\">\n                  <T>System.Object[]</T>\n                  <T>System.Array</T>\n                  <T>System.Object</T>\n                </TN>\n                <LST>\n                  <S>AD-Domain-Services</S>\n                  <S>DNS</S>\n                </LST>\n              </Obj>\n            </En>\n          </DCT>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">DnsServers_Internal</S>\n        <Obj N=\"Value\" RefId=\"4\">\n          <TNRef RefId=\"1\" />\n          <LST>\n            <S>127.0.0.1</S>\n          </LST>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">InstallADDSRole</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">EnsureW32Time</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">Role</S>\n        <S N=\"Value\">DC</S>\n      </En>\n      <En>\n        <S N=\"Key\">ComputerName</S>\n        <S N=\"Value\">SERVER25-DC-01</S>\n      </En>\n      <En>\n        <S N=\"Key\">InterfaceAlias_Internal</S>\n        <S N=\"Value\">Ethernet 2</S>\n      </En>\n      <En>\n        <S N=\"Key\">Network</S>\n        <Obj N=\"Value\" RefId=\"5\">\n          <TNRef RefId=\"0\" />\n          <DCT>\n            <En>\n              <S N=\"Key\">DnsServers</S>\n              <Obj N=\"Value\" RefId=\"6\">\n                <TNRef RefId=\"1\" />\n                <LST>\n                  <S>192.168.56.107</S>\n                </LST>\n              </Obj>\n            </En>\n            <En>\n              <S N=\"Key\">InterfaceAlias</S>\n              <S N=\"Value\">Ethernet 2</S>\n            </En>\n            <En>\n              <S N=\"Key\">AddressFamily</S>\n              <S N=\"Value\">IPv4</S>\n            </En>\n            <En>\n              <S N=\"Key\">PrefixLength</S>\n              <I32 N=\"Value\">24</I32>\n            </En>\n            <En>\n              <S N=\"Key\">IPAddress</S>\n              <S N=\"Value\">192.168.56.107</S>\n            </En>\n          </DCT>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">NodeName</S>\n        <S N=\"Value\">localhost</S>\n      </En>\n    </DCT>\n  </Obj>\n</Objs>')\n\n                Set-DnsClient -InterfaceAlias $node.InterfaceAlias_NAT -RegisterThisConnectionsAddress $false\n            ";
- ResourceID = "[Script]DisableNatDnsRegistration";
+ SetScript = "$node = [System.Management.Automation.PSSerializer]::Deserialize('<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\">\n  <Obj RefId=\"0\">\n    <TN RefId=\"0\">\n      <T>System.Collections.Hashtable</T>\n      <T>System.Object</T>\n    </TN>\n    <DCT>\n      <En>\n        <S N=\"Key\">IPv4Address_Internal</S>\n        <S N=\"Value\">192.168.56.107</S>\n      </En>\n      <En>\n        <S N=\"Key\">TimeZone</S>\n        <S N=\"Value\">GMT Standard Time</S>\n      </En>\n      <En>\n        <S N=\"Key\">Expect_NAT_Dhcp</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">InstallADDSRole</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">ForestMode</S>\n        <S N=\"Value\">WinThreshold</S>\n      </En>\n      <En>\n        <S N=\"Key\">Baseline</S>\n        <Obj N=\"Value\" RefId=\"1\">\n          <TNRef RefId=\"0\" />\n          <DCT>\n            <En>\n              <S N=\"Key\">PowerPlan</S>\n              <S N=\"Value\">High Performance</S>\n            </En>\n          </DCT>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">ComputerName</S>\n        <S N=\"Value\">SERVER25-DC-01</S>\n      </En>\n      <En>\n        <S N=\"Key\">DisableDnsRegistrationOnNat</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">Network</S>\n        <Obj N=\"Value\" RefId=\"2\">\n          <TNRef RefId=\"0\" />\n          <DCT>\n            <En>\n              <S N=\"Key\">AddressFamily</S>\n              <S N=\"Value\">IPv4</S>\n            </En>\n            <En>\n              <S N=\"Key\">DnsServers</S>\n              <Obj N=\"Value\" RefId=\"3\">\n                <TN RefId=\"1\">\n                  <T>System.Object[]</T>\n                  <T>System.Array</T>\n                  <T>System.Object</T>\n                </TN>\n                <LST>\n                  <S>192.168.56.107</S>\n                </LST>\n              </Obj>\n            </En>\n            <En>\n              <S N=\"Key\">InterfaceAlias</S>\n              <S N=\"Value\">Ethernet 2</S>\n            </En>\n            <En>\n              <S N=\"Key\">PrefixLength</S>\n              <I32 N=\"Value\">24</I32>\n            </En>\n            <En>\n              <S N=\"Key\">IPAddress</S>\n              <S N=\"Value\">192.168.56.107</S>\n            </En>\n          </DCT>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">DomainMode</S>\n        <S N=\"Value\">WinThreshold</S>\n      </En>\n      <En>\n        <S N=\"Key\">DnsServers_Internal</S>\n        <Obj N=\"Value\" RefId=\"4\">\n          <TNRef RefId=\"1\" />\n          <LST>\n            <S>127.0.0.1</S>\n          </LST>\n        </Obj>\n      </En>\n      <En>\n        <S N=\"Key\">Role</S>\n        <S N=\"Value\">DC</S>\n      </En>\n      <En>\n        <S N=\"Key\">InterfaceAlias_Internal</S>\n        <S N=\"Value\">Ethernet 2</S>\n      </En>\n      <En>\n        <S N=\"Key\">DomainName</S>\n        <S N=\"Value\">bolton.corp</S>\n      </En>\n      <En>\n        <S N=\"Key\">EnsureW32Time</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">InstallRSATADDS</S>\n        <B N=\"Value\">true</B>\n      </En>\n      <En>\n        <S N=\"Key\">NodeName</S>\n        <S N=\"Value\">localhost</S>\n      </En>\n      <En>\n        <S N=\"Key\">InterfaceAlias_NAT</S>\n        <S N=\"Value\">Ethernet</S>\n      </En>\n      <En>\n        <S N=\"Key\">PrefixLength_Internal</S>\n        <I32 N=\"Value\">24</I32>\n      </En>\n      <En>\n        <S N=\"Key\">DomainNetBIOSName</S>\n        <S N=\"Value\">BOLTON</S>\n      </En>\n      <En>\n        <S N=\"Key\">Features</S>\n        <Obj N=\"Value\" RefId=\"5\">\n          <TNRef RefId=\"0\" />\n          <DCT>\n            <En>\n              <S N=\"Key\">Add</S>\n              <Obj N=\"Value\" RefId=\"6\">\n                <TNRef RefId=\"1\" />\n                <LST>\n                  <S>AD-Domain-Services</S>\n                  <S>DNS</S>\n                </LST>\n              </Obj>\n            </En>\n          </DCT>\n        </Obj>\n      </En>\n    </DCT>\n  </Obj>\n</Objs>')\n\n                Set-DnsClient -InterfaceAlias $node.InterfaceAlias_NAT -RegisterThisConnectionsAddress $false\n            ";
 
 ModuleVersion = "1.0";
 DependsOn = {
@@ -135,22 +135,22 @@ DependsOn = {
 };
 instance of MSFT_RoleResource as $MSFT_RoleResource3ref
 {
-ModuleName = "PsDesiredStateConfiguration";
- Name = "AD-Domain-Services";
- SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::99::13::WindowsFeature";
+ResourceID = "[WindowsFeature]Feature_AD-Domain-Services";
  Ensure = "Present";
- ResourceID = "[WindowsFeature]Feature_AD-Domain-Services";
+ Name = "AD-Domain-Services";
+ ModuleName = "PsDesiredStateConfiguration";
+ SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::99::13::WindowsFeature";
 
 ModuleVersion = "1.0";
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_RoleResource as $MSFT_RoleResource4ref
 {
-ModuleName = "PsDesiredStateConfiguration";
- Name = "DNS";
- SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::99::13::WindowsFeature";
+ResourceID = "[WindowsFeature]Feature_DNS";
  Ensure = "Present";
- ResourceID = "[WindowsFeature]Feature_DNS";
+ Name = "DNS";
+ ModuleName = "PsDesiredStateConfiguration";
+ SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::99::13::WindowsFeature";
 
 ModuleVersion = "1.0";
  ConfigurationName = "StudentBaseline";
@@ -166,7 +166,7 @@ instance of OMI_ConfigurationDocument
 
                         Author="Administrator";
 
-                        GenerationDate="02/21/2026 03:47:37";
+                        GenerationDate="02/21/2026 04:02:37";
 
                         GenerationHost="SERVER25-DC-01";
 
