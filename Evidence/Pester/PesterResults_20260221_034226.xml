@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="26" errors="0" failures="1" not-run="0" inconclusive="0" ignored="0" skipped="2" invalid="0" date="2026-02-21" time="03:42:26">
+  <environment cwd="C:\Users\Administrator\Desktop\repo\COM5411-BarmBuzz" user="Administrator" nunit-version="2.5.8.0" os-version="10.0.26100" machine-name="SERVER25-DC-01" clr-version="9.0.10" user-domain="SERVER25-DC-01" platform="Microsoft Windows Server 2025 Datacenter|C:\WINDOWS|\Device\Harddisk0\Partition4" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Failure" success="False" time="2.7275" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="C:\Users\Administrator\Desktop\repo\COM5411-BarmBuzz\tests\pester\Preflight-Environment.Tests.ps1" executed="True" result="Failure" success="False" time="2.7275" asserts="0" description="C:\Users\Administrator\Desktop\repo\COM5411-BarmBuzz\tests\pester\Preflight-Environment.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="COM5411 IaC Environment Preflight (Dual-Shell)" executed="True" result="Failure" success="False" time="2.6691" asserts="0" description="COM5411 IaC Environment Preflight (Dual-Shell)">
+            <results>
+              <test-suite type="TestFixture" name="COM5411 IaC Environment Preflight (Dual-Shell).Entry requirements" executed="True" result="Success" success="True" time="0.0204" asserts="0" description="COM5411 IaC Environment Preflight (Dual-Shell).Entry requirements">
+                <results>
+                  <test-case description="Must be run from PowerShell 7 (pwsh) (this is the orchestration shell)" name="COM5411 IaC Environment Preflight (Dual-Shell).Entry requirements.Must be run from PowerShell 7 (pwsh) (this is the orchestration shell)" time="0.0096" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Should be run as Administrator (recommended for meaningful preflight)" name="COM5411 IaC Environment Preflight (Dual-Shell).Entry requirements.Should be run as Administrator (recommended for meaningful preflight)" time="0.0043" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Repo root contains Run_BuildMain.ps1 (orchestrator)" name="COM5411 IaC Environment Preflight (Dual-Shell).Entry requirements.Repo root contains Run_BuildMain.ps1 (orchestrator)" time="0.004" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="COM5411 IaC Environment Preflight (Dual-Shell).Diagnostics (support visibility)" executed="True" result="Success" success="True" time="0.2301" asserts="0" description="COM5411 IaC Environment Preflight (Dual-Shell).Diagnostics (support visibility)">
+                <results>
+                  <test-case description="PSModulePath is set in PowerShell 7 (current process)" name="COM5411 IaC Environment Preflight (Dual-Shell).Diagnostics (support visibility).PSModulePath is set in PowerShell 7 (current process)" time="0.0061" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="PSModulePath is set in Windows PowerShell 5.1" name="COM5411 IaC Environment Preflight (Dual-Shell).Diagnostics (support visibility).PSModulePath is set in Windows PowerShell 5.1" time="0.2014" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="COM5411 IaC Environment Preflight (Dual-Shell).Toolchain (PowerShell 7)" executed="True" result="Success" success="True" time="0.2532" asserts="0" description="COM5411 IaC Environment Preflight (Dual-Shell).Toolchain (PowerShell 7)">
+                <results>
+                  <test-case description="DSC v3 CLI exists on PATH (dsc.exe)" name="COM5411 IaC Environment Preflight (Dual-Shell).Toolchain (PowerShell 7).DSC v3 CLI exists on PATH (dsc.exe)" time="0.0073" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="PSResourceGet is available (Microsoft.PowerShell.PSResourceGet)" name="COM5411 IaC Environment Preflight (Dual-Shell).Toolchain (PowerShell 7).PSResourceGet is available (Microsoft.PowerShell.PSResourceGet)" time="0.0137" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility)" executed="True" result="Failure" success="False" time="2.068" asserts="0" description="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility)">
+                <results>
+                  <test-case description="Canonical module root exists (C:\Program Files\WindowsPowerShell\Modules)" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).Canonical module root exists (C:\Program Files\WindowsPowerShell\Modules)" time="0.0055" asserts="0" success="True" result="Success" executed="True" />
+                  <test-suite type="ParameterizedTest" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).PowerShell 7: &lt;name&gt; is installed and pinned to &lt;ver&gt;" executed="True" result="Success" success="True" time="0.0536" asserts="0" description="PowerShell 7: &lt;name&gt; is installed and pinned to &lt;ver&gt;">
+                    <results>
+                      <test-case description="PowerShell 7: GroupPolicyDsc is installed and pinned to 1.0.3" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).PowerShell 7: GroupPolicyDsc is installed and pinned to 1.0.3" time="0.0139" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="PowerShell 7: ActiveDirectoryDsc is installed and pinned to 6.6.0" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).PowerShell 7: ActiveDirectoryDsc is installed and pinned to 6.6.0" time="0.022" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="PowerShell 7: Pester is installed and pinned to 5.7.1" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).PowerShell 7: Pester is installed and pinned to 5.7.1" time="0.0178" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).Windows PowerShell 5.1: &lt;name&gt; is installed, pinned to &lt;ver&gt;, and stored under WindowsPowerShell\Modules" executed="True" result="Failure" success="False" time="1.4606" asserts="0" description="Windows PowerShell 5.1: &lt;name&gt; is installed, pinned to &lt;ver&gt;, and stored under WindowsPowerShell\Modules">
+                    <results>
+                      <test-case description="Windows PowerShell 5.1: GroupPolicyDsc is installed, pinned to 1.0.3, and stored under WindowsPowerShell\Modules" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).Windows PowerShell 5.1: GroupPolicyDsc is installed, pinned to 1.0.3, and stored under WindowsPowerShell\Modules" time="0.5166" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Windows PowerShell 5.1: ActiveDirectoryDsc is installed, pinned to 6.6.0, and stored under WindowsPowerShell\Modules" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).Windows PowerShell 5.1: ActiveDirectoryDsc is installed, pinned to 6.6.0, and stored under WindowsPowerShell\Modules" time="0.2428" asserts="0" success="False" result="Failure" executed="True">
+                        <failure>
+                          <message>RuntimeException: Module missing in Windows PowerShell 5.1: ActiveDirectoryDsc
+NEXT STEP (do this first, then re-run Preflight):
+  1) Open PowerShell 7 as Administrator
+  2) From the REPO ROOT run:
+       .\Run_BuildMain.ps1
+  3) Then re-run:
+       Invoke-Pester -Path .\Tests\Pester\Preflight-Environment.Tests.ps1 -Output Detailed
+DETAILS:
+Run_BuildMain.ps1 should install/pin modules into C:\Program Files\WindowsPowerShell\Modules.</message>
+                          <stack-trace>at Fail-WithRunBuildMain, C:\Users\Administrator\Desktop\repo\COM5411-BarmBuzz\tests\pester\Preflight-Environment.Tests.ps1:194
+at &lt;ScriptBlock&gt;, C:\Users\Administrator\Desktop\repo\COM5411-BarmBuzz\tests\pester\Preflight-Environment.Tests.ps1:312</stack-trace>
+                        </failure>
+                      </test-case>
+                      <test-case description="Windows PowerShell 5.1: Pester is installed, pinned to 5.7.1, and stored under WindowsPowerShell\Modules" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).Windows PowerShell 5.1: Pester is installed, pinned to 5.7.1, and stored under WindowsPowerShell\Modules" time="0.7012" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).PowerShell 7: &lt;name&gt; is installed and pinned to &lt;ver&gt; (PS7-only)" executed="True" result="Success" success="True" time="0.0136" asserts="0" description="PowerShell 7: &lt;name&gt; is installed and pinned to &lt;ver&gt; (PS7-only)">
+                    <results>
+                      <test-case description="PowerShell 7: PSDesiredStateConfiguration is installed and pinned to 2.0.7 (PS7-only)" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).PowerShell 7: PSDesiredStateConfiguration is installed and pinned to 2.0.7 (PS7-only)" time="0.0136" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).PowerShell 7: &lt;name&gt; is installed" executed="True" result="Success" success="True" time="0.0158" asserts="0" description="PowerShell 7: &lt;name&gt; is installed">
+                    <results>
+                      <test-case description="PowerShell 7: ComputerManagementDsc is installed" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).PowerShell 7: ComputerManagementDsc is installed" time="0.0158" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).Windows PowerShell 5.1: &lt;name&gt; is installed under WindowsPowerShell\Modules" executed="True" result="Success" success="True" time="0.2628" asserts="0" description="Windows PowerShell 5.1: &lt;name&gt; is installed under WindowsPowerShell\Modules">
+                    <results>
+                      <test-case description="Windows PowerShell 5.1: ComputerManagementDsc is installed under WindowsPowerShell\Modules" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).Windows PowerShell 5.1: ComputerManagementDsc is installed under WindowsPowerShell\Modules" time="0.2628" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="COM5411 IaC Environment Preflight (Dual-Shell).RSAT / admin tooling (AD + GPO management)" executed="True" result="Ignored" success="True" time="2.5898" asserts="0" description="COM5411 IaC Environment Preflight (Dual-Shell).RSAT / admin tooling (AD + GPO management)">
+                <results>
+                  <test-case description="Windows PowerShell 5.1: ActiveDirectory module is available" name="COM5411 IaC Environment Preflight (Dual-Shell).RSAT / admin tooling (AD + GPO management).Windows PowerShell 5.1: ActiveDirectory module is available" time="0.2487" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Windows PowerShell 5.1: GroupPolicy module is available" name="COM5411 IaC Environment Preflight (Dual-Shell).RSAT / admin tooling (AD + GPO management).Windows PowerShell 5.1: GroupPolicy module is available" time="0.2369" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="PowerShell 7: ActiveDirectory module discoverable (informational)" name="COM5411 IaC Environment Preflight (Dual-Shell).RSAT / admin tooling (AD + GPO management).PowerShell 7: ActiveDirectory module discoverable (informational)" time="0.0148" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="PowerShell 7: GroupPolicy module discoverable (informational)" name="COM5411 IaC Environment Preflight (Dual-Shell).RSAT / admin tooling (AD + GPO management).PowerShell 7: GroupPolicy module discoverable (informational)" time="0.019" asserts="0" success="False" result="Ignored" executed="False" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="COM5411 IaC Environment Preflight (Dual-Shell).WinRM / WS-Man local connectivity (common lab failure)" executed="True" result="Success" success="True" time="2.6152" asserts="0" description="COM5411 IaC Environment Preflight (Dual-Shell).WinRM / WS-Man local connectivity (common lab failure)">
+                <results>
+                  <test-case description="WinRM service exists" name="COM5411 IaC Environment Preflight (Dual-Shell).WinRM / WS-Man local connectivity (common lab failure).WinRM service exists" time="0.0083" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="WinRM should be Running (if not: run Run_BuildMain.ps1 which calls OneShot Network)" name="COM5411 IaC Environment Preflight (Dual-Shell).WinRM / WS-Man local connectivity (common lab failure).WinRM should be Running (if not: run Run_BuildMain.ps1 which calls OneShot Network)" time="0.0063" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="WS-Man should respond locally (Test-WSMan localhost)" name="COM5411 IaC Environment Preflight (Dual-Shell).WinRM / WS-Man local connectivity (common lab failure).WS-Man should respond locally (Test-WSMan localhost)" time="0.0083" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="COM5411 IaC Environment Preflight (Dual-Shell).Developer tooling" executed="True" result="Ignored" success="True" time="2.6557" asserts="0" description="COM5411 IaC Environment Preflight (Dual-Shell).Developer tooling">
+                <results>
+                  <test-case description="Git is installed (git.exe on PATH)" name="COM5411 IaC Environment Preflight (Dual-Shell).Developer tooling.Git is installed (git.exe on PATH)" time="0.007" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="VS Code installed (code.exe on PATH) [optional]" name="COM5411 IaC Environment Preflight (Dual-Shell).Developer tooling.VS Code installed (code.exe on PATH) [optional]" time="0.0311" asserts="0" success="False" result="Ignored" executed="False" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
