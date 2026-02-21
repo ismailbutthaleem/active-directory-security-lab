@@ -22,6 +22,8 @@
 
             DomainName = 'bolton.corp'
             DomainNetBIOSName = 'BOLTON'
+            ForestMode        = 'WinThreshold'
+            DomainMode        = 'WinThreshold'
             Network = @{
                 InterfaceAlias = 'Ethernet 2'
                 AddressFamily  = 'IPv4'
