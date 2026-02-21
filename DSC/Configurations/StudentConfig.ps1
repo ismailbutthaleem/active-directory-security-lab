@@ -44,7 +44,26 @@ Configuration StudentBaseline
             IsSingleInstance = 'Yes'
             TimeZone         = $node.TimeZone
         }
+        Service WindowsTime
+        {
+            Name        = 'W32Time'
+            State       = 'Running'
+            StartupType = 'Automatic'
+            DependsOn   = '[TimeZone]SetTimeZone'
+        }
 
+        WindowsFeature ADDS 
+        {
+            Name   = 'AD-Domain-Services'
+            Ensure = 'Present'
+        }
+
+        WindowsFeature RSATADDS 
+        {
+            Name   = 'RSAT-AD-Tools'
+            Ensure = 'Present'
+            DependsOn = '[WindowsFeature]ADDS'
+        }
         # -----------------------------
         # Baseline network readiness
         # -----------------------------

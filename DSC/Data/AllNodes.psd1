@@ -6,6 +6,7 @@
 
             ComputerName = 'SERVER25-DC-01'
             TimeZone     = 'GMT Standard Time'
+            EnsureW32Time = $true # Ensure Windows Time service is running for domain join and time sync
 
             InterfaceAlias_Internal = 'Ethernet 2'
             IPv4Address_Internal    = '192.168.56.107'
