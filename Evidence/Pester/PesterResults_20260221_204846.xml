@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="31" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2026-02-21" time="20:48:46">
+  <environment machine-name="SERVER25-DC-01" nunit-version="2.5.8.0" os-version="10.0.26100" user-domain="BOLTON" cwd="C:\Users\Administrator\repo\COM5411-BarmBuzz" user="Administrator" platform="Microsoft Windows Server 2025 Datacenter|C:\WINDOWS|\Device\Harddisk0\Partition4" clr-version="9.0.10" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="36.511" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1" executed="True" result="Success" success="True" time="36.511" asserts="0" description="C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion" executed="True" result="Success" success="True" time="27.1721" asserts="0" description="Active Directory Domain Services (AD DS) Promotion">
+            <results>
+              <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation" executed="True" result="Success" success="True" time="0.4151" asserts="0" description="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation">
+                <results>
+                  <test-case description="Computer has expected name" name="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation.Computer has expected name" time="0.061" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="AD Domain Services feature is installed" name="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation.AD Domain Services feature is installed" time="0.0633" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="RSAT AD Tools feature is installed" name="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation.RSAT AD Tools feature is installed" time="0.0645" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Internal network adapter is configured with static IP" name="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation.Internal network adapter is configured with static IP" time="0.1379" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="DNS points to localhost (127.0.0.1)" name="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation.DNS points to localhost (127.0.0.1)" time="0.0744" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services" executed="True" result="Success" success="True" time="0.8552" asserts="0" description="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services">
+                <results>
+                  <test-case description="Active Directory Domain Services is running" name="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services.Active Directory Domain Services is running" time="0.0543" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="DNS Server service is running" name="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services.DNS Server service is running" time="0.2104" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Netlogon service is running" name="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services.Netlogon service is running" time="0.0821" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Kerberos Key Distribution Center is running" name="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services.Kerberos Key Distribution Center is running" time="0.0371" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="File Replication Service or DFS Replication is running" name="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services.File Replication Service or DFS Replication is running" time="0.0499" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration" executed="True" result="Success" success="True" time="5.1217" asserts="0" description="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration">
+                <results>
+                  <test-case description="Computer is part of the expected domain" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.Computer is part of the expected domain" time="2.5875" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Domain exists and is accessible" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.Domain exists and is accessible" time="0.4856" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Forest exists and has correct name" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.Forest exists and has correct name" time="0.1766" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Domain has correct NetBIOS name" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.Domain has correct NetBIOS name" time="0.2971" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Forest functional level is modern (2016+)" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.Forest functional level is modern (2016+)" time="0.1642" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Domain functional level is modern (2016+)" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.Domain functional level is modern (2016+)" time="0.2753" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="This computer is a domain controller" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.This computer is a domain controller" time="0.2753" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion.DNS Functionality" executed="True" result="Success" success="True" time="5.9463" asserts="0" description="Active Directory Domain Services (AD DS) Promotion.DNS Functionality">
+                <results>
+                  <test-case description="DNS zones are created for the domain" name="Active Directory Domain Services (AD DS) Promotion.DNS Functionality.DNS zones are created for the domain" time="0.4611" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Reverse DNS zone exists for internal subnet or PTR resolution works" name="Active Directory Domain Services (AD DS) Promotion.DNS Functionality.Reverse DNS zone exists for internal subnet or PTR resolution works" time="0.1095" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Domain controller has DNS A record" name="Active Directory Domain Services (AD DS) Promotion.DNS Functionality.Domain controller has DNS A record" time="0.1199" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Domain has NS record pointing to this DC" name="Active Directory Domain Services (AD DS) Promotion.DNS Functionality.Domain has NS record pointing to this DC" time="0.0704" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Can resolve domain name to IP" name="Active Directory Domain Services (AD DS) Promotion.DNS Functionality.Can resolve domain name to IP" time="0.0584" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality" executed="True" result="Success" success="True" time="6.4236" asserts="0" description="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality">
+                <results>
+                  <test-case description="Can query domain users" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality.Can query domain users" time="0.1356" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Built-in Administrator account exists" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality.Built-in Administrator account exists" time="0.0586" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Domain Admins group exists" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality.Domain Admins group exists" time="0.0803" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Default domain containers exist" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality.Default domain containers exist" time="0.0853" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="SYSVOL share is accessible" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality.SYSVOL share is accessible" time="0.0527" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="NETLOGON share is accessible" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality.NETLOGON share is accessible" time="0.059" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion.Health and Status Checks" executed="True" result="Success" success="True" time="9.7636" asserts="0" description="Active Directory Domain Services (AD DS) Promotion.Health and Status Checks">
+                <results>
+                  <test-case description="Event logs show successful promotion" name="Active Directory Domain Services (AD DS) Promotion.Health and Status Checks.Event logs show successful promotion" time="1.3375" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="No recent critical errors in AD logs" name="Active Directory Domain Services (AD DS) Promotion.Health and Status Checks.No recent critical errors in AD logs" time="0.0546" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Domain controller can authenticate itself" name="Active Directory Domain Services (AD DS) Promotion.Health and Status Checks.Domain controller can authenticate itself" time="0.3964" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

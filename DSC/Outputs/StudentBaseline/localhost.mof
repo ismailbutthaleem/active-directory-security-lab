@@ -1,31 +1,31 @@
 /*
 @TargetNode='localhost'
 @GeneratedBy=Administrator
-@GenerationDate=02/21/2026 16:18:04
+@GenerationDate=02/21/2026 20:29:55
 @GenerationHost=SERVER25-DC-01
 */
 
 instance of MSFT_FileDirectoryConfiguration as $MSFT_FileDirectoryConfiguration1ref
 {
-Ensure = "Present";
- ResourceID = "[File]TestFolder";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::26::9::File";
- DestinationPath = "C:\\TEST";
- ModuleName = "PSDesiredStateConfiguration";
+SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::40::9::File";
  Type = "Directory";
+ DestinationPath = "C:\\TEST";
+ ResourceID = "[File]TestFolder";
+ ModuleName = "PSDesiredStateConfiguration";
+ Ensure = "Present";
 
 ModuleVersion = "1.0";
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_FileDirectoryConfiguration as $MSFT_FileDirectoryConfiguration2ref
 {
-Ensure = "Present";
- ResourceID = "[File]TestFile";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::33::9::File";
- DestinationPath = "C:\\TEST\\test.txt";
- Contents = "Proof-of-life: DSC created this file.";
- ModuleName = "PSDesiredStateConfiguration";
+SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::47::9::File";
  Type = "File";
+ DestinationPath = "C:\\TEST\\test.txt";
+ ResourceID = "[File]TestFile";
+ ModuleName = "PSDesiredStateConfiguration";
+ Contents = "Proof-of-life: DSC created this file.";
+ Ensure = "Present";
 
 ModuleVersion = "1.0";
 DependsOn = {
@@ -34,31 +34,31 @@ DependsOn = {
 };
 instance of DSC_Computer as $DSC_Computer1ref
 {
-Name = "SERVER25-DC-01";
- ResourceID = "[Computer]SetComputerName";
+ResourceID = "[Computer]SetComputerName";
  ModuleVersion = "10.0.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::42::9::Computer";
- ModuleName = "ComputerManagementDsc";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::57::9::Computer";
+ ModuleName = "ComputerManagementDsc";
+ Name = "SERVER25-DC-01";
  ConfigurationName = "StudentBaseline";
 };
 instance of DSC_TimeZone as $DSC_TimeZone1ref
 {
-ResourceID = "[TimeZone]SetTimeZone";
- TimeZone = "GMT Standard Time";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::47::9::TimeZone";
+SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::63::9::TimeZone";
  IsSingleInstance = "Yes";
- ModuleName = "ComputerManagementDsc";
- ModuleVersion = "10.0.0";
+ ModuleVersion = "10.0.0";
+ TimeZone = "GMT Standard Time";
+ ResourceID = "[TimeZone]SetTimeZone";
+ ModuleName = "ComputerManagementDsc";
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_ServiceResource as $MSFT_ServiceResource1ref
 {
-State = "Running";
- ResourceID = "[Service]WindowsTime";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::53::9::Service";
+SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::70::9::Service";
  Name = "W32Time";
- ModuleName = "PsDesiredStateConfiguration";
  StartupType = "Automatic";
+ State = "Running";
+ ResourceID = "[Service]WindowsTime";
+ ModuleName = "PsDesiredStateConfiguration";
 
 ModuleVersion = "1.0";
 DependsOn = {
@@ -67,22 +67,22 @@ DependsOn = {
 };
 instance of MSFT_RoleResource as $MSFT_RoleResource1ref
 {
-Ensure = "Present";
- ResourceID = "[WindowsFeature]ADDS";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::61::9::WindowsFeature";
+SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::79::9::WindowsFeature";
  Name = "AD-Domain-Services";
+ ResourceID = "[WindowsFeature]ADDS";
  ModuleName = "PsDesiredStateConfiguration";
+ Ensure = "Present";
 
 ModuleVersion = "1.0";
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_RoleResource as $MSFT_RoleResource2ref
 {
-Ensure = "Present";
- ResourceID = "[WindowsFeature]RSATADDS";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::67::9::WindowsFeature";
+SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::85::9::WindowsFeature";
  Name = "RSAT-ADDS";
+ ResourceID = "[WindowsFeature]RSATADDS";
  ModuleName = "PsDesiredStateConfiguration";
+ Ensure = "Present";
 
 ModuleVersion = "1.0";
 DependsOn = {
@@ -91,66 +91,100 @@ DependsOn = {
 };
 instance of DSC_IPAddress as $DSC_IPAddress1ref
 {
-AddressFamily = "IPv4";
- InterfaceAlias = "Ethernet 2";
- IPAddress = {
+IPAddress = {
     "192.168.56.107/24"
 };
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::74::9::IPAddress";
  KeepExistingAddress = False;
+ ModuleVersion = "9.1.0";
  ResourceID = "[IPAddress]StaticIPv4";
+ InterfaceAlias = "Ethernet 2";
  ModuleName = "NetworkingDsc";
- ModuleVersion = "9.1.0";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::93::9::IPAddress";
+ AddressFamily = "IPv4";
+
+DependsOn = {
+    "[Computer]SetComputerName"};
  ConfigurationName = "StudentBaseline";
 };
 instance of DSC_DnsServerAddress as $DSC_DnsServerAddress1ref
 {
-AddressFamily = "IPv4";
- InterfaceAlias = "Ethernet 2";
+SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::102::9::DnsServerAddress";
+ ModuleVersion = "9.1.0";
  ResourceID = "[DnsServerAddress]InternalDNS";
+ InterfaceAlias = "Ethernet 2";
+ ModuleName = "NetworkingDsc";
  Address = {
     "127.0.0.1"
 };
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::82::9::DnsServerAddress";
- ModuleName = "NetworkingDsc";
- ModuleVersion = "9.1.0";
+ AddressFamily = "IPv4";
 
 DependsOn = {
     "[IPAddress]StaticIPv4"};
  ConfigurationName = "StudentBaseline";
 };
-instance of MSFT_ScriptResource as $MSFT_ScriptResource1ref
+instance of DSC_DnsConnectionSuffix as $DSC_DnsConnectionSuffix1ref
 {
-ResourceID = "[Script]DisableNatDnsRegistration";
- GetScript = "$NatAlias ='Ethernet'\n\n                @{ Result = (Get-DnsClient -InterfaceAlias $NatAlias).RegisterThisConnectionsAddress }\n            ";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::93::9::Script";
- SetScript = "$NatAlias ='Ethernet'\n\n                Set-DnsClient -InterfaceAlias $NatAlias -RegisterThisConnectionsAddress $false\n            ";
- ModuleName = "PsDesiredStateConfiguration";
- TestScript = "$NatAlias ='Ethernet'\n\n                (Get-DnsClient -InterfaceAlias $NatAlias).RegisterThisConnectionsAddress -eq $false\n            ";
+SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::114::9::DnsConnectionSuffix";
+ ConnectionSpecificSuffix = "nat";
+ ModuleVersion = "9.1.0";
+ RegisterThisConnectionsAddress = False;
+ ResourceID = "[DnsConnectionSuffix]DisableNatDnsRegistration";
+ InterfaceAlias = "Ethernet";
+ ModuleName = "NetworkingDsc";
 
-ModuleVersion = "1.0";
 DependsOn = {
     "[DnsServerAddress]InternalDNS"};
  ConfigurationName = "StudentBaseline";
 };
+instance of MSFT_Credential as $MSFT_Credential1ref
+{
+UserName = "Administrator";
+ Password = "Ittaniga";
+
+};
+
+instance of MSFT_Credential as $MSFT_Credential2ref
+{
+UserName = "Administrator";
+ Password = "Ittaniga!1";
+
+};
+
+instance of MSFT_ADDomain as $MSFT_ADDomain1ref
+{
+SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::122::9::ADDomain";
+ DomainNetBiosName = "BOLTON";
+ DomainName = "bolton.corp";
+ DomainMode = "WinThreshold";
+ ModuleVersion = "6.6.0";
+ Credential = $MSFT_Credential1ref;
+ ResourceID = "[ADDomain]CreateForest";
+ ModuleName = "ActiveDirectoryDsc";
+ ForestMode = "WinThreshold";
+ SafeModeAdministratorPassword = $MSFT_Credential2ref;
+
+DependsOn = {
+    "[WindowsFeature]RSATADDS"};
+ ConfigurationName = "StudentBaseline";
+};
 instance of MSFT_RoleResource as $MSFT_RoleResource3ref
 {
-Ensure = "Present";
- ResourceID = "[WindowsFeature]Feature_AD-Domain-Services";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::109::13::WindowsFeature";
+SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::154::13::WindowsFeature";
  Name = "AD-Domain-Services";
+ ResourceID = "[WindowsFeature]Feature_AD-Domain-Services";
  ModuleName = "PsDesiredStateConfiguration";
+ Ensure = "Present";
 
 ModuleVersion = "1.0";
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_RoleResource as $MSFT_RoleResource4ref
 {
-Ensure = "Present";
- ResourceID = "[WindowsFeature]Feature_DNS";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::109::13::WindowsFeature";
+SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::154::13::WindowsFeature";
  Name = "DNS";
+ ResourceID = "[WindowsFeature]Feature_DNS";
  ModuleName = "PsDesiredStateConfiguration";
+ Ensure = "Present";
 
 ModuleVersion = "1.0";
  ConfigurationName = "StudentBaseline";
@@ -166,7 +200,7 @@ instance of OMI_ConfigurationDocument
 
                         Author="Administrator";
 
-                        GenerationDate="02/21/2026 16:18:04";
+                        GenerationDate="02/21/2026 20:29:55";
 
                         GenerationHost="SERVER25-DC-01";
 
