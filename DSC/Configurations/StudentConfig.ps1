@@ -108,21 +108,16 @@ Configuration StudentBaseline {
         }
 
         ### Network Settings – External NIC
-        DnsConnectionSuffix DisableNatDnsRegistration
-        {
-            # InterfaceAlias: The NAT NIC (internet access)
-            InterfaceAlias = $node.InterfaceAlias_NAT
+        ### Network Settings – External NIC
 
-            # ConnectionSpecificSuffix: Empty string = no suffix
-            ConnectionSpecificSuffix = ''
-
-            # key setting - it prevents the NAT NIC's IP from
-            # being registered in DNS when the AD DS DNS advertises itself
-            RegisterThisConnectionsAddress = $false
-
-            # DependsOn: Wait for internal DNS to be configured
-            DependsOn = '[DnsServerAddress]InternalDNS'
-        }
+        # Disable DNS registration on the NAT network interface to prevent conflicts with the internal DNS configuration for Active Directory, with dependency to ensure it is applied after the internal DNS server address is configured
+    DnsClientGlobalSetting DisableNatDnsRegistration
+    {
+        IsSingleInstance              = 'Yes'
+        RegisterThisConnectionsAddress = $false
+        UseSuffixWhenRegistering       = $false
+        DependsOn                      = '[DnsServerAddress]InternalDNS'
+    }
 
         ### PROMOTE TO DOMAIN CONTROLLER - Create new forest and domain
         ADDomain CreateForest
