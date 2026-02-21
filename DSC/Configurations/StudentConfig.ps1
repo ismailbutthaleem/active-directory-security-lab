@@ -13,15 +13,9 @@ Configuration StudentBaseline
 
     Node $AllNodes.NodeName
     {
-        # Pull this node's data from ConfigurationData
         $node = $ConfigurationData.AllNodes | Where-Object NodeName -eq $Node.NodeName
-
-        # Local network map (from ConfigurationData)
         $Network = $node.Network
 
-        # -----------------------------
-        # Proof-of-life
-        # -----------------------------
         File TestFolder
         {
             DestinationPath = 'C:\TEST'
@@ -38,9 +32,6 @@ Configuration StudentBaseline
             DependsOn       = '[File]TestFolder'
         }
 
-        # -----------------------------
-        # Baseline identity controls
-        # -----------------------------
         Computer SetComputerName
         {
             Name = $node.ComputerName
@@ -60,9 +51,6 @@ Configuration StudentBaseline
             DependsOn   = '[TimeZone]SetTimeZone'
         }
 
-        # -----------------------------
-        # Feature readiness (baseline)
-        # -----------------------------
         WindowsFeature ADDS
         {
             Name   = 'AD-Domain-Services'
@@ -76,9 +64,6 @@ Configuration StudentBaseline
             DependsOn = '[WindowsFeature]ADDS'
         }
 
-        # -----------------------------
-        # Baseline network readiness
-        # -----------------------------
         IPAddress StaticIPv4
         {
             AddressFamily       = $Network.AddressFamily
@@ -87,26 +72,28 @@ Configuration StudentBaseline
             KeepExistingAddress = $false
         }
 
-        # IMPORTANT: match tutor test expectation for Internal NIC DNS
-        # Uses AllNodes keys: DnsServers_Internal + InterfaceAlias_Internal
         DnsServerAddress InternalDNS
         {
             AddressFamily  = 'IPv4'
             InterfaceAlias = $node.InterfaceAlias_Internal
-            Address        = $node.DnsServers_Internal   # e.g. @('127.0.0.1')
+            Address        = $node.DnsServers_Internal
             DependsOn      = '[IPAddress]StaticIPv4'
         }
 
-        # NEW: Disable DNS registration on NAT NIC (dual-NIC DC best practice)
-        DnsClient DisableNatRegistration
+        Script DisableNatDnsRegistration
         {
-            InterfaceAlias                 = $node.InterfaceAlias_NAT
-            RegisterThisConnectionsAddress = $false
+            GetScript = {
+                @{ Result = (Get-DnsClient -InterfaceAlias $using:node.InterfaceAlias_NAT).RegisterThisConnectionsAddress }
+            }
+            TestScript = {
+                (Get-DnsClient -InterfaceAlias $using:node.InterfaceAlias_NAT).RegisterThisConnectionsAddress -eq $false
+            }
+            SetScript = {
+                Set-DnsClient -InterfaceAlias $using:node.InterfaceAlias_NAT -RegisterThisConnectionsAddress $false
+            }
+            DependsOn = '[DnsServerAddress]InternalDNS'
         }
 
-        # -----------------------------
-        # Optional extra features from data
-        # -----------------------------
         foreach ($featureName in $node.Features.Add)
         {
             WindowsFeature "Feature_$featureName"
