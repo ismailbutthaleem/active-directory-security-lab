@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="31" errors="0" failures="21" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2026-02-21" time="15:19:28">
+  <environment machine-name="SERVER25-DC-01" user="Administrator" user-domain="SERVER25-DC-01" cwd="C:\Users\Administrator\repo\COM5411-BarmBuzz" platform="Microsoft Windows Server 2025 Datacenter|C:\WINDOWS|\Device\Harddisk0\Partition4" clr-version="9.0.10" os-version="10.0.26100" nunit-version="2.5.8.0" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Failure" success="False" time="39.3172" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1" executed="True" result="Failure" success="False" time="39.3172" asserts="0" description="C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion" executed="True" result="Failure" success="False" time="30.0944" asserts="0" description="Active Directory Domain Services (AD DS) Promotion">
+            <results>
+              <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation" executed="True" result="Success" success="True" time="1.6607" asserts="0" description="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation">
+                <results>
+                  <test-case description="Computer has expected name" name="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation.Computer has expected name" time="0.9734" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="AD Domain Services feature is installed" name="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation.AD Domain Services feature is installed" time="0.0662" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="RSAT AD Tools feature is installed" name="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation.RSAT AD Tools feature is installed" time="0.185" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Internal network adapter is configured with static IP" name="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation.Internal network adapter is configured with static IP" time="0.1623" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="DNS points to localhost (127.0.0.1)" name="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation.DNS points to localhost (127.0.0.1)" time="0.1221" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services" executed="True" result="Failure" success="False" time="2.2656" asserts="0" description="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services">
+                <results>
+                  <test-case description="Active Directory Domain Services is running" name="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services.Active Directory Domain Services is running" time="0.1385" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected 'Running', because Active Directory Domain Services (NTDS) must be running.
+Current status: Stopped
+HINT: If promotion failed, check Event Logs:
+Get-WinEvent -LogName 'Directory Services' | Select-Object -First 20, but got Stopped.</message>
+                      <stack-trace>at $ntdsService.Status | Should -Be 'Running' -Because @", C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:188
+at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:191</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="DNS Server service is running" name="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services.DNS Server service is running" time="0.0852" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Netlogon service is running" name="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services.Netlogon service is running" time="0.1758" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected 'Running', because Netlogon service must be running for domain authentication.
+Current status: Stopped, but got Stopped.</message>
+                      <stack-trace>at $netlogonService.Status | Should -Be 'Running' -Because @", C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:213
+at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:216</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Kerberos Key Distribution Center is running" name="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services.Kerberos Key Distribution Center is running" time="0.0946" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected 'Running', because Kerberos Key Distribution Center must be running for authentication.
+Current status: Stopped, but got Stopped.</message>
+                      <stack-trace>at $kdcService.Status | Should -Be 'Running' -Because @", C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:223
+at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:226</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="File Replication Service or DFS Replication is running" name="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services.File Replication Service or DFS Replication is running" time="0.1067" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration" executed="True" result="Failure" success="False" time="6.2982" asserts="0" description="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration">
+                <results>
+                  <test-case description="Computer is part of the expected domain" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.Computer is part of the expected domain" time="2.3957" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected strings to be the same, because Computer should be joined to domain: bolton.corp
+Current domain: WORKGROUP
+HINT: This indicates DC promotion may not have completed successfully, but they were different.
+Expected length: 11
+Actual length:   9
+Strings differ at index 0.
+Expected: 'bolton.corp'
+But was:  'WORKGROUP'
+           ^</message>
+                      <stack-trace>at $currentDomain | Should -Be $script:ExpectedDomain -Because @", C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:265
+at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:265</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Domain exists and is accessible" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.Domain exists and is accessible" time="0.2309" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, because Unable to query domain 'bolton.corp' using AD module.
+This could indicate:
+- DC promotion failed
+- AD services aren't running
+- Network/DNS issues, but an exception "Unable to find a default server with Active Directory Web Services running." was thrown from C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:274 char:15
+    + …           { Get-ADDomain -Identity $script:ExpectedDomain -ErrorActio …
+    +               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { Get-ADDomain -Identity $script:ExpectedDomain -ErrorAction Stop } | Should -Not -Throw -Because @", C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:274
+at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:274</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Forest exists and has correct name" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.Forest exists and has correct name" time="0.0896" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ADIdentityNotFoundException: Could not find a forest identified by: 'SERVER25-DC-01'.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:285</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Domain has correct NetBIOS name" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.Domain has correct NetBIOS name" time="0.1315" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ADException: Unable to find a default server with flags: 'MinimumDirectoryServiceVersion:Windows2000 | ADWS | ReturnDnsName'.
+ADServerDownException: Unable to find a default server with Active Directory Web Services running.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:294</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Forest functional level is modern (2016+)" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.Forest functional level is modern (2016+)" time="0.859" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ADIdentityNotFoundException: Could not find a forest identified by: 'SERVER25-DC-01'.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:302</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Domain functional level is modern (2016+)" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.Domain functional level is modern (2016+)" time="0.0893" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ADException: Unable to find a default server with flags: 'MinimumDirectoryServiceVersion:Windows2000 | ADWS | ReturnDnsName'.
+ADServerDownException: Unable to find a default server with Active Directory Web Services running.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:317</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="This computer is a domain controller" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.This computer is a domain controller" time="0.2214" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ADException: Unable to find a default server with flags: 'MinimumDirectoryServiceVersion:Windows2000 | ADWS | ReturnDnsName'.
+ADServerDownException: Unable to find a default server with Active Directory Web Services running.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:332</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion.DNS Functionality" executed="True" result="Failure" success="False" time="11.1337" asserts="0" description="Active Directory Domain Services (AD DS) Promotion.DNS Functionality">
+                <results>
+                  <test-case description="DNS zones are created for the domain" name="Active Directory Domain Services (AD DS) Promotion.DNS Functionality.DNS zones are created for the domain" time="0.5404" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected a value, because Forward DNS zone for 'bolton.corp' should exist.
+HINT: DNS zones are created automatically during DC promotion, but got $null or empty.</message>
+                      <stack-trace>at $forwardZone | Should -Not -BeNullOrEmpty -Because @", C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:348
+at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:348</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Reverse DNS zone exists for internal subnet or PTR resolution works" name="Active Directory Domain Services (AD DS) Promotion.DNS Functionality.Reverse DNS zone exists for internal subnet or PTR resolution works" time="3.2759" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Domain controller has DNS A record" name="Active Directory Domain Services (AD DS) Promotion.DNS Functionality.Domain controller has DNS A record" time="0.8547" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CimException: The zone bolton.corp was not found on server SERVER25-DC-01.</message>
+                      <stack-trace>at Get-DnsServerResourceRecord&lt;End&gt;, &lt;No file&gt;:4077
+at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:390</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Domain has NS record pointing to this DC" name="Active Directory Domain Services (AD DS) Promotion.DNS Functionality.Domain has NS record pointing to this DC" time="0.0629" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CimException: The zone bolton.corp was not found on server SERVER25-DC-01.</message>
+                      <stack-trace>at Get-DnsServerResourceRecord&lt;End&gt;, &lt;No file&gt;:4077
+at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:398</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Can resolve domain name to IP" name="Active Directory Domain Services (AD DS) Promotion.DNS Functionality.Can resolve domain name to IP" time="0.0937" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected a value, because Domain name should resolve to IP address, but got $null or empty.</message>
+                      <stack-trace>at $resolution | Should -Not -BeNullOrEmpty -Because "Domain name should resolve to IP address", C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:409
+at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:409</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality" executed="True" result="Failure" success="False" time="12.5295" asserts="0" description="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality">
+                <results>
+                  <test-case description="Can query domain users" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality.Can query domain users" time="0.0899" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, because Should be able to query Active Directory users.
+This tests basic AD PowerShell functionality and permissions., but an exception "Unable to find a default server with Active Directory Web Services running." was thrown from C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:421 char:15
+    +             { Get-ADUser -Filter * -ErrorAction Stop } | Should -Not  …
+    +               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { Get-ADUser -Filter * -ErrorAction Stop } | Should -Not -Throw -Because @", C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:421
+at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:421</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Built-in Administrator account exists" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality.Built-in Administrator account exists" time="0.0471" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ADException: Unable to find a default server with flags: 'MinimumDirectoryServiceVersion:Windows2000 | ADWS | ReturnDnsName'.
+ADServerDownException: Unable to find a default server with Active Directory Web Services running.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:429</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Domain Admins group exists" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality.Domain Admins group exists" time="0.0789" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ADException: Unable to find a default server with flags: 'MinimumDirectoryServiceVersion:Windows2000 | ADWS | ReturnDnsName'.
+ADServerDownException: Unable to find a default server with Active Directory Web Services running.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:435</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Default domain containers exist" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality.Default domain containers exist" time="0.8674" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ADException: Unable to find a default server with flags: 'MinimumDirectoryServiceVersion:Windows2000 | ADWS | ReturnDnsName'.
+ADServerDownException: Unable to find a default server with Active Directory Web Services running.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:462</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="SYSVOL share is accessible" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality.SYSVOL share is accessible" time="0.207" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected $true, because SYSVOL share should be accessible at: \\SERVER25-DC-01\SYSVOL
+This is required for Group Policy and domain replication., but got $false.</message>
+                      <stack-trace>at Test-Path $sysvolPath | Should -BeTrue -Because @", C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:470
+at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:470</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="NETLOGON share is accessible" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality.NETLOGON share is accessible" time="0.1019" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected $true, because NETLOGON share should be accessible at: \\SERVER25-DC-01\NETLOGON
+This is required for domain logon scripts and authentication., but got $false.</message>
+                      <stack-trace>at Test-Path $netlogonPath | Should -BeTrue -Because @", C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:479
+at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:479</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion.Health and Status Checks" executed="True" result="Failure" success="False" time="16.3778" asserts="0" description="Active Directory Domain Services (AD DS) Promotion.Health and Status Checks">
+                <results>
+                  <test-case description="Event logs show successful promotion" name="Active Directory Domain Services (AD DS) Promotion.Health and Status Checks.Event logs show successful promotion" time="0.7432" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="No recent critical errors in AD logs" name="Active Directory Domain Services (AD DS) Promotion.Health and Status Checks.No recent critical errors in AD logs" time="0.0643" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Domain controller can authenticate itself" name="Active Directory Domain Services (AD DS) Promotion.Health and Status Checks.Domain controller can authenticate itself" time="0.1727" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected $true, because Domain controller cannot authenticate with domain and AD queries are also failing.
+Secure channel error: Unable to find a default server with Active Directory Web Services running.
+This indicates a serious domain configuration issue., but got $false.</message>
+                      <stack-trace>at $false | Should -BeTrue -Because @", C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:556
+at &lt;ScriptBlock&gt;, C:\Users\Administrator\repo\COM5411-BarmBuzz\tests\pester\ADDS_Promotion.Tests.ps1:559</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
