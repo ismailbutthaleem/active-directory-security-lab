@@ -1,0 +1,15 @@
+
+Current LogonId is 0:0x11e6f5
+
+Cached Tickets: (1)
+
+#0>	Client: Administrator @ BOLTON.CORP
+	Server: krbtgt/BOLTON.CORP @ BOLTON.CORP
+	KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+	Ticket Flags 0x40e10000 -> forwardable renewable initial pre_authent name_canonicalize 
+	Start Time: 2/21/2026 20:36:16 (local)
+	End Time:   2/22/2026 6:36:16 (local)
+	Renew Time: 2/22/2026 6:36:16 (local)
+	Session Key Type: AES-256-CTS-HMAC-SHA1-96
+	Cache Flags: 0x1 -> PRIMARY 
+	Kdc Called: SERVER25-DC-01

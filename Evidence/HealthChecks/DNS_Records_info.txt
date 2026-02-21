@@ -1,0 +1,20 @@
+
+Name                                     Type   TTL   Section    NameTarget                     Priority Weigh
+                                                                                                         t
+----                                     ----   ---   -------    ----------                     -------- -----
+_ldap._tcp.bolton.corp                   SRV    600   Answer     server25-dc-01.bolton.corp     0        100
+
+Name       : server25-dc-01.bolton.corp
+QueryType  : A
+TTL        : 3600
+Section    : Additional
+IP4Address : 10.0.2.15
+
+
+Name       : server25-dc-01.bolton.corp
+QueryType  : A
+TTL        : 3600
+Section    : Additional
+IP4Address : 192.168.56.107
+
+

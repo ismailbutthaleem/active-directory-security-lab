@@ -1,0 +1,15 @@
+
+ApplicationPartitions : {DC=DomainDnsZones,DC=bolton,DC=corp, DC=ForestDnsZones,DC=bolton,DC=corp}
+CrossForestReferences : {}
+DomainNamingMaster    : SERVER25-DC-01.bolton.corp
+Domains               : {bolton.corp}
+ForestMode            : Windows2016Forest
+GlobalCatalogs        : {SERVER25-DC-01.bolton.corp}
+Name                  : bolton.corp
+PartitionsContainer   : CN=Partitions,CN=Configuration,DC=bolton,DC=corp
+RootDomain            : bolton.corp
+SchemaMaster          : SERVER25-DC-01.bolton.corp
+Sites                 : {Default-First-Site-Name}
+SPNSuffixes           : {}
+UPNSuffixes           : {}
+

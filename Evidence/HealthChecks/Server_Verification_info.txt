@@ -1,0 +1,26 @@
+
+ComputerObjectDN           : CN=SERVER25-DC-01,OU=Domain Controllers,DC=bolton,DC=corp
+DefaultPartition           : DC=bolton,DC=corp
+Domain                     : bolton.corp
+Enabled                    : True
+Forest                     : bolton.corp
+HostName                   : SERVER25-DC-01.bolton.corp
+InvocationId               : 73f5e207-aea4-4996-856b-ee815ee84cdb
+IPv4Address                : 192.168.56.107
+IPv6Address                : 
+IsGlobalCatalog            : True
+IsReadOnly                 : False
+LdapPort                   : 389
+Name                       : SERVER25-DC-01
+NTDSSettingsObjectDN       : CN=NTDS Settings,CN=SERVER25-DC-01,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=bolton,DC=corp
+OperatingSystem            : Windows Server 2025 Datacenter
+OperatingSystemHotfix      : 
+OperatingSystemServicePack : 
+OperatingSystemVersion     : 10.0 (26100)
+OperationMasterRoles       : {SchemaMaster, DomainNamingMaster, PDCEmulator, RIDMaster…}
+Partitions                 : {DC=ForestDnsZones,DC=bolton,DC=corp, DC=DomainDnsZones,DC=bolton,DC=corp, CN=Schema,CN=Configuration,DC=bolton,DC=corp, CN=Configuration,DC=bolton,DC=corp…}
+ServerObjectDN             : CN=SERVER25-DC-01,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=bolton,DC=corp
+ServerObjectGuid           : ca12f4d6-fa57-4afc-aa33-53e552b33acb
+Site                       : Default-First-Site-Name
+SslPort                    : 636
+

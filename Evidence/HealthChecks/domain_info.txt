@@ -1,0 +1,32 @@
+
+AllowedDNSSuffixes                 : {}
+ChildDomains                       : {}
+ComputersContainer                 : CN=Computers,DC=bolton,DC=corp
+DeletedObjectsContainer            : CN=Deleted Objects,DC=bolton,DC=corp
+DistinguishedName                  : DC=bolton,DC=corp
+DNSRoot                            : bolton.corp
+DomainControllersContainer         : OU=Domain Controllers,DC=bolton,DC=corp
+DomainMode                         : Windows2016Domain
+DomainSID                          : S-1-5-21-1239633434-1875597299-1469250292
+ForeignSecurityPrincipalsContainer : CN=ForeignSecurityPrincipals,DC=bolton,DC=corp
+Forest                             : bolton.corp
+InfrastructureMaster               : SERVER25-DC-01.bolton.corp
+LastLogonReplicationInterval       : 
+LinkedGroupPolicyObjects           : {CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=bolton,DC=corp}
+LostAndFoundContainer              : CN=LostAndFound,DC=bolton,DC=corp
+ManagedBy                          : 
+Name                               : bolton
+NetBIOSName                        : BOLTON
+ObjectClass                        : domainDNS
+ObjectGUID                         : 55fa2d91-bff1-4555-973a-df0b3cf56402
+ParentDomain                       : 
+PDCEmulator                        : SERVER25-DC-01.bolton.corp
+PublicKeyRequiredPasswordRolling   : True
+QuotasContainer                    : CN=NTDS Quotas,DC=bolton,DC=corp
+ReadOnlyReplicaDirectoryServers    : {}
+ReplicaDirectoryServers            : {SERVER25-DC-01.bolton.corp}
+RIDMaster                          : SERVER25-DC-01.bolton.corp
+SubordinateReferences              : {DC=ForestDnsZones,DC=bolton,DC=corp, DC=DomainDnsZones,DC=bolton,DC=corp, CN=Configuration,DC=bolton,DC=corp}
+SystemsContainer                   : CN=System,DC=bolton,DC=corp
+UsersContainer                     : CN=Users,DC=bolton,DC=corp
+
