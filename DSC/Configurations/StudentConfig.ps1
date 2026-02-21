@@ -14,7 +14,14 @@ Configuration StudentBaseline
     Node $AllNodes.NodeName
     {
         $node = $ConfigurationData.AllNodes | Where-Object NodeName -eq $Node.NodeName
-        $Network = $node.Network
+
+        $Network = @{
+            InterfaceAlias = $node.InterfaceAlias_Internal
+            AddressFamily  = 'IPv4'
+            IPAddress      = $node.IPv4Address_Internal
+            PrefixLength   = $node.PrefixLength_Internal
+            DnsServers     = $node.DnsServers_Internal
+        }
 
         File TestFolder
         {
@@ -80,16 +87,19 @@ Configuration StudentBaseline
             DependsOn      = '[IPAddress]StaticIPv4'
         }
 
+        # --- FIX: capture NAT interface alias once for Script resource scoping ---
+        $NatAlias = $node.InterfaceAlias_NAT
+
         Script DisableNatDnsRegistration
         {
             GetScript = {
-                @{ Result = (Get-DnsClient -InterfaceAlias $using:node.InterfaceAlias_NAT).RegisterThisConnectionsAddress }
+                @{ Result = (Get-DnsClient -InterfaceAlias $using:NatAlias).RegisterThisConnectionsAddress }
             }
             TestScript = {
-                (Get-DnsClient -InterfaceAlias $using:node.InterfaceAlias_NAT).RegisterThisConnectionsAddress -eq $false
+                (Get-DnsClient -InterfaceAlias $using:NatAlias).RegisterThisConnectionsAddress -eq $false
             }
             SetScript = {
-                Set-DnsClient -InterfaceAlias $using:node.InterfaceAlias_NAT -RegisterThisConnectionsAddress $false
+                Set-DnsClient -InterfaceAlias $using:NatAlias -RegisterThisConnectionsAddress $false
             }
             DependsOn = '[DnsServerAddress]InternalDNS'
         }
