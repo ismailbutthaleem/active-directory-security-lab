@@ -24,13 +24,6 @@
             DomainNetBIOSName = 'BOLTON'
             ForestMode        = 'WinThreshold'
             DomainMode        = 'WinThreshold'
-            Network = @{
-                InterfaceAlias = 'Ethernet 2'
-                AddressFamily  = 'IPv4'
-                IPAddress      = '192.168.56.107'
-                PrefixLength   = 24
-                DnsServers     = @('192.168.56.107')
-            }
 
             Features = @{
                 Add = @('AD-Domain-Services','DNS')
