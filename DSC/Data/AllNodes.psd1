@@ -21,7 +21,7 @@
             InstallRSATADDS  = $true
 
             DomainName = 'bolton.corp'
-
+            DomainNetBIOSName = 'BOLTON'
             Network = @{
                 InterfaceAlias = 'Ethernet 2'
                 AddressFamily  = 'IPv4'
