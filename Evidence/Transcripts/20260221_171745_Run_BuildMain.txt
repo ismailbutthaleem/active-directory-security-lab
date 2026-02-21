@@ -1,0 +1,56 @@
+**********************
+PowerShell transcript start
+Start time: 20260221171745
+Username: DESKTOP-4KDR5HC\ismail
+RunAs User: DESKTOP-4KDR5HC\ismail
+Configuration Name: 
+Machine: DESKTOP-4KDR5HC (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -WorkingDirectory ~
+Process ID: 9264
+PSVersion: 7.5.4
+PSEdition: Core
+GitCommitId: 7.5.4
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+[+] Transcript started: Evidence\\Transcripts\\20260221_171745_Run_BuildMain.txt
+[+] Admin privileges confirmed.
+
+[Phase 1] Prerequisites...
+[*] Invoke-BarmBuzz-OneShots: LCM then Network
+[*] LCM already configured (flag present).
+[*] Network already configured (flag present).
+[*] LCM already configured (skipping).
+[*] Network already configured (skipping).
+[+] Phase 1 complete.
+
+[Phase 2] Compile + Apply DSC...
+
+[-] BUILD FAILED
+Message: At C:\Users\ismail\repo\DSC\Configurations\StudentConfig.ps1:25 char:5
++     Import-DscResource -ModuleName NetworkingDsc
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Could not find the module 'NetworkingDsc'.
+
+At C:\Users\ismail\repo\DSC\Configurations\StudentConfig.ps1:93 char:9
++         IPAddress StaticIPv4
++         ~~~~~~~~~
+Undefined DSC resource 'IPAddress'. Use Import-DSCResource to import the resource.
+
+At C:\Users\ismail\repo\DSC\Configurations\StudentConfig.ps1:102 char:9
++         DnsServerAddress InternalDNS
++         ~~~~~~~~~~~~~~~~
+Undefined DSC resource 'DnsServerAddress'. Use Import-DSCResource to import the resource.
+
+At C:\Users\ismail\repo\DSC\Configurations\StudentConfig.ps1:111 char:9
++         DnsConnectionSuffix DisableNatDnsRegistration
++         ~~~~~~~~~~~~~~~~~~~
+Undefined DSC resource 'DnsConnectionSuffix'. Use Import-DSCResource to import the resource.
+**********************
+PowerShell transcript end
+End time: 20260221171745
+**********************
