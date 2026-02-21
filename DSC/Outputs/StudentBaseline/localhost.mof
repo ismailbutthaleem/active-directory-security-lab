@@ -1,7 +1,7 @@
 /*
 @TargetNode='localhost'
 @GeneratedBy=Administrator
-@GenerationDate=02/21/2026 00:13:44
+@GenerationDate=02/21/2026 01:23:50
 @GenerationHost=SERVER25-DC-01
 */
 
@@ -51,6 +51,44 @@ IsSingleInstance = "Yes";
  TimeZone = "GMT Standard Time";
  ConfigurationName = "StudentBaseline";
 };
+instance of MSFT_ServiceResource as $MSFT_ServiceResource1ref
+{
+ResourceID = "[Service]WindowsTime";
+ ModuleName = "PsDesiredStateConfiguration";
+ Name = "W32Time";
+ State = "Running";
+ StartupType = "Automatic";
+ SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::47::9::Service";
+
+ModuleVersion = "1.0";
+DependsOn = {
+    "[TimeZone]SetTimeZone"};
+ ConfigurationName = "StudentBaseline";
+};
+instance of MSFT_RoleResource as $MSFT_RoleResource1ref
+{
+ResourceID = "[WindowsFeature]ADDS";
+ ModuleName = "PsDesiredStateConfiguration";
+ Name = "AD-Domain-Services";
+ Ensure = "Present";
+ SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::55::9::WindowsFeature";
+
+ModuleVersion = "1.0";
+ ConfigurationName = "StudentBaseline";
+};
+instance of MSFT_RoleResource as $MSFT_RoleResource2ref
+{
+ResourceID = "[WindowsFeature]RSATADDS";
+ ModuleName = "PsDesiredStateConfiguration";
+ Name = "RSAT-AD-Tools";
+ Ensure = "Present";
+ SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::61::9::WindowsFeature";
+
+ModuleVersion = "1.0";
+DependsOn = {
+    "[WindowsFeature]ADDS"};
+ ConfigurationName = "StudentBaseline";
+};
 instance of DSC_IPAddress as $DSC_IPAddress1ref
 {
 IPAddress = {
@@ -62,7 +100,7 @@ IPAddress = {
  ModuleVersion = "9.1.0";
  KeepExistingAddress = False;
  InterfaceAlias = "Ethernet 2";
- SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::53::9::IPAddress";
+ SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::72::9::IPAddress";
  ConfigurationName = "StudentBaseline";
 };
 instance of DSC_DnsServerAddress as $DSC_DnsServerAddress1ref
@@ -75,30 +113,30 @@ Address = {
  ModuleName = "NetworkingDsc";
  ModuleVersion = "9.1.0";
  InterfaceAlias = "Ethernet 2";
- SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::62::9::DnsServerAddress";
+ SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::81::9::DnsServerAddress";
 
 DependsOn = {
     "[IPAddress]StaticIPv4"};
  ConfigurationName = "StudentBaseline";
 };
-instance of MSFT_RoleResource as $MSFT_RoleResource1ref
+instance of MSFT_RoleResource as $MSFT_RoleResource3ref
 {
 ResourceID = "[WindowsFeature]Feature_AD-Domain-Services";
  ModuleName = "PsDesiredStateConfiguration";
  Name = "AD-Domain-Services";
  Ensure = "Present";
- SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::72::13::WindowsFeature";
+ SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::91::13::WindowsFeature";
 
 ModuleVersion = "1.0";
  ConfigurationName = "StudentBaseline";
 };
-instance of MSFT_RoleResource as $MSFT_RoleResource2ref
+instance of MSFT_RoleResource as $MSFT_RoleResource4ref
 {
 ResourceID = "[WindowsFeature]Feature_DNS";
  ModuleName = "PsDesiredStateConfiguration";
  Name = "DNS";
  Ensure = "Present";
- SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::72::13::WindowsFeature";
+ SourceInfo = "C:\\Users\\Administrator\\Desktop\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::91::13::WindowsFeature";
 
 ModuleVersion = "1.0";
  ConfigurationName = "StudentBaseline";
@@ -114,7 +152,7 @@ instance of OMI_ConfigurationDocument
 
                         Author="Administrator";
 
-                        GenerationDate="02/21/2026 00:13:44";
+                        GenerationDate="02/21/2026 01:23:50";
 
                         GenerationHost="SERVER25-DC-01";
 
