@@ -114,9 +114,9 @@ Configuration StudentBaseline {
         DnsConnectionSuffix DisableNatDnsRegistration
         {
             InterfaceAlias = $node.InterfaceAlias_NAT
-            Suffix         = 'nat
-            RegisterThisConnectionsAddress = $false'
-            DependsOn      = '[DnsServerAddress]InternalDNS'
+            ConnectionSpecificSuffix = 'nat'
+            RegisterThisConnectionsAddress = $false
+            DependsOn     = '[DnsServerAddress]InternalDNS'
         }
         ### PROMOTE TO DOMAIN CONTROLLER - Create new forest and domain
         ADDomain CreateForest
