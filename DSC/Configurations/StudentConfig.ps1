@@ -60,7 +60,7 @@ Configuration StudentBaseline
 
         WindowsFeature RSATADDS 
         {
-            Name   = 'RSAT-AD-Tools'
+            Name   = 'RSAT-ADDS'
             Ensure = 'Present'
             DependsOn = '[WindowsFeature]ADDS'
         }
