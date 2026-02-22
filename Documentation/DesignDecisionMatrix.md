@@ -17,6 +17,7 @@ NTP Server: time.windows.com
 ### DNS Configuration ###
 
 DNS strategy: AD-Integrated DNS on the Domain Controller
+No DNS registration for adapter "ethernet" (NAT)
 
 ---
 
