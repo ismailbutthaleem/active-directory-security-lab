@@ -6,10 +6,7 @@
 #
 # The test fails if any OU is missing or incorrectly named,
 # providing clear feedback about misconfiguration. 
-
 Describe 'Student OU Governance Structure' {
-
-    Describe 'Student OU Governance Structure' {
 
     $DomainDN = 'DC=bolton,DC=corp'
 
