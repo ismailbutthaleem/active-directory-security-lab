@@ -32,6 +32,7 @@
             # Domain configuration for Active Directory
             DomainName = 'bolton.corp'
             DomainNetBIOSName = 'BOLTON'
+            DomainDN = 'DC=bolton,DC=corp'
             ForestMode        = 'WinThreshold'
             DomainMode        = 'WinThreshold'
             # SafeModeAdministratorPassword is required for domain join and Active Directory installation

@@ -25,8 +25,8 @@ Configuration StudentBaseline {
     Import-DscResource -ModuleName NetworkingDsc
     Import-DscResource -ModuleName ActiveDirectoryDsc
 
-    Node $AllNodes.NodeName
-    {
+    Node $AllNodes.NodeName {
+
         $node = $ConfigurationData.AllNodes | Where-Object NodeName -eq $Node.NodeName
 
         $Network = @{
@@ -37,15 +37,13 @@ Configuration StudentBaseline {
             DnsServers     = $node.DnsServers_Internal
         }
 
-        File TestFolder
-        {
+        File TestFolder {
             DestinationPath = 'C:\TEST'
             Type            = 'Directory'
             Ensure          = 'Present'
         }
 
-        File TestFile
-        {
+        File TestFile {
             DestinationPath = 'C:\TEST\test.txt'
             Type            = 'File'
             Ensure          = 'Present'
@@ -54,21 +52,18 @@ Configuration StudentBaseline {
         }
 
         # Use ComputerName resource to set the computer name as specified in the configuration data for domain join and proper identification in Active Directory
-        Computer SetComputerName
-        {
+        Computer SetComputerName {
             Name = $node.ComputerName
         }
 
         # Set the time zone as specified in the configuration data for domain join and time synchronization, and ensure Windows Time service is running for proper time sync in Active Directory
-        TimeZone SetTimeZone
-        {
+        TimeZone SetTimeZone {
             IsSingleInstance = 'Yes'
             TimeZone         = $node.TimeZone
         }
 
         # Ensure Windows Time service is running and set to automatic startup for domain join and time synchronization in Active Directory
-        Service WindowsTime
-        {
+        Service WindowsTime {
             Name        = 'W32Time'
             State       = 'Running'
             StartupType = 'Automatic'
@@ -76,22 +71,19 @@ Configuration StudentBaseline {
         }
 
         # Install Active Directory Domain Services and RSAT-ADDS features for domain controller configuration as specified in the configuration data
-        WindowsFeature ADDS
-        {
+        WindowsFeature ADDS {
             Name   = 'AD-Domain-Services'
             Ensure = 'Present'
         }
 
-        WindowsFeature RSATADDS
-        {
+        WindowsFeature RSATADDS {
             Name      = 'RSAT-ADDS'
             Ensure    = 'Present'
             DependsOn = '[WindowsFeature]ADDS'
         }
 
         # Network configuration for internal network interface using IPAddress and DnsServerAddress resources, with dependency to ensure proper order of configuration application for domain join and Active Directory functionality
-        IPAddress StaticIPv4
-        {
+        IPAddress StaticIPv4 {
             AddressFamily       = $Network.AddressFamily
             InterfaceAlias      = $Network.InterfaceAlias
             IPAddress           = @("$($Network.IPAddress)/$($Network.PrefixLength)")
@@ -99,8 +91,7 @@ Configuration StudentBaseline {
             DependsOn           = '[Computer]SetComputerName'
         }
 
-        DnsServerAddress InternalDNS
-        {
+        DnsServerAddress InternalDNS {
             AddressFamily  = 'IPv4'
             InterfaceAlias = $node.InterfaceAlias_Internal
             Address        = $node.DnsServers_Internal
@@ -111,16 +102,16 @@ Configuration StudentBaseline {
         ### Network Settings – External NIC
 
         # Disable DNS registration on the NAT network interface to prevent conflicts with the internal DNS configuration for Active Directory, with dependency to ensure it is applied after the internal DNS server address is configured
-        DnsConnectionSuffix DisableNatDnsRegistration
-        {
-            InterfaceAlias = $node.InterfaceAlias_NAT
-            ConnectionSpecificSuffix = 'nat'
+        DnsConnectionSuffix DisableNatDnsRegistration {
+            InterfaceAlias                 = $node.InterfaceAlias_NAT
+            ConnectionSpecificSuffix       = 'nat'
             RegisterThisConnectionsAddress = $false
-            DependsOn     = '[DnsServerAddress]InternalDNS'
+            DependsOn                      = '[DnsServerAddress]InternalDNS'
         }
+
         ### PROMOTE TO DOMAIN CONTROLLER - Create new forest and domain
-        ADDomain CreateForest
-        {
+        ADDomain CreateForest {
+
             # DomainName: The fully-qualified domain name (FQDN)
             # This becomes both the AD domain name and the DNS zone
             DomainName = $Node.DomainName
@@ -149,12 +140,57 @@ Configuration StudentBaseline {
             DependsOn = '[WindowsFeature]RSATADDS'
         }
 
-        foreach ($featureName in $node.Features.Add)
-        {
-            WindowsFeature "Feature_$featureName"
-            {
+        foreach ($featureName in $node.Features.Add) {
+            WindowsFeature "Feature_$featureName" {
                 Name   = $featureName
                 Ensure = 'Present'
+            }
+        }
+
+        # ===============================
+        # OU STRUCTURE (Root DC only)
+        # ===============================
+
+        if ($node.Role -eq 'RootDC') {
+
+            ADOrganizationalUnit 'OU_ControlPlane' {
+                Name  = 'ControlPlane'
+                Path  = $Node.DomainDN
+                Ensure = 'Present'
+                ProtectedFromAccidentalDeletion = $true
+                DependsOn = '[ADDomain]CreateForest'
+            }
+
+            ADOrganizationalUnit 'OU_ManagementPlane' {
+                Name  = 'ManagementPlane'
+                Path  = $Node.DomainDN
+                Ensure = 'Present'
+                ProtectedFromAccidentalDeletion = $true
+                DependsOn = '[ADDomain]CreateForest'
+            }
+
+            ADOrganizationalUnit 'OU_UserAccessPlane' {
+                Name  = 'UserAccessPlane'
+                Path  = $Node.DomainDN
+                Ensure = 'Present'
+                ProtectedFromAccidentalDeletion = $true
+                DependsOn = '[ADDomain]CreateForest'
+            }
+
+            ADOrganizationalUnit 'OU_UserAccessPlane_Users' {
+                Name  = 'Users'
+                Path  = "OU=UserAccessPlane,$($Node.DomainDN)"
+                Ensure = 'Present'
+                ProtectedFromAccidentalDeletion = $true
+                DependsOn = '[ADOrganizationalUnit]OU_UserAccessPlane'
+            }
+
+            ADOrganizationalUnit 'OU_UserAccessPlane_Computers' {
+                Name  = 'Computers'
+                Path  = "OU=UserAccessPlane,$($Node.DomainDN)"
+                Ensure = 'Present'
+                ProtectedFromAccidentalDeletion = $true
+                DependsOn = '[ADOrganizationalUnit]OU_UserAccessPlane'
             }
         }
     }
