@@ -151,7 +151,7 @@ Configuration StudentBaseline {
         # OU STRUCTURE (Root DC only)
         # ===============================
 
-        if ($node.Role -eq 'RootDC') {
+        if ($node.Role -eq 'DC') {
 
             ADOrganizationalUnit 'OU_ControlPlane' {
                 Name  = 'ControlPlane'
