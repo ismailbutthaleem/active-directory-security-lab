@@ -9,6 +9,8 @@
 
 Describe 'Student OU Governance Structure' {
 
+    Describe 'Student OU Governance Structure' {
+
     $DomainDN = 'DC=bolton,DC=corp'
 
     It 'ControlPlane OU should exist' {
