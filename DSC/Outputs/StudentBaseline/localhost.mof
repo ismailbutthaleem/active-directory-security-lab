@@ -1,7 +1,7 @@
 /*
 @TargetNode='localhost'
 @GeneratedBy=Administrator
-@GenerationDate=02/22/2026 01:16:01
+@GenerationDate=02/22/2026 22:38:42
 @GenerationHost=SERVER25-DC-01
 */
 
@@ -23,7 +23,7 @@ ModuleName = "PSDesiredStateConfiguration";
  DestinationPath = "C:\\TEST\\test.txt";
  Contents = "Proof-of-life: DSC created this file.";
  Ensure = "Present";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::47::9::File";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::46::9::File";
  ResourceID = "[File]TestFile";
  Type = "File";
 
@@ -34,7 +34,7 @@ DependsOn = {
 };
 instance of DSC_Computer as $DSC_Computer1ref
 {
-SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::57::9::Computer";
+SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::55::9::Computer";
  Name = "SERVER25-DC-01";
  ModuleName = "ComputerManagementDsc";
  ModuleVersion = "10.0.0";
@@ -46,7 +46,7 @@ instance of DSC_TimeZone as $DSC_TimeZone1ref
 ModuleName = "ComputerManagementDsc";
  IsSingleInstance = "Yes";
  ModuleVersion = "10.0.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::63::9::TimeZone";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::60::9::TimeZone";
  ResourceID = "[TimeZone]SetTimeZone";
  TimeZone = "GMT Standard Time";
  ConfigurationName = "StudentBaseline";
@@ -57,7 +57,7 @@ ModuleName = "PsDesiredStateConfiguration";
  Name = "W32Time";
  State = "Running";
  StartupType = "Automatic";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::70::9::Service";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::66::9::Service";
  ResourceID = "[Service]WindowsTime";
 
 ModuleVersion = "1.0";
@@ -70,7 +70,7 @@ instance of MSFT_RoleResource as $MSFT_RoleResource1ref
 ModuleName = "PsDesiredStateConfiguration";
  Name = "AD-Domain-Services";
  Ensure = "Present";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::79::9::WindowsFeature";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::74::9::WindowsFeature";
  ResourceID = "[WindowsFeature]ADDS";
 
 ModuleVersion = "1.0";
@@ -81,7 +81,7 @@ instance of MSFT_RoleResource as $MSFT_RoleResource2ref
 ModuleName = "PsDesiredStateConfiguration";
  Name = "RSAT-ADDS";
  Ensure = "Present";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::85::9::WindowsFeature";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::79::9::WindowsFeature";
  ResourceID = "[WindowsFeature]RSATADDS";
 
 ModuleVersion = "1.0";
@@ -98,7 +98,7 @@ ModuleName = "NetworkingDsc";
     "192.168.56.107/24"
 };
  ModuleVersion = "9.1.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::93::9::IPAddress";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::86::9::IPAddress";
  ResourceID = "[IPAddress]StaticIPv4";
  InterfaceAlias = "Ethernet 2";
 
@@ -114,7 +114,7 @@ ModuleName = "NetworkingDsc";
  Address = {
     "127.0.0.1"
 };
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::102::9::DnsServerAddress";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::94::9::DnsServerAddress";
  ResourceID = "[DnsServerAddress]InternalDNS";
  InterfaceAlias = "Ethernet 2";
 
@@ -128,7 +128,7 @@ ModuleName = "NetworkingDsc";
  RegisterThisConnectionsAddress = False;
  ConnectionSpecificSuffix = "nat";
  ModuleVersion = "9.1.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::114::9::DnsConnectionSuffix";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::105::9::DnsConnectionSuffix";
  ResourceID = "[DnsConnectionSuffix]DisableNatDnsRegistration";
  InterfaceAlias = "Ethernet";
 
@@ -160,7 +160,7 @@ ForestMode = "WinThreshold";
  Credential = $MSFT_Credential2ref;
  ModuleName = "ActiveDirectoryDsc";
  ModuleVersion = "6.6.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::122::9::ADDomain";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::113::9::ADDomain";
  ResourceID = "[ADDomain]CreateForest";
 
 DependsOn = {
@@ -172,7 +172,7 @@ instance of MSFT_RoleResource as $MSFT_RoleResource3ref
 ModuleName = "PsDesiredStateConfiguration";
  Name = "AD-Domain-Services";
  Ensure = "Present";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::154::13::WindowsFeature";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::144::13::WindowsFeature";
  ResourceID = "[WindowsFeature]Feature_AD-Domain-Services";
 
 ModuleVersion = "1.0";
@@ -183,10 +183,85 @@ instance of MSFT_RoleResource as $MSFT_RoleResource4ref
 ModuleName = "PsDesiredStateConfiguration";
  Name = "DNS";
  Ensure = "Present";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::154::13::WindowsFeature";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::144::13::WindowsFeature";
  ResourceID = "[WindowsFeature]Feature_DNS";
 
 ModuleVersion = "1.0";
+ ConfigurationName = "StudentBaseline";
+};
+instance of MSFT_ADOrganizationalUnit as $MSFT_ADOrganizationalUnit1ref
+{
+ModuleName = "ActiveDirectoryDsc";
+ Name = "ControlPlane";
+ Ensure = "Present";
+ ModuleVersion = "6.6.0";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::156::13::ADOrganizationalUnit";
+ ResourceID = "[ADOrganizationalUnit]OU_ControlPlane";
+ Path = "DC=bolton,DC=corp";
+ ProtectedFromAccidentalDeletion = True;
+
+DependsOn = {
+    "[ADDomain]CreateForest"};
+ ConfigurationName = "StudentBaseline";
+};
+instance of MSFT_ADOrganizationalUnit as $MSFT_ADOrganizationalUnit2ref
+{
+ModuleName = "ActiveDirectoryDsc";
+ Name = "ManagementPlane";
+ Ensure = "Present";
+ ModuleVersion = "6.6.0";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::164::13::ADOrganizationalUnit";
+ ResourceID = "[ADOrganizationalUnit]OU_ManagementPlane";
+ Path = "DC=bolton,DC=corp";
+ ProtectedFromAccidentalDeletion = True;
+
+DependsOn = {
+    "[ADDomain]CreateForest"};
+ ConfigurationName = "StudentBaseline";
+};
+instance of MSFT_ADOrganizationalUnit as $MSFT_ADOrganizationalUnit3ref
+{
+ModuleName = "ActiveDirectoryDsc";
+ Name = "UserAccessPlane";
+ Ensure = "Present";
+ ModuleVersion = "6.6.0";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::172::13::ADOrganizationalUnit";
+ ResourceID = "[ADOrganizationalUnit]OU_UserAccessPlane";
+ Path = "DC=bolton,DC=corp";
+ ProtectedFromAccidentalDeletion = True;
+
+DependsOn = {
+    "[ADDomain]CreateForest"};
+ ConfigurationName = "StudentBaseline";
+};
+instance of MSFT_ADOrganizationalUnit as $MSFT_ADOrganizationalUnit4ref
+{
+ModuleName = "ActiveDirectoryDsc";
+ Name = "Users";
+ Ensure = "Present";
+ ModuleVersion = "6.6.0";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::180::13::ADOrganizationalUnit";
+ ResourceID = "[ADOrganizationalUnit]OU_UserAccessPlane_Users";
+ Path = "OU=UserAccessPlane,DC=bolton,DC=corp";
+ ProtectedFromAccidentalDeletion = True;
+
+DependsOn = {
+    "[ADOrganizationalUnit]OU_UserAccessPlane"};
+ ConfigurationName = "StudentBaseline";
+};
+instance of MSFT_ADOrganizationalUnit as $MSFT_ADOrganizationalUnit5ref
+{
+ModuleName = "ActiveDirectoryDsc";
+ Name = "Computers";
+ Ensure = "Present";
+ ModuleVersion = "6.6.0";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::188::13::ADOrganizationalUnit";
+ ResourceID = "[ADOrganizationalUnit]OU_UserAccessPlane_Computers";
+ Path = "OU=UserAccessPlane,DC=bolton,DC=corp";
+ ProtectedFromAccidentalDeletion = True;
+
+DependsOn = {
+    "[ADOrganizationalUnit]OU_UserAccessPlane"};
  ConfigurationName = "StudentBaseline";
 };
 instance of OMI_ConfigurationDocument
@@ -200,7 +275,7 @@ instance of OMI_ConfigurationDocument
 
                         Author="Administrator";
 
-                        GenerationDate="02/22/2026 01:16:01";
+                        GenerationDate="02/22/2026 22:38:42";
 
                         GenerationHost="SERVER25-DC-01";
 
