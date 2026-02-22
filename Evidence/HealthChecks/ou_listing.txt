@@ -1,0 +1,10 @@
+
+Name               DistinguishedName
+----               -----------------
+Domain Controllers OU=Domain Controllers,DC=bolton,DC=corp
+ControlPlane       OU=ControlPlane,DC=bolton,DC=corp
+ManagementPlane    OU=ManagementPlane,DC=bolton,DC=corp
+UserAccessPlane    OU=UserAccessPlane,DC=bolton,DC=corp
+Users              OU=Users,OU=UserAccessPlane,DC=bolton,DC=corp
+Computers          OU=Computers,OU=UserAccessPlane,DC=bolton,DC=corp
+
