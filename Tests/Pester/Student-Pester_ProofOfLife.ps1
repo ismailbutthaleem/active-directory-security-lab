@@ -55,4 +55,9 @@ Describe 'Student OU Governance Structure' {
         (Get-ADOrganizationalUnit -LDAPFilter "(ou=AdminUsers)" -SearchBase $base -ErrorAction Stop).DistinguishedName |
             Should -Be "OU=AdminUsers,OU=ManagementPlane,$($script:DomainDN)"
     }
+    It Groups OU should exist under ManagementPlane {
+        $base = "OU=ManagementPlane,$($script:DomainDN)"
+        (Get-ADOrganizationalUnit -LDAPFilter "(ou=Groups)" -SearchBase $base -ErrorAction Stop).DistinguishedName |
+            Should -Be "OU=Groups,OU=ManagementPlane,$($script:DomainDN)"
+    }
 }
