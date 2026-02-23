@@ -192,6 +192,15 @@ Configuration StudentBaseline {
                 ProtectedFromAccidentalDeletion = $true
                 DependsOn = '[ADOrganizationalUnit]OU_UserAccessPlane'
             }
+            
+            # OU under UserAccessPlane
+                ADOrganizationalUnit 'OU_UserAccessPlane_Groups' {
+                Name                            = 'Groups'
+                Path                            = 'OU=UserAccessPlane,DC=bolton,DC=corp'
+                ProtectedFromAccidentalDeletion = $true
+                Ensure                          = 'Present'
+            }
+
         }
     }
 }
