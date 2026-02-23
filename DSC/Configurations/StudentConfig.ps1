@@ -15,11 +15,7 @@ Configuration StudentBaseline {
 
         [Parameter(Mandatory = $true)]
         [PSCredential]
-        $DsrmCredential,
-
-        [Parameter(Mandatory = $true)]
-        [PSCredential]
-        $DefaultUserCredential
+        $DsrmCredential
     )
 
     Import-DscResource -ModuleName PSDesiredStateConfiguration
@@ -30,6 +26,13 @@ Configuration StudentBaseline {
     Node $AllNodes.NodeName {
 
         $node = $ConfigurationData.AllNodes | Where-Object { $_.NodeName -eq $Node.NodeName }
+
+        # Create a PSCredential object for users using the SecureString password
+        # This avoids hardcoding and satisfies ADUser type requirements
+        $UserPassword = New-Object System.Management.Automation.PSCredential (
+            "UserPassword",
+            $DomainAdminCredential.Password
+        )
 
         $Network = @{
             InterfaceAlias = $node.InterfaceAlias_Internal
@@ -209,7 +212,7 @@ Configuration StudentBaseline {
                 UserName    = 'adam.khan'
                 Path        = "OU=Users,OU=UserAccessPlane,$($Node.DomainDN)"
                 Ensure      = 'Present'
-                Password    = $DefaultUserCredential
+                Password    = $UserPassword
                 Enabled     = $true
             }
 
@@ -218,7 +221,7 @@ Configuration StudentBaseline {
                 UserName    = 'katy.smith'
                 Path        = "OU=Users,OU=UserAccessPlane,$($Node.DomainDN)"
                 Ensure      = 'Present'
-                Password    = $DefaultUserCredential
+                Password    = $UserPassword
                 Enabled     = $true
             }
 
@@ -227,7 +230,7 @@ Configuration StudentBaseline {
                 UserName    = 'ismail.admin'
                 Path        = "OU=AdminUsers,OU=ManagementPlane,$($Node.DomainDN)"
                 Ensure      = 'Present'
-                Password    = $DefaultUserCredential
+                Password    = $UserPassword
                 Enabled     = $true
             }
 
@@ -236,7 +239,7 @@ Configuration StudentBaseline {
                 UserName    = 'paul.evans'
                 Path        = "OU=AdminUsers,OU=ManagementPlane,$($Node.DomainDN)"
                 Ensure      = 'Present'
-                Password    = $DefaultUserCredential
+                Password    = $UserPassword
                 Enabled     = $true
             }
 
