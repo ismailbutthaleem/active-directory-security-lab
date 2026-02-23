@@ -60,4 +60,29 @@ Describe 'Student OU Governance Structure' {
         (Get-ADOrganizationalUnit -LDAPFilter "(ou=Groups)" -SearchBase $base -ErrorAction Stop).DistinguishedName |
             Should -Be "OU=Groups,OU=ManagementPlane,$($script:DomainDN)"
     }
+
+    It 'GG-HR-Staff should exist under UserAccessPlane\Groups' {
+        $base = "OU=Groups,OU=UserAccessPlane,$($script:DomainDN)"
+        (Get-ADGroup -LDAPFilter "(cn=GG-HR-Staff)" -SearchBase $base -ErrorAction Stop).DistinguishedName |
+            Should -Be "CN=GG-HR-Staff,OU=Groups,OU=UserAccessPlane,$($script:DomainDN)"
+    }
+
+    It 'GG-Finance-Staff should exist under UserAccessPlane\Groups' {
+        $base = "OU=Groups,OU=UserAccessPlane,$($script:DomainDN)"
+        (Get-ADGroup -LDAPFilter "(cn=GG-Finance-Staff)" -SearchBase $base -ErrorAction Stop).DistinguishedName |
+            Should -Be "CN=GG-Finance-Staff,OU=Groups,OU=UserAccessPlane,$($script:DomainDN)"
+    }
+    
+    It 'GG-Helpdesk-Operators should exist under ManagementPlane\Groups' {
+        $base = "OU=Groups,OU=ManagementPlane,$($script:DomainDN)"
+        (Get-ADGroup -LDAPFilter "(cn=GG-Helpdesk-Operators)" -SearchBase $base -ErrorAction Stop).DistinguishedName |
+            Should -Be "CN=GG-Helpdesk-Operators,OU=Groups,OU=ManagementPlane,$($script:DomainDN)"
+    }
+
+    It 'GG-Server-Admins should exist under ManagementPlane\Groups' {
+        $base = "OU=Groups,OU=ManagementPlane,$($script:DomainDN)"
+        (Get-ADGroup -LDAPFilter "(cn=GG-Server-Admins)" -SearchBase $base -ErrorAction Stop).DistinguishedName |
+            Should -Be "CN=GG-Server-Admins,OU=Groups,OU=ManagementPlane,$($script:DomainDN)"
+    }
+
 }

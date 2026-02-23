@@ -216,6 +216,42 @@ Configuration StudentBaseline {
                 ProtectedFromAccidentalDeletion = $true
                 Ensure                          = 'Present'
             }
+
+            ADGroup 'GG_HR_Staff' {
+            GroupName  = 'GG-HR-Staff'
+            GroupScope = 'Global'
+            Category   = 'Security'
+            Path       = 'OU=Groups,OU=UserAccessPlane,DC=bolton,DC=corp'
+            Ensure     = 'Present'
+            DependsOn  = '[ADOrganizationalUnit]OU_UserAccessPlane_Groups'
+            }
+
+            ADGroup 'GG_Finance_Staff' {
+            GroupName  = 'GG-Finance-Staff'
+            GroupScope = 'Global'
+            Category   = 'Security'
+            Path       = 'OU=Groups,OU=UserAccessPlane,DC=bolton,DC=corp'
+            Ensure     = 'Present'
+            DependsOn  = '[ADOrganizationalUnit]OU_UserAccessPlane_Groups'
+            }
+
+            ADGroup 'GG_IT_Admins' {
+            GroupName  = 'GG-IT-Admins'
+            GroupScope = 'Global'
+            Category   = 'Security'
+            Path       = 'OU=Groups,OU=ManagementPlane,DC=bolton,DC=corp'
+            Ensure     = 'Present'
+            DependsOn  = '[ADOrganizationalUnit]OU_ManagementPlane_Groups'
+        }
+
+            ADGroup 'GG_Server_Admins' {
+            GroupName  = 'GG-Server-Admins'
+            GroupScope = 'Global'
+            Category   = 'Security'
+            Path       = 'OU=Groups,OU=ManagementPlane,DC=bolton,DC=corp'
+            Ensure     = 'Present'
+            DependsOn  = '[ADOrganizationalUnit]OU_ManagementPlane_Groups'
+        }
         }
     }
 }
