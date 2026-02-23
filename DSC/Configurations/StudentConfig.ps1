@@ -199,6 +199,15 @@ Configuration StudentBaseline {
                 Path                            = 'OU=UserAccessPlane,DC=bolton,DC=corp'
                 ProtectedFromAccidentalDeletion = $true
                 Ensure                          = 'Present'
+            
+            }
+           
+            # OU under ManagementPlane for admin users
+                ADOrganizationalUnit 'OU_ManagementPlane_AdminUsers' {
+                Name                            = 'AdminUsers'
+                Path                            = 'OU=ManagementPlane,DC=bolton,DC=corp'
+                ProtectedFromAccidentalDeletion = $true
+                Ensure                          = 'Present'
             }
 
         }
