@@ -201,33 +201,38 @@ Configuration StudentBaseline {
             }
 
             # ---------- Users (No Password – created disabled) ----------
+                        # ---------- Users (Created via DSC, disabled to avoid password policy / no hardcoded secrets) ----------
 
             ADUser 'User_Adam_Khan' {
                 DomainName  = $Node.DomainName
                 UserName    = 'adam.khan'
                 Path        = "OU=Users,OU=UserAccessPlane,$($Node.DomainDN)"
-                Ensure      = '$false' # Create the user but keep it disabled
+                Ensure      = 'Present'
+                Enabled     = $false
             }
 
             ADUser 'User_Katy_Smith' {
                 DomainName  = $Node.DomainName
                 UserName    = 'katy.smith'
                 Path        = "OU=Users,OU=UserAccessPlane,$($Node.DomainDN)"
-                Ensure      = '$false' # Create the user but keep it disabled
+                Ensure      = 'Present'
+                Enabled     = $false
             }
 
             ADUser 'User_Ismail_Admin' {
                 DomainName  = $Node.DomainName
                 UserName    = 'ismail.admin'
                 Path        = "OU=AdminUsers,OU=ManagementPlane,$($Node.DomainDN)"
-                Ensure      = '$false' # Create the user but keep it disabled
+                Ensure      = 'Present'
+                Enabled     = $false
             }
 
             ADUser 'User_Paul_Evans' {
                 DomainName  = $Node.DomainName
                 UserName    = 'paul.evans'
                 Path        = "OU=AdminUsers,OU=ManagementPlane,$($Node.DomainDN)"
-                Ensure      = '$false' # Create the user but keep it disabled
+                Ensure      = 'Present'
+                Enabled     = $false
             }
 
 
