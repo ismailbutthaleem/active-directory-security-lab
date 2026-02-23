@@ -209,7 +209,13 @@ Configuration StudentBaseline {
                 ProtectedFromAccidentalDeletion = $true
                 Ensure                          = 'Present'
             }
-
+            # OU under ManagementPlane for groups
+                ADOrganizationalUnit 'OU_ManagementPlane_Groups' {
+                Name                            = 'Groups'
+                Path                            = 'OU=ManagementPlane,DC=bolton,DC=corp'
+                ProtectedFromAccidentalDeletion = $true
+                Ensure                          = 'Present'
+            }
         }
     }
 }
