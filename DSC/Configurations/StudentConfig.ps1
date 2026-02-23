@@ -9,15 +9,17 @@ Configuration StudentBaseline {
 
     param(
 
-        # The username in the credential should be just 'Administrator'
         [Parameter(Mandatory = $true)]
         [PSCredential]
         $DomainAdminCredential,
 
-        # Can be same as DomainAdminCredential, or different for extra security
         [Parameter(Mandatory = $true)]
         [PSCredential]
-        $DsrmCredential
+        $DsrmCredential,
+
+        [Parameter(Mandatory = $true)]
+        [PSCredential]
+        $DefaultUserCredential
     )
 
     Import-DscResource -ModuleName PSDesiredStateConfiguration
@@ -112,67 +114,67 @@ Configuration StudentBaseline {
 
         if ($node.Role -eq 'DC') {
 
+            # ---------- OUs ----------
+
             ADOrganizationalUnit 'OU_ControlPlane' {
-                Name                            = 'ControlPlane'
-                Path                            = $Node.DomainDN
-                Ensure                          = 'Present'
+                Name  = 'ControlPlane'
+                Path  = $Node.DomainDN
+                Ensure = 'Present'
                 ProtectedFromAccidentalDeletion = $true
-                DependsOn                       = '[ADDomain]CreateForest'
+                DependsOn = '[ADDomain]CreateForest'
             }
 
             ADOrganizationalUnit 'OU_ManagementPlane' {
-                Name                            = 'ManagementPlane'
-                Path                            = $Node.DomainDN
-                Ensure                          = 'Present'
+                Name  = 'ManagementPlane'
+                Path  = $Node.DomainDN
+                Ensure = 'Present'
                 ProtectedFromAccidentalDeletion = $true
-                DependsOn                       = '[ADDomain]CreateForest'
+                DependsOn = '[ADDomain]CreateForest'
             }
 
             ADOrganizationalUnit 'OU_UserAccessPlane' {
-                Name                            = 'UserAccessPlane'
-                Path                            = $Node.DomainDN
-                Ensure                          = 'Present'
+                Name  = 'UserAccessPlane'
+                Path  = $Node.DomainDN
+                Ensure = 'Present'
                 ProtectedFromAccidentalDeletion = $true
-                DependsOn                       = '[ADDomain]CreateForest'
+                DependsOn = '[ADDomain]CreateForest'
             }
 
             ADOrganizationalUnit 'OU_UserAccessPlane_Users' {
-                Name                            = 'Users'
-                Path                            = "OU=UserAccessPlane,$($Node.DomainDN)"
-                Ensure                          = 'Present'
+                Name  = 'Users'
+                Path  = "OU=UserAccessPlane,$($Node.DomainDN)"
+                Ensure = 'Present'
                 ProtectedFromAccidentalDeletion = $true
-                DependsOn                       = '[ADOrganizationalUnit]OU_UserAccessPlane'
             }
 
             ADOrganizationalUnit 'OU_UserAccessPlane_Groups' {
-                Name                            = 'Groups'
-                Path                            = 'OU=UserAccessPlane,DC=bolton,DC=corp'
-                Ensure                          = 'Present'
+                Name  = 'Groups'
+                Path  = "OU=UserAccessPlane,$($Node.DomainDN)"
+                Ensure = 'Present'
                 ProtectedFromAccidentalDeletion = $true
-                DependsOn                       = '[ADOrganizationalUnit]OU_UserAccessPlane'
             }
 
             ADOrganizationalUnit 'OU_ManagementPlane_AdminUsers' {
-                Name                            = 'AdminUsers'
-                Path                            = 'OU=ManagementPlane,DC=bolton,DC=corp'
-                Ensure                          = 'Present'
+                Name  = 'AdminUsers'
+                Path  = "OU=ManagementPlane,$($Node.DomainDN)"
+                Ensure = 'Present'
                 ProtectedFromAccidentalDeletion = $true
-                DependsOn                       = '[ADOrganizationalUnit]OU_ManagementPlane'
             }
 
             ADOrganizationalUnit 'OU_ManagementPlane_Groups' {
-                Name                            = 'Groups'
-                Path                            = 'OU=ManagementPlane,DC=bolton,DC=corp'
-                Ensure                          = 'Present'
+                Name  = 'Groups'
+                Path  = "OU=ManagementPlane,$($Node.DomainDN)"
+                Ensure = 'Present'
                 ProtectedFromAccidentalDeletion = $true
-                DependsOn                       = '[ADOrganizationalUnit]OU_ManagementPlane'
             }
+
+            # ---------- Groups ----------
 
             ADGroup 'GG_HR_Staff' {
                 GroupName  = 'GG-HR-Staff'
                 GroupScope = 'Global'
                 Category   = 'Security'
-                Path       = 'OU=Groups,OU=UserAccessPlane,DC=bolton,DC=corp'
+                Path       = "OU=Groups,OU=UserAccessPlane,$($Node.DomainDN)"
                 Ensure     = 'Present'
             }
 
@@ -180,7 +182,7 @@ Configuration StudentBaseline {
                 GroupName  = 'GG-Finance-Staff'
                 GroupScope = 'Global'
                 Category   = 'Security'
-                Path       = 'OU=Groups,OU=UserAccessPlane,DC=bolton,DC=corp'
+                Path       = "OU=Groups,OU=UserAccessPlane,$($Node.DomainDN)"
                 Ensure     = 'Present'
             }
 
@@ -188,7 +190,7 @@ Configuration StudentBaseline {
                 GroupName  = 'GG-IT-Admins'
                 GroupScope = 'Global'
                 Category   = 'Security'
-                Path       = 'OU=Groups,OU=ManagementPlane,DC=bolton,DC=corp'
+                Path       = "OU=Groups,OU=ManagementPlane,$($Node.DomainDN)"
                 Ensure     = 'Present'
             }
 
@@ -196,57 +198,48 @@ Configuration StudentBaseline {
                 GroupName  = 'GG-Server-Admins'
                 GroupScope = 'Global'
                 Category   = 'Security'
-                Path       = 'OU=Groups,OU=ManagementPlane,DC=bolton,DC=corp'
+                Path       = "OU=Groups,OU=ManagementPlane,$($Node.DomainDN)"
                 Ensure     = 'Present'
             }
-	    
+
+            # ---------- Users ----------
+
             ADUser 'User_Adam_Khan' {
                 DomainName  = $Node.DomainName
                 UserName    = 'adam.khan'
-                GivenName   = 'Adam'
-                Surname     = 'Khan'
-                DisplayName = 'Adam Khan'
-                Path        = 'OU=Users,OU=UserAccessPlane,DC=bolton,DC=corp'
-                Enabled     = $true
+                Path        = "OU=Users,OU=UserAccessPlane,$($Node.DomainDN)"
                 Ensure      = 'Present'
-                Password    = $DomainAdminCredential.Password
+                Password    = $DefaultUserCredential
+                Enabled     = $true
             }
 
             ADUser 'User_Katy_Smith' {
                 DomainName  = $Node.DomainName
                 UserName    = 'katy.smith'
-                GivenName   = 'Katy'
-                Surname     = 'Smith'
-                DisplayName = 'Katy Smith'
-                Path        = 'OU=Users,OU=UserAccessPlane,DC=bolton,DC=corp'
-                Enabled     = $true
+                Path        = "OU=Users,OU=UserAccessPlane,$($Node.DomainDN)"
                 Ensure      = 'Present'
-                Password    = $DomainAdminCredential.Password
+                Password    = $DefaultUserCredential
+                Enabled     = $true
             }
 
             ADUser 'User_Ismail_Admin' {
                 DomainName  = $Node.DomainName
                 UserName    = 'ismail.admin'
-                GivenName   = 'Ismail'
-                Surname     = 'Admin'
-                DisplayName = 'Ismail Admin'
-                Path        = 'OU=AdminUsers,OU=ManagementPlane,DC=bolton,DC=corp'
-                Enabled     = $true
+                Path        = "OU=AdminUsers,OU=ManagementPlane,$($Node.DomainDN)"
                 Ensure      = 'Present'
-                Password    = $DomainAdminCredential.Password
+                Password    = $DefaultUserCredential
+                Enabled     = $true
             }
 
             ADUser 'User_Paul_Evans' {
                 DomainName  = $Node.DomainName
                 UserName    = 'paul.evans'
-                GivenName   = 'Paul'
-                Surname     = 'Evans'
-                DisplayName = 'Paul Evans'
-                Path        = 'OU=AdminUsers,OU=ManagementPlane,DC=bolton,DC=corp'
-                Enabled     = $true
+                Path        = "OU=AdminUsers,OU=ManagementPlane,$($Node.DomainDN)"
                 Ensure      = 'Present'
-                Password    = $DomainAdminCredential.Password
+                Password    = $DefaultUserCredential
+                Enabled     = $true
             }
+
         }
 
     }
