@@ -1,0 +1,48 @@
+Pester v5.7.1
+
+Starting discovery in 1 files.
+Discovery found 16 tests in 249ms.
+Running tests.
+
+Running tests from 'C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\Student-Pester_ProofOfLife.ps1'
+Describing Student OU Governance Structure
+  [+] ControlPlane OU should exist
+ 215ms (161ms|54ms)
+  [+] ManagementPlane OU should exist
+ 24ms (24ms|1ms)
+  [+] UserAccessPlane OU should exist
+ 25ms (25ms|0ms)
+  [+] Users OU should exist under UserAccessPlane
+ 25ms (24ms|0ms)
+  [+] Computers OU should exist under UserAccessPlane
+ 28ms (27ms|1ms)
+  [+] Groups OU should exist under UserAccessPlane
+ 27ms (27ms|1ms)
+  [+] AdminUsers OU should exist under ManagementPlane
+ 25ms (24ms|0ms)
+  [+] Groups OU should exist under ManagementPlane
+ 26ms (25ms|0ms)
+  [+] GG-HR-Staff should exist under UserAccessPlane\Groups
+ 27ms (26ms|1ms)
+  [+] GG-Finance-Staff should exist under UserAccessPlane\Groups
+ 24ms (23ms|1ms)
+  [+] GG-IT-Admins should exist under ManagementPlane\Groups
+ 26ms (25ms|0ms)
+  [+] GG-Server-Admins should exist under ManagementPlane\Groups
+ 26ms (26ms|1ms)
+ Describing User Provisioning via DSC
+   [+] adam.khan should exist in UserAccessPlane and be disabled
+ 56ms (54ms|3ms)
+   [+] katy.smith should exist in UserAccessPlane and be disabled
+ 39ms (38ms|1ms)
+   [+] ismail.admin should exist in ManagementPlane and be disabled
+ 79ms (78ms|1ms)
+   [+] paul.evans should exist in ManagementPlane and be disabled
+ 23ms (22ms|1ms)
+Tests completed in 2.61s
+Tests Passed: 16, 
+Failed: 0, 
+Skipped: 0, 
+Inconclusive: 0, 
+
+NotRun: 0

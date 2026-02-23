@@ -1,0 +1,83 @@
+**********************
+PowerShell transcript start
+Start time: 20260223053341
+Username: BOLTON\Administrator
+RunAs User: BOLTON\Administrator
+Configuration Name: 
+Machine: SERVER25-DC-01 (Microsoft Windows NT 10.0.26100.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -WorkingDirectory ~
+Process ID: 7576
+PSVersion: 7.5.4
+PSEdition: Core
+GitCommitId: 7.5.4
+OS: Microsoft Windows 10.0.26100
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+[+] Transcript started: Evidence\\Transcripts\\20260223_053341_Run_BuildMain.txt
+[+] Admin privileges confirmed.
+
+[Phase 1] Prerequisites...
+[*] Invoke-BarmBuzz-OneShots: LCM then Network
+[*] LCM already configured (flag present).
+[*] Network already configured (flag present).
+[*] LCM already configured (skipping).
+[*] Network already configured (skipping).
+[+] Phase 1 complete.
+
+[Credential] Domain Administrator Password Required...
+[*] This is the LOCAL Administrator account that will perform the promotion.
+[*] After promotion, this becomes BARMBUZZ\\Administrator (Domain Admin).
+[+] Domain Admin credential captured (not logged).
+
+[Credential] DSRM Password Required...
+[*] This password is for Directory Services Restore Mode (DC recovery).
+[*] Use this to boot into recovery mode if AD database is corrupted.
+[*] Can be same as Admin password, or different for extra security.
+[+] DSRM credential captured (not logged).
+
+[Phase 2] Compile + Apply DSC...
+[+] Found configuration: StudentBaseline
+[*] Compiling -> DSC\\Outputs\\StudentBaseline
+PS>TerminatingError(ActiveDirectoryDsc\ADUser): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At least one of the values '$false' is not supported or valid for property 'Ensure' on class 'ADUser'. Please specify only supported values:
+Present, Absent."
+>> TerminatingError(ActiveDirectoryDsc\ADUser): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At least one of the values '$false' is not supported or valid for property 'Ensure' on class 'ADUser'. Please specify only supported values:
+Present, Absent."
+Write-Error: C:\Users\Administrator\repo\COM5411-BarmBuzz\DSC\Configurations\StudentConfig.ps1:26
+Line |
+  26 |      Node $AllNodes.NodeName {
+     |      ~~~~
+     | At least one of the values '$false' is not supported or valid for property 'Ensure' on class 'ADUser'. Please specify only supported values: Present, Absent.
+Write-Error: C:\Users\Administrator\repo\COM5411-BarmBuzz\DSC\Configurations\StudentConfig.ps1:26
+Line |
+  26 |      Node $AllNodes.NodeName {
+     |      ~~~~
+     | At least one of the values '$false' is not supported or valid for property 'Ensure' on class 'ADUser'. Please specify only
+     | supported values: Present, Absent.
+
+PS>TerminatingError(Update-ModuleVersion): "Index operation failed; the array index evaluated to null."
+Write-Error: C:\Users\Administrator\repo\COM5411-BarmBuzz\DSC\Configurations\StudentConfig.ps1:26
+Line |
+  26 |      Node $AllNodes.NodeName {
+     |      ~~~~
+     | An exception was raised while processing Node 'localhost': Index operation failed; the array index evaluated to null. At C:\Users\Administrator\repo\COM5411-BarmBuzz\DSC\Configurations\StudentConfig.ps1:26 char:5 +   Node
+Write-Error: C:\Users\Administrator\repo\COM5411-BarmBuzz\DSC\Configurations\StudentConfig.ps1:26
+Line |
+  26 |      Node $AllNodes.NodeName {
+     |      ~~~~
+     | An exception was raised while processing Node 'localhost': Index operation failed; the array index evaluated to null. At
+     | C:\Users\Administrator\repo\COM5411-BarmBuzz\DSC\Configurations\StudentConfig.ps1:26 char:5 +   Node
+
+PS>TerminatingError(Update-DependsOn): "Index operation failed; the array index evaluated to null."
+PS>TerminatingError(Update-DependsOn): "Index operation failed; the array index evaluated to null."
+>> TerminatingError(Update-DependsOn): "Index operation failed; the array index evaluated to null."
+
+[-] BUILD FAILED
+Message: Index operation failed; the array index evaluated to null.
+**********************
+PowerShell transcript end
+End time: 20260223053400
+**********************
