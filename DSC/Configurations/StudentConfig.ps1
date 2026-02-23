@@ -17,7 +17,7 @@ Configuration StudentBaseline {
         [PSCredential]
         $DsrmCredential
     )
-
+     ## Note: The DomainAdminCredential and DsrmCredential parameters are defined as mandatory to ensure that the configuration cannot be applied without providing these credentials. This is important for security and functionality, as these credentials are required for domain join and Active Directory installation. By using parameters, we avoid hardcoding sensitive information in the configuration script, allowing for secure and flexible deployment.
     Import-DscResource -ModuleName PSDesiredStateConfiguration
     Import-DscResource -ModuleName ComputerManagementDsc
     Import-DscResource -ModuleName NetworkingDsc
@@ -27,6 +27,7 @@ Configuration StudentBaseline {
 
         $node = $ConfigurationData.AllNodes | Where-Object { $_.NodeName -eq $Node.NodeName }
 
+        ## Note: The $node variable is used to access the properties defined in the configuration data for the current node. This allows us to use the values specified in AllNodes.psd1, such as ComputerName, TimeZone, network settings, and domain configuration, without hardcoding them in the configuration script. This approach promotes reusability and maintainability of the configuration, as changes can be made in the configuration data file without modifying the script itself.
         $Network = @{
             InterfaceAlias = $node.InterfaceAlias_Internal
             AddressFamily  = 'IPv4'
@@ -34,6 +35,7 @@ Configuration StudentBaseline {
             PrefixLength   = $node.PrefixLength_Internal
             DnsServers     = $node.DnsServers_Internal
         }
+        
 
         File TestFolder {
             DestinationPath = 'C:\TEST'
@@ -227,6 +229,7 @@ Configuration StudentBaseline {
                 Path        = "OU=AdminUsers,OU=ManagementPlane,$($Node.DomainDN)"
                 Ensure      = 'Absent'
             }
+
 
         }
 

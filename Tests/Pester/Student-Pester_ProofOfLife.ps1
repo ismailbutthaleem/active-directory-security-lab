@@ -84,5 +84,33 @@ Describe 'Student OU Governance Structure' {
         (Get-ADGroup -LDAPFilter "(cn=GG-Server-Admins)" -SearchBase $base -ErrorAction Stop).DistinguishedName |
             Should -Be "CN=GG-Server-Admins,OU=Groups,OU=ManagementPlane,$($script:DomainDN)"
     }
+    
+    Describe 'User Provisioning via DSC' {
+
+    It 'adam.khan should exist in UserAccessPlane and be disabled' {
+        $u = Get-ADUser -Identity 'adam.khan' -Properties Enabled
+        $u.DistinguishedName | Should -Be 'CN=adam.khan,OU=Users,OU=UserAccessPlane,DC=bolton,DC=corp'
+        $u.Enabled | Should -BeFalse
+    }
+
+    It 'katy.smith should exist in UserAccessPlane and be disabled' {
+        $u = Get-ADUser -Identity 'katy.smith' -Properties Enabled
+        $u.DistinguishedName | Should -Be 'CN=katy.smith,OU=Users,OU=UserAccessPlane,DC=bolton,DC=corp'
+        $u.Enabled | Should -BeFalse
+    }
+
+    It 'ismail.admin should exist in ManagementPlane and be disabled' {
+        $u = Get-ADUser -Identity 'ismail.admin' -Properties Enabled
+        $u.DistinguishedName | Should -Be 'CN=ismail.admin,OU=AdminUsers,OU=ManagementPlane,DC=bolton,DC=corp'
+        $u.Enabled | Should -BeFalse
+    }
+
+    It 'paul.evans should exist in ManagementPlane and be disabled' {
+        $u = Get-ADUser -Identity 'paul.evans' -Properties Enabled
+        $u.DistinguishedName | Should -Be 'CN=paul.evans,OU=AdminUsers,OU=ManagementPlane,DC=bolton,DC=corp'
+        $u.Enabled | Should -BeFalse
+    }
+
+}
 
 }
