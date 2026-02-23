@@ -1,10 +1,34 @@
 # OU Intent Sketch — BarmBuzz
 
 ## Forest Root Domain: bolton.corp
+Operational Model:
 
-OU Structure (Management Model)
+DC=bolton,DC=corp
+│
+├── OU=ControlPlane
+│   ├── OU=DomainControllers
+│   ├── OU=Tier0-Admins
+│   └── OU=Services
+│
+├── OU=ManagementPlane
+│   ├── OU=AdminUsers
+│   ├── OU=AdminWorkstations
+│   ├── OU=Servers
+│   └── OU=Groups
+│
+└── OU=UserAccessPlane
+    ├── OU=Users
+    ├── OU=Computers
+    ├── OU=Workstations
+    ├── OU=Groups
+    └── OU=ServiceAccounts
+Rationale:
+A operational infrastructured model is used to align with enterprise security practices.
+The structure is broken down into three tiers to avoid the risk of lateral movements and exposure. The Control Plane tier is isolated tto avoid potential threat actors as this tier controls the entire domain managment.
 
-OU=Bolton
+OU Structure (Business Management Model)
+
+OU=Bolton (ManagmentPlane OU)
 │
 ├── OU=Users
 ├── OU=Computers
@@ -22,7 +46,7 @@ policy targeting, administrative delegation, and operational clarity.
 
 ## Planned Child Domain: derby.bolton.corp
 
-OU Structure (Regional Management Model)
+OU Structure (Possible Extension)
 
 OU=Derby
 │
