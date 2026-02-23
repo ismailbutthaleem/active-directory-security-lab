@@ -1,0 +1,319 @@
+
+Directory Server Diagnosis
+
+Performing initial setup:
+   Trying to find home server...
+   * Verifying that the local machine SERVER25-DC-01, is a Directory Server. 
+   Home Server = SERVER25-DC-01
+   * Connecting to directory service on server SERVER25-DC-01.
+   * Identified AD Forest. 
+   Collecting AD specific global data 
+   * Collecting site info.
+   Calling ldap_search_init_page(hld,CN=Sites,CN=Configuration,DC=bolton,DC=corp,LDAP_SCOPE_SUBTREE,(objectCategory=ntDSSiteSettings),.......
+   The previous call succeeded 
+   Iterating through the sites 
+   Looking at base site object: CN=NTDS Site Settings,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=bolton,DC=corp
+   Getting ISTG and options for the site
+   * Identifying all servers.
+   Calling ldap_search_init_page(hld,CN=Sites,CN=Configuration,DC=bolton,DC=corp,LDAP_SCOPE_SUBTREE,(objectClass=ntDSDsa),.......
+   The previous call succeeded....
+   The previous call succeeded
+   Iterating through the list of servers 
+   Getting information for the server CN=NTDS Settings,CN=SERVER25-DC-01,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=bolton,DC=corp 
+   objectGuid obtained
+   InvocationID obtained
+   dnsHostname obtained
+   site info obtained
+   All the info for the server collected
+   * Identifying all NC cross-refs.
+   * Found 1 DC(s). Testing 1 of them.
+   Done gathering initial info.
+
+Doing initial required tests
+   
+   Testing server: Default-First-Site-Name\SERVER25-DC-01
+      Starting test: Connectivity
+         * Active Directory LDAP Services Check
+         Determining IP4 connectivity 
+         * Active Directory RPC Services Check
+         ......................... SERVER25-DC-01 passed test Connectivity
+
+Doing primary tests
+   
+   Testing server: Default-First-Site-Name\SERVER25-DC-01
+      Starting test: Advertising
+         The DC SERVER25-DC-01 is advertising itself as a DC and having a DS.
+         The DC SERVER25-DC-01 is advertising as an LDAP server
+         The DC SERVER25-DC-01 is advertising as having a writeable directory
+         The DC SERVER25-DC-01 is advertising as a Key Distribution Center
+         The DC SERVER25-DC-01 is advertising as a time server
+         The DS SERVER25-DC-01 is advertising as a GC.
+         ......................... SERVER25-DC-01 passed test Advertising
+      Test omitted by user request: CheckSecurityError
+      Test omitted by user request: CutoffServers
+      Starting test: FrsEvent
+         * The File Replication Service Event log test 
+         Skip the test because the server is running DFSR.
+         ......................... SERVER25-DC-01 passed test FrsEvent
+      Starting test: DFSREvent
+         The DFS Replication Event Log. 
+         There are warning or error events within the last 24 hours after the
+         SYSVOL has been shared.  Failing SYSVOL replication problems may cause
+         Group Policy problems. 
+         A warning event occurred.  EventID: 0x800008A4
+            Time Generated: 02/23/2026   05:32:49
+            Event String:
+            The DFS Replication service has detected an unexpected shutdown on volume C:. This can occur if the service terminated abnormally (due to a power loss, for example) or an error occurred on the volume. The service has automatically initiated a recovery process. The service will rebuild the database if it determines it cannot reliably recover. No user action is required. 
+             
+            Additional Information: 
+            Volume: C: 
+            GUID: 858471F5-8614-4A6A-99EC-94BF864F3961
+         A warning event occurred.  EventID: 0x800008A4
+            Time Generated: 02/23/2026   05:48:01
+            Event String:
+            The DFS Replication service has detected an unexpected shutdown on volume C:. This can occur if the service terminated abnormally (due to a power loss, for example) or an error occurred on the volume. The service has automatically initiated a recovery process. The service will rebuild the database if it determines it cannot reliably recover. No user action is required. 
+             
+            Additional Information: 
+            Volume: C: 
+            GUID: 858471F5-8614-4A6A-99EC-94BF864F3961
+         ......................... SERVER25-DC-01 passed test DFSREvent
+      Starting test: SysVolCheck
+         * The File Replication Service SYSVOL ready test 
+         File Replication Service's SYSVOL is ready 
+         ......................... SERVER25-DC-01 passed test SysVolCheck
+      Starting test: KccEvent
+         * The KCC Event log test
+         A warning event occurred.  EventID: 0x80000603
+            Time Generated: 02/23/2026   22:22:40
+            Event String:
+            Active Directory Domain Services could not disable the software-based disk write cache on the following hard disk. 
+             
+            Hard disk:
+            c: 
+             
+            Data might be lost during system failures.
+         A warning event occurred.  EventID: 0x80000BEB
+            Time Generated: 02/23/2026   22:22:41
+            Event String:
+            The directory has been configured to not enforce per-attribute authorization during LDAP add operations. Warning events will be logged, but no requests will be blocked. 
+             
+            This setting is not secure and should only be used as a temporary troubleshooting step. Please review the suggested mitigations in the link below. 
+             
+            For more information, please see https://go.microsoft.com/fwlink/?linkid=2174032.
+         A warning event occurred.  EventID: 0x80000BEE
+            Time Generated: 02/23/2026   22:22:41
+            Event String:
+            The directory has been configured to allow implicit owner privileges when initially setting or modifying the nTSecurityDescriptor attribute during LDAP add and modify operations. Warning events will be logged, but no requests will be blocked. 
+             
+            This setting is not secure and should only be used as a temporary troubleshooting step. Please review the suggested mitigations in the link below. 
+             
+            For more information, please see https://go.microsoft.com/fwlink/?linkid=2174032.
+         Found no KCC errors in "Directory Service" Event log in the last 15 minutes.
+         ......................... SERVER25-DC-01 passed test KccEvent
+      Starting test: KnowsOfRoleHolders
+         Role Schema Owner = CN=NTDS Settings,CN=SERVER25-DC-01,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=bolton,DC=corp
+         Role Domain Owner = CN=NTDS Settings,CN=SERVER25-DC-01,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=bolton,DC=corp
+         Role PDC Owner = CN=NTDS Settings,CN=SERVER25-DC-01,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=bolton,DC=corp
+         Role Rid Owner = CN=NTDS Settings,CN=SERVER25-DC-01,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=bolton,DC=corp
+         Role Infrastructure Update Owner = CN=NTDS Settings,CN=SERVER25-DC-01,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=bolton,DC=corp
+         ......................... SERVER25-DC-01 passed test
+         KnowsOfRoleHolders
+      Starting test: MachineAccount
+         Checking machine account for DC SERVER25-DC-01 on DC SERVER25-DC-01.
+         * SPN found :LDAP/SERVER25-DC-01.bolton.corp/bolton.corp
+         * SPN found :LDAP/SERVER25-DC-01.bolton.corp
+         * SPN found :LDAP/SERVER25-DC-01
+         * SPN found :LDAP/SERVER25-DC-01.bolton.corp/BOLTON
+         * SPN found :LDAP/73f5e207-aea4-4996-856b-ee815ee84cdb._msdcs.bolton.corp
+         * SPN found :E3514235-4B06-11D1-AB04-00C04FC2DCD2/73f5e207-aea4-4996-856b-ee815ee84cdb/bolton.corp
+         * SPN found :HOST/SERVER25-DC-01.bolton.corp/bolton.corp
+         * SPN found :HOST/SERVER25-DC-01.bolton.corp
+         * SPN found :HOST/SERVER25-DC-01
+         * SPN found :HOST/SERVER25-DC-01.bolton.corp/BOLTON
+         * SPN found :GC/SERVER25-DC-01.bolton.corp/bolton.corp
+         ......................... SERVER25-DC-01 passed test MachineAccount
+      Starting test: NCSecDesc
+         * Security Permissions check for all NC's on DC SERVER25-DC-01.
+         * Security Permissions Check for
+           DC=ForestDnsZones,DC=bolton,DC=corp
+            (NDNC,Version 3)
+         * Security Permissions Check for
+           DC=DomainDnsZones,DC=bolton,DC=corp
+            (NDNC,Version 3)
+         * Security Permissions Check for
+           CN=Schema,CN=Configuration,DC=bolton,DC=corp
+            (Schema,Version 3)
+         * Security Permissions Check for
+           CN=Configuration,DC=bolton,DC=corp
+            (Configuration,Version 3)
+         * Security Permissions Check for
+           DC=bolton,DC=corp
+            (Domain,Version 3)
+         ......................... SERVER25-DC-01 passed test NCSecDesc
+      Starting test: NetLogons
+         * Network Logons Privileges Check
+         Verified share \\SERVER25-DC-01\netlogon
+         Verified share \\SERVER25-DC-01\sysvol
+         ......................... SERVER25-DC-01 passed test NetLogons
+      Starting test: ObjectsReplicated
+         SERVER25-DC-01 is in domain DC=bolton,DC=corp
+         Checking for CN=SERVER25-DC-01,OU=Domain Controllers,DC=bolton,DC=corp in domain DC=bolton,DC=corp on 1 servers
+            Object is up-to-date on all servers.
+         Checking for CN=NTDS Settings,CN=SERVER25-DC-01,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=bolton,DC=corp in domain CN=Configuration,DC=bolton,DC=corp on 1 servers
+            Object is up-to-date on all servers.
+         ......................... SERVER25-DC-01 passed test ObjectsReplicated
+      Test omitted by user request: OutboundSecureChannels
+      Starting test: Replications
+         * Replications Check
+         * Replication Latency Check
+         ......................... SERVER25-DC-01 passed test Replications
+      Starting test: RidManager
+         * Available RID Pool for the Domain is 1601 to 1073741823
+         * SERVER25-DC-01.bolton.corp is the RID Master
+         * DsBind with RID Master was successful
+         * rIDAllocationPool is 1101 to 1600
+         * rIDPreviousAllocationPool is 1101 to 1600
+         * rIDNextRID: 1115
+         ......................... SERVER25-DC-01 passed test RidManager
+      Starting test: Services
+         * Checking Service: EventSystem
+         * Checking Service: RpcSs
+         * Checking Service: NTDS
+         * Checking Service: DnsCache
+         * Checking Service: DFSR
+         * Checking Service: IsmServ
+         * Checking Service: kdc
+         * Checking Service: SamSs
+         * Checking Service: LanmanServer
+         * Checking Service: LanmanWorkstation
+         * Checking Service: w32time
+         * Checking Service: NETLOGON
+         ......................... SERVER25-DC-01 passed test Services
+      Starting test: SystemLog
+         * The System Event log test
+         A warning event occurred.  EventID: 0x80040022
+            Time Generated: 02/23/2026   22:22:40
+            Event String:
+            The driver disabled the write cache on device \Device\Harddisk0\DR0.
+         A warning event occurred.  EventID: 0x80040022
+            Time Generated: 02/23/2026   22:22:40
+            Event String:
+            The driver disabled the write cache on device \Device\Harddisk0\DR0.
+         A warning event occurred.  EventID: 0x80040022
+            Time Generated: 02/23/2026   22:22:40
+            Event String:
+            The driver disabled the write cache on device \Device\Harddisk0\DR0.
+         A warning event occurred.  EventID: 0x000003F6
+            Time Generated: 02/23/2026   22:22:44
+            Event String:
+            Name resolution for the name _ldap._tcp.dc._msdcs.nat timed out after none of the configured DNS servers responded. Client PID 1400.
+         A warning event occurred.  EventID: 0x000727AA
+            Time Generated: 02/23/2026   22:23:08
+            Event String:
+            The WinRM service failed to create the following SPNs: WSMAN/SERVER25-DC-01.bolton.corp; WSMAN/SERVER25-DC-01. 
+            
+             Additional Data 
+             The error received was 1355: %%1355.
+            
+             User Action 
+             The SPNs can be created by an administrator using setspn.exe utility.
+         An error event occurred.  EventID: 0xC0000007
+            Time Generated: 02/23/2026   22:23:26
+            Event String:
+            The Security Account Manager failed a KDC request in an unexpected way. The error is in the data field. The account name was  and lookup type 0x108.
+         A warning event occurred.  EventID: 0x0000000C
+            Time Generated: 02/23/2026   22:23:26
+            Event String:
+            Time Provider NtpClient: This machine is configured to use the domain hierarchy to determine its time source, but it is the AD PDC emulator for the domain at the root of the forest, so there is no machine above it in the domain hierarchy to use as a time source. It is recommended that you either configure a reliable time service in the root domain, or manually configure the AD PDC to synchronize with an external time source. Otherwise, this machine will function as the authoritative time source in the domain hierarchy. If an external time source is not configured or used for this computer, you may choose to disable the NtpClient.
+         A warning event occurred.  EventID: 0x80040081
+            Time Generated: 02/23/2026   22:25:25
+            Event String: Reset to device, \Device\RaidPort0, was issued.
+         A warning event occurred.  EventID: 0x80040099
+            Time Generated: 02/23/2026   22:25:25
+            Event String:
+            The IO operation at logical block address 0x2c5ca50 for Disk 0 (PDO name: \Device\0000001d) was retried.
+         A warning event occurred.  EventID: 0x80040081
+            Time Generated: 02/23/2026   22:25:53
+            Event String: Reset to device, \Device\RaidPort0, was issued.
+         A warning event occurred.  EventID: 0x80040081
+            Time Generated: 02/23/2026   22:33:41
+            Event String: Reset to device, \Device\RaidPort0, was issued.
+         A warning event occurred.  EventID: 0x80040099
+            Time Generated: 02/23/2026   22:33:41
+            Event String:
+            The IO operation at logical block address 0x1eff98 for Disk 0 (PDO name: \Device\0000001d) was retried.
+         ......................... SERVER25-DC-01 failed test SystemLog
+      Test omitted by user request: Topology
+      Test omitted by user request: VerifyEnterpriseReferences
+      Starting test: VerifyReferences
+         The system object reference (serverReference)
+         CN=SERVER25-DC-01,OU=Domain Controllers,DC=bolton,DC=corp and backlink
+         on
+         CN=SERVER25-DC-01,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=bolton,DC=corp
+         are correct. 
+         The system object reference (serverReferenceBL)
+         CN=SERVER25-DC-01,CN=Topology,CN=Domain System Volume,CN=DFSR-GlobalSettings,CN=System,DC=bolton,DC=corp
+         and backlink on
+         CN=NTDS Settings,CN=SERVER25-DC-01,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=bolton,DC=corp
+         are correct. 
+         The system object reference (msDFSR-ComputerReferenceBL)
+         CN=SERVER25-DC-01,CN=Topology,CN=Domain System Volume,CN=DFSR-GlobalSettings,CN=System,DC=bolton,DC=corp
+         and backlink on
+         CN=SERVER25-DC-01,OU=Domain Controllers,DC=bolton,DC=corp are correct.
+         ......................... SERVER25-DC-01 passed test VerifyReferences
+      Test omitted by user request: VerifyReplicas
+   
+      Test omitted by user request: DNS
+      Test omitted by user request: DNS
+   
+   Running partition tests on : ForestDnsZones
+      Starting test: CheckSDRefDom
+         ......................... ForestDnsZones passed test CheckSDRefDom
+      Starting test: CrossRefValidation
+         ......................... ForestDnsZones passed test
+         CrossRefValidation
+   
+   Running partition tests on : DomainDnsZones
+      Starting test: CheckSDRefDom
+         ......................... DomainDnsZones passed test CheckSDRefDom
+      Starting test: CrossRefValidation
+         ......................... DomainDnsZones passed test
+         CrossRefValidation
+   
+   Running partition tests on : Schema
+      Starting test: CheckSDRefDom
+         ......................... Schema passed test CheckSDRefDom
+      Starting test: CrossRefValidation
+         ......................... Schema passed test CrossRefValidation
+   
+   Running partition tests on : Configuration
+      Starting test: CheckSDRefDom
+         ......................... Configuration passed test CheckSDRefDom
+      Starting test: CrossRefValidation
+         ......................... Configuration passed test CrossRefValidation
+   
+   Running partition tests on : bolton
+      Starting test: CheckSDRefDom
+         ......................... bolton passed test CheckSDRefDom
+      Starting test: CrossRefValidation
+         ......................... bolton passed test CrossRefValidation
+   
+   Running enterprise tests on : bolton.corp
+      Test omitted by user request: DNS
+      Test omitted by user request: DNS
+      Starting test: LocatorCheck
+         GC Name: \\SERVER25-DC-01.bolton.corp
+         Locator Flags: 0xe007f3fd
+         PDC Name: \\SERVER25-DC-01.bolton.corp
+         Locator Flags: 0xe007f3fd
+         Time Server Name: \\SERVER25-DC-01.bolton.corp
+         Locator Flags: 0xe007f3fd
+         Preferred Time Server Name: \\SERVER25-DC-01.bolton.corp
+         Locator Flags: 0xe007f3fd
+         KDC Name: \\SERVER25-DC-01.bolton.corp
+         Locator Flags: 0xe007f3fd
+         ......................... bolton.corp passed test LocatorCheck
+      Starting test: Intersite
+         Skipping site Default-First-Site-Name, this site is outside the scope
+         provided by the command line arguments provided. 
+         ......................... bolton.corp passed test Intersite
