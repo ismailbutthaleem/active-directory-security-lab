@@ -1,7 +1,7 @@
 /*
 @TargetNode='localhost'
 @GeneratedBy=Administrator
-@GenerationDate=02/23/2026 01:43:53
+@GenerationDate=02/23/2026 02:19:42
 @GenerationHost=SERVER25-DC-01
 */
 
@@ -138,14 +138,14 @@ DependsOn = {
 };
 instance of MSFT_Credential as $MSFT_Credential1ref
 {
-Password = "Ittaniga!1";
+Password = "d";
  UserName = "Administrator";
 
 };
 
 instance of MSFT_Credential as $MSFT_Credential2ref
 {
-Password = "Ittaniga";
+Password = "Ittan";
  UserName = "Administrator";
 
 };
@@ -300,6 +300,70 @@ Path = "OU=ManagementPlane,DC=bolton,DC=corp";
  Ensure = "Present";
  ConfigurationName = "StudentBaseline";
 };
+instance of MSFT_ADGroup as $MSFT_ADGroup1ref
+{
+Path = "OU=Groups,OU=UserAccessPlane,DC=bolton,DC=corp";
+ ModuleVersion = "6.6.0";
+ Category = "Security";
+ GroupName = "GG-HR-Staff";
+ GroupScope = "Global";
+ ModuleName = "ActiveDirectoryDsc";
+ ResourceID = "[ADGroup]GG_HR_Staff";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::220::13::ADGroup";
+ Ensure = "Present";
+
+DependsOn = {
+    "[ADOrganizationalUnit]OU_UserAccessPlane_Groups"};
+ ConfigurationName = "StudentBaseline";
+};
+instance of MSFT_ADGroup as $MSFT_ADGroup2ref
+{
+Path = "OU=Groups,OU=UserAccessPlane,DC=bolton,DC=corp";
+ ModuleVersion = "6.6.0";
+ Category = "Security";
+ GroupName = "GG-Finance-Staff";
+ GroupScope = "Global";
+ ModuleName = "ActiveDirectoryDsc";
+ ResourceID = "[ADGroup]GG_Finance_Staff";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::229::13::ADGroup";
+ Ensure = "Present";
+
+DependsOn = {
+    "[ADOrganizationalUnit]OU_UserAccessPlane_Groups"};
+ ConfigurationName = "StudentBaseline";
+};
+instance of MSFT_ADGroup as $MSFT_ADGroup3ref
+{
+Path = "OU=Groups,OU=ManagementPlane,DC=bolton,DC=corp";
+ ModuleVersion = "6.6.0";
+ Category = "Security";
+ GroupName = "GG-IT-Admins";
+ GroupScope = "Global";
+ ModuleName = "ActiveDirectoryDsc";
+ ResourceID = "[ADGroup]GG_IT_Admins";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::238::13::ADGroup";
+ Ensure = "Present";
+
+DependsOn = {
+    "[ADOrganizationalUnit]OU_ManagementPlane_Groups"};
+ ConfigurationName = "StudentBaseline";
+};
+instance of MSFT_ADGroup as $MSFT_ADGroup4ref
+{
+Path = "OU=Groups,OU=ManagementPlane,DC=bolton,DC=corp";
+ ModuleVersion = "6.6.0";
+ Category = "Security";
+ GroupName = "GG-Server-Admins";
+ GroupScope = "Global";
+ ModuleName = "ActiveDirectoryDsc";
+ ResourceID = "[ADGroup]GG_Server_Admins";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::247::13::ADGroup";
+ Ensure = "Present";
+
+DependsOn = {
+    "[ADOrganizationalUnit]OU_ManagementPlane_Groups"};
+ ConfigurationName = "StudentBaseline";
+};
 instance of OMI_ConfigurationDocument
 
                     {
@@ -311,7 +375,7 @@ instance of OMI_ConfigurationDocument
 
                         Author="Administrator";
 
-                        GenerationDate="02/23/2026 01:43:53";
+                        GenerationDate="02/23/2026 02:19:42";
 
                         GenerationHost="SERVER25-DC-01";
 
