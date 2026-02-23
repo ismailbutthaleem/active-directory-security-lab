@@ -1,0 +1,39 @@
+Pester v5.7.1
+
+Starting discovery in 1 files.
+Discovery found 12 tests in 21ms.
+Running tests.
+
+Running tests from 'C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\Student-Pester_ProofOfLife.ps1'
+Describing Student OU Governance Structure
+  [+] ControlPlane OU should exist
+ 7ms (4ms|3ms)
+  [+] ManagementPlane OU should exist
+ 3ms (3ms|0ms)
+  [+] UserAccessPlane OU should exist
+ 4ms (4ms|0ms)
+  [+] Users OU should exist under UserAccessPlane
+ 4ms (4ms|0ms)
+  [+] Computers OU should exist under UserAccessPlane
+ 5ms (5ms|0ms)
+  [+] Groups OU should exist under UserAccessPlane
+ 4ms (4ms|0ms)
+  [+] AdminUsers OU should exist under ManagementPlane
+ 5ms (5ms|0ms)
+  [+] Groups OU should exist under ManagementPlane
+ 6ms (6ms|0ms)
+  [+] GG-HR-Staff should exist under UserAccessPlane\Groups
+ 4ms (4ms|0ms)
+  [+] GG-Finance-Staff should exist under UserAccessPlane\Groups
+ 4ms (4ms|0ms)
+  [+] GG-IT-Admins should exist under ManagementPlane\Groups
+ 5ms (5ms|0ms)
+  [+] GG-Server-Admins should exist under ManagementPlane\Groups
+ 7ms (7ms|0ms)
+Tests completed in 240ms
+Tests Passed: 12, 
+Failed: 0, 
+Skipped: 0, 
+Inconclusive: 0, 
+
+NotRun: 0
