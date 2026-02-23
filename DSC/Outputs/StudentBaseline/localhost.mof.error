@@ -1,7 +1,7 @@
 /*
 @TargetNode='localhost'
 @GeneratedBy=Administrator
-@GenerationDate=02/23/2026 03:55:33
+@GenerationDate=02/23/2026 03:57:48
 @GenerationHost=SERVER25-DC-01
 */
 
@@ -324,16 +324,9 @@ GroupScope = "Global";
  Category = "Security";
  ConfigurationName = "StudentBaseline";
 };
-instance of MSFT_Credential as $MSFT_Credential3ref
-{
-UserName = "Administrator";
- Password = "Ittaniga";
-
-};
-
 instance of MSFT_ADUser as $MSFT_ADUser1ref
 {
-Password = $MSFT_Credential3ref;
+Password = "System.Security.SecureString";
  DisplayName = "Adam Khan";
  ModuleName = "ActiveDirectoryDsc";
  Enabled = True;
@@ -348,16 +341,9 @@ Password = $MSFT_Credential3ref;
  UserName = "adam.khan";
  ConfigurationName = "StudentBaseline";
 };
-instance of MSFT_Credential as $MSFT_Credential4ref
-{
-UserName = "Administrator";
- Password = "Ittaniga";
-
-};
-
 instance of MSFT_ADUser as $MSFT_ADUser2ref
 {
-Password = $MSFT_Credential4ref;
+Password = "System.Security.SecureString";
  DisplayName = "Katy Smith";
  ModuleName = "ActiveDirectoryDsc";
  Enabled = True;
@@ -372,16 +358,9 @@ Password = $MSFT_Credential4ref;
  UserName = "katy.smith";
  ConfigurationName = "StudentBaseline";
 };
-instance of MSFT_Credential as $MSFT_Credential5ref
-{
-UserName = "Administrator";
- Password = "Ittaniga";
-
-};
-
 instance of MSFT_ADUser as $MSFT_ADUser3ref
 {
-Password = $MSFT_Credential5ref;
+Password = "System.Security.SecureString";
  DisplayName = "Ismail Admin";
  ModuleName = "ActiveDirectoryDsc";
  Enabled = True;
@@ -396,16 +375,9 @@ Password = $MSFT_Credential5ref;
  UserName = "ismail.admin";
  ConfigurationName = "StudentBaseline";
 };
-instance of MSFT_Credential as $MSFT_Credential6ref
-{
-UserName = "Administrator";
- Password = "Ittaniga";
-
-};
-
 instance of MSFT_ADUser as $MSFT_ADUser4ref
 {
-Password = $MSFT_Credential6ref;
+Password = "System.Security.SecureString";
  DisplayName = "Paul Evans";
  ModuleName = "ActiveDirectoryDsc";
  Enabled = True;
@@ -431,7 +403,7 @@ instance of OMI_ConfigurationDocument
 
                         Author="Administrator";
 
-                        GenerationDate="02/23/2026 03:55:33";
+                        GenerationDate="02/23/2026 03:57:48";
 
                         GenerationHost="SERVER25-DC-01";
 

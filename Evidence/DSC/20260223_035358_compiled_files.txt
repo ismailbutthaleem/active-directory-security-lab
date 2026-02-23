@@ -1,0 +1,5 @@
+
+FullName                                                                               Length LastWriteTime
+--------                                                                               ------ -------------
+C:\Users\Administrator\repo\COM5411-BarmBuzz\DSC\Outputs\StudentBaseline\localhost.mof  14873 2/23/2026 3:54:06 AM
+

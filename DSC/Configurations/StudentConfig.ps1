@@ -174,7 +174,6 @@ Configuration StudentBaseline {
                 Category   = 'Security'
                 Path       = 'OU=Groups,OU=UserAccessPlane,DC=bolton,DC=corp'
                 Ensure     = 'Present'
-                DependsOn  = '[ADOrganizationalUnit]OU_UserAccessPlane_Groups'
             }
 
             ADGroup 'GG_Finance_Staff' {
@@ -183,7 +182,6 @@ Configuration StudentBaseline {
                 Category   = 'Security'
                 Path       = 'OU=Groups,OU=UserAccessPlane,DC=bolton,DC=corp'
                 Ensure     = 'Present'
-                DependsOn  = '[ADOrganizationalUnit]OU_UserAccessPlane_Groups'
             }
 
             ADGroup 'GG_IT_Admins' {
@@ -192,7 +190,6 @@ Configuration StudentBaseline {
                 Category   = 'Security'
                 Path       = 'OU=Groups,OU=ManagementPlane,DC=bolton,DC=corp'
                 Ensure     = 'Present'
-                DependsOn  = '[ADOrganizationalUnit]OU_ManagementPlane_Groups'
             }
 
             ADGroup 'GG_Server_Admins' {
@@ -201,9 +198,8 @@ Configuration StudentBaseline {
                 Category   = 'Security'
                 Path       = 'OU=Groups,OU=ManagementPlane,DC=bolton,DC=corp'
                 Ensure     = 'Present'
-                DependsOn  = '[ADOrganizationalUnit]OU_ManagementPlane_Groups'
             }
-
+	    
             ADUser 'User_Adam_Khan' {
                 DomainName  = $Node.DomainName
                 UserName    = 'adam.khan'
@@ -213,7 +209,7 @@ Configuration StudentBaseline {
                 Path        = 'OU=Users,OU=UserAccessPlane,DC=bolton,DC=corp'
                 Enabled     = $true
                 Ensure      = 'Present'
-                Password    = $DomainAdminCredential
+                Password    = $DomainAdminCredential.Password
             }
 
             ADUser 'User_Katy_Smith' {
@@ -225,7 +221,7 @@ Configuration StudentBaseline {
                 Path        = 'OU=Users,OU=UserAccessPlane,DC=bolton,DC=corp'
                 Enabled     = $true
                 Ensure      = 'Present'
-                Password    = $DomainAdminCredential
+                Password    = $DomainAdminCredential.Password
             }
 
             ADUser 'User_Ismail_Admin' {
@@ -237,7 +233,7 @@ Configuration StudentBaseline {
                 Path        = 'OU=AdminUsers,OU=ManagementPlane,DC=bolton,DC=corp'
                 Enabled     = $true
                 Ensure      = 'Present'
-                Password    = $DomainAdminCredential
+                Password    = $DomainAdminCredential.Password
             }
 
             ADUser 'User_Paul_Evans' {
@@ -249,37 +245,8 @@ Configuration StudentBaseline {
                 Path        = 'OU=AdminUsers,OU=ManagementPlane,DC=bolton,DC=corp'
                 Enabled     = $true
                 Ensure      = 'Present'
-                Password    = $DomainAdminCredential
+                Password    = $DomainAdminCredential.Password
             }
-
-            ADGroupMember 'Adam_HR_Membership' {
-                GroupName        = 'GG-HR-Staff'
-                MembersToInclude = @('adam.khan')
-                Ensure           = 'Present'
-                DependsOn        = '[ADUser]User_Adam_Khan'
-            }
-
-            ADGroupMember 'Katy_Finance_Membership' {
-                GroupName        = 'GG-Finance-Staff'
-                MembersToInclude = @('katy.smith')
-                Ensure           = 'Present'
-                DependsOn        = '[ADUser]User_Katy_Smith'
-            }
-
-            ADGroupMember 'Ismail_ServerAdmin_Membership' {
-                GroupName        = 'GG-Server-Admins'
-                MembersToInclude = @('ismail.admin')
-                Ensure           = 'Present'
-                DependsOn        = '[ADUser]User_Ismail_Admin'
-            }
-
-            ADGroupMember 'Paul_Helpdesk_Membership' {
-                GroupName        = 'GG-IT-Admins'
-                MembersToInclude = @('paul.evans')
-                Ensure           = 'Present'
-                DependsOn        = '[ADUser]User_Paul_Evans'
-            }
-
         }
 
     }
