@@ -1,7 +1,7 @@
 /*
 @TargetNode='localhost'
 @GeneratedBy=Administrator
-@GenerationDate=02/23/2026 01:11:07
+@GenerationDate=02/23/2026 01:43:53
 @GenerationHost=SERVER25-DC-01
 */
 
@@ -288,6 +288,18 @@ Path = "OU=ManagementPlane,DC=bolton,DC=corp";
  Ensure = "Present";
  ConfigurationName = "StudentBaseline";
 };
+instance of MSFT_ADOrganizationalUnit as $MSFT_ADOrganizationalUnit8ref
+{
+Path = "OU=ManagementPlane,DC=bolton,DC=corp";
+ ModuleVersion = "6.6.0";
+ Name = "Groups";
+ ResourceID = "[ADOrganizationalUnit]OU_ManagementPlane_Groups";
+ ProtectedFromAccidentalDeletion = True;
+ ModuleName = "ActiveDirectoryDsc";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::213::17::ADOrganizationalUnit";
+ Ensure = "Present";
+ ConfigurationName = "StudentBaseline";
+};
 instance of OMI_ConfigurationDocument
 
                     {
@@ -299,7 +311,7 @@ instance of OMI_ConfigurationDocument
 
                         Author="Administrator";
 
-                        GenerationDate="02/23/2026 01:11:07";
+                        GenerationDate="02/23/2026 01:43:53";
 
                         GenerationHost="SERVER25-DC-01";
 
