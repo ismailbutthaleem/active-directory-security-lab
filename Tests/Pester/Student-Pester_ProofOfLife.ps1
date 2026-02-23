@@ -73,10 +73,10 @@ Describe 'Student OU Governance Structure' {
             Should -Be "CN=GG-Finance-Staff,OU=Groups,OU=UserAccessPlane,$($script:DomainDN)"
     }
     
-    It 'GG-Helpdesk-Operators should exist under ManagementPlane\Groups' {
+    It 'GG-IT-Admins should exist under ManagementPlane\Groups' {
         $base = "OU=Groups,OU=ManagementPlane,$($script:DomainDN)"
-        (Get-ADGroup -LDAPFilter "(cn=GG-Helpdesk-Operators)" -SearchBase $base -ErrorAction Stop).DistinguishedName |
-            Should -Be "CN=GG-Helpdesk-Operators,OU=Groups,OU=ManagementPlane,$($script:DomainDN)"
+        (Get-ADGroup -LDAPFilter "(cn=GG-IT-Admins)" -SearchBase $base -ErrorAction Stop).DistinguishedName |
+            Should -Be "CN=GG-IT-Admins,OU=Groups,OU=ManagementPlane,$($script:DomainDN)"
     }
 
     It 'GG-Server-Admins should exist under ManagementPlane\Groups' {
