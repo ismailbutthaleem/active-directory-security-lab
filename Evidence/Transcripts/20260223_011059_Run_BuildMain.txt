@@ -1,0 +1,65 @@
+**********************
+PowerShell transcript start
+Start time: 20260223011059
+Username: BOLTON\Administrator
+RunAs User: BOLTON\Administrator
+Configuration Name: 
+Machine: SERVER25-DC-01 (Microsoft Windows NT 10.0.26100.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -WorkingDirectory ~
+Process ID: 7848
+PSVersion: 7.5.4
+PSEdition: Core
+GitCommitId: 7.5.4
+OS: Microsoft Windows 10.0.26100
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+[+] Transcript started: Evidence\\Transcripts\\20260223_011059_Run_BuildMain.txt
+[+] Admin privileges confirmed.
+
+[Phase 1] Prerequisites...
+[*] Invoke-BarmBuzz-OneShots: LCM then Network
+[*] LCM already configured (flag present).
+[*] Network already configured (flag present).
+[*] LCM already configured (skipping).
+[*] Network already configured (skipping).
+[+] Phase 1 complete.
+
+[Credential] Domain Administrator Password Required...
+[*] This is the LOCAL Administrator account that will perform the promotion.
+[*] After promotion, this becomes BARMBUZZ\\Administrator (Domain Admin).
+[+] Domain Admin credential captured (not logged).
+
+[Credential] DSRM Password Required...
+[*] This password is for Directory Services Restore Mode (DC recovery).
+[*] Use this to boot into recovery mode if AD database is corrupted.
+[*] Can be same as Admin password, or different for extra security.
+[+] DSRM credential captured (not logged).
+
+[Phase 2] Compile + Apply DSC...
+[+] Found configuration: StudentBaseline
+[*] Compiling -> DSC\\Outputs\\StudentBaseline
+
+    Directory: C:\Users\Administrator\repo\COM5411-BarmBuzz\DSC\Outputs\StudentBaseline
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---           2/23/2026  1:11 AM          10770 localhost.mof
+[+] Compilation complete.
+[*] Applying configuration (waits until complete)...
+[+] Apply complete.
+
+[Phase 3] Validation...
+[*] Pester validation will be added later.
+
+[+] BUILD SUCCESS
+[*] Next steps (commit outputs + evidence):
+    git add DSC\Outputs Evidence
+    git commit -m \ Build 20260223_011059\
+**********************
+PowerShell transcript end
+End time: 20260223011109
+**********************
