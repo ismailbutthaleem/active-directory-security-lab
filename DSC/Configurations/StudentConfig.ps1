@@ -27,7 +27,6 @@ Configuration StudentBaseline {
 
     Node $AllNodes.NodeName {
 
-        # FIXED: Where-Object must use a script block
         $node = $ConfigurationData.AllNodes | Where-Object { $_.NodeName -eq $Node.NodeName }
 
         $Network = @{
@@ -52,18 +51,15 @@ Configuration StudentBaseline {
             DependsOn       = '[File]TestFolder'
         }
 
-        # Use ComputerName resource to set the computer name as specified in the configuration data for domain join and proper identification in Active Directory
         Computer SetComputerName {
             Name = $node.ComputerName
         }
 
-        # Set the time zone as specified in the configuration data for domain join and time synchronization, and ensure Windows Time service is running for proper time sync in Active Directory
         TimeZone SetTimeZone {
             IsSingleInstance = 'Yes'
             TimeZone         = $node.TimeZone
         }
 
-        # Ensure Windows Time service is running and set to automatic startup for domain join and time synchronization in Active Directory
         Service WindowsTime {
             Name        = 'W32Time'
             State       = 'Running'
@@ -71,7 +67,6 @@ Configuration StudentBaseline {
             DependsOn   = '[TimeZone]SetTimeZone'
         }
 
-        # Install Active Directory Domain Services and RSAT-ADDS features for domain controller configuration as specified in the configuration data
         WindowsFeature ADDS {
             Name   = 'AD-Domain-Services'
             Ensure = 'Present'
@@ -83,7 +78,6 @@ Configuration StudentBaseline {
             DependsOn = '[WindowsFeature]ADDS'
         }
 
-        # Network configuration for internal network interface using IPAddress and DnsServerAddress resources, with dependency to ensure proper order of configuration application for domain join and Active Directory functionality
         IPAddress StaticIPv4 {
             AddressFamily       = $Network.AddressFamily
             InterfaceAlias      = $Network.InterfaceAlias
@@ -99,10 +93,6 @@ Configuration StudentBaseline {
             DependsOn      = '[IPAddress]StaticIPv4'
         }
 
-        ### Network Settings – External NIC
-        ### Network Settings – External NIC
-
-        # Disable DNS registration on the NAT network interface to prevent conflicts with the internal DNS configuration for Active Directory, with dependency to ensure it is applied after the internal DNS server address is configured
         DnsConnectionSuffix DisableNatDnsRegistration {
             InterfaceAlias                 = $node.InterfaceAlias_NAT
             ConnectionSpecificSuffix       = 'nat'
@@ -110,47 +100,15 @@ Configuration StudentBaseline {
             DependsOn                      = '[DnsServerAddress]InternalDNS'
         }
 
-        ### PROMOTE TO DOMAIN CONTROLLER - Create new forest and domain
         ADDomain CreateForest {
-
-            # DomainName: The fully-qualified domain name (FQDN)
-            # This becomes both the AD domain name and the DNS zone
-            DomainName = $Node.DomainName
-
-            # Domain NetBIOS Name: Legacy short name (15 chars max, no dots)
-            DomainNetBIOSName = $Node.DomainNetBIOSName
-
-            # Credential: Account to use for the operation
-            # For creating a NEW forest, this is the local Administrator
-            # For joining an existing domain, this would be a domain account
-            # After promotion, this account becomes the first Domain Admin
-            Credential = $DomainAdminCredential
-
-            # This is your emergency recovery password
+            DomainName                   = $Node.DomainName
+            DomainNetBIOSName             = $Node.DomainNetBIOSName
+            Credential                    = $DomainAdminCredential
             SafemodeAdministratorPassword = $DsrmCredential
-
-            # ForestMode: Determines available AD features
-            # Higher levels enable more features but limit DC compatibility
-            ForestMode = $Node.ForestMode
-
-            # DomainMode: Same as ForestMode for a new single-domain forest
-            DomainMode = $Node.DomainMode
-
-            # DependsOn: Wait for all prerequisites
-            # Specifically, RSAT must be installed for the AD PowerShell module
-            DependsOn = '[WindowsFeature]RSATADDS'
+            ForestMode                    = $Node.ForestMode
+            DomainMode                    = $Node.DomainMode
+            DependsOn                     = '[WindowsFeature]RSATADDS'
         }
-
-        foreach ($featureName in $node.Features.Add) {
-            WindowsFeature "Feature_$featureName" {
-                Name   = $featureName
-                Ensure = 'Present'
-            }
-        }
-
-        # ===============================
-        # OU STRUCTURE (Root DC only)
-        # ===============================
 
         if ($node.Role -eq 'DC') {
 
@@ -186,38 +144,27 @@ Configuration StudentBaseline {
                 DependsOn                       = '[ADOrganizationalUnit]OU_UserAccessPlane'
             }
 
-            ADOrganizationalUnit 'OU_UserAccessPlane_Computers' {
-                Name                            = 'Computers'
-                Path                            = "OU=UserAccessPlane,$($Node.DomainDN)"
-                Ensure                          = 'Present'
-                ProtectedFromAccidentalDeletion = $true
-                DependsOn                       = '[ADOrganizationalUnit]OU_UserAccessPlane'
-            }
-
-            # OU under UserAccessPlane
             ADOrganizationalUnit 'OU_UserAccessPlane_Groups' {
                 Name                            = 'Groups'
                 Path                            = 'OU=UserAccessPlane,DC=bolton,DC=corp'
-                ProtectedFromAccidentalDeletion = $true
                 Ensure                          = 'Present'
+                ProtectedFromAccidentalDeletion = $true
                 DependsOn                       = '[ADOrganizationalUnit]OU_UserAccessPlane'
             }
 
-            # OU under ManagementPlane for admin users
             ADOrganizationalUnit 'OU_ManagementPlane_AdminUsers' {
                 Name                            = 'AdminUsers'
                 Path                            = 'OU=ManagementPlane,DC=bolton,DC=corp'
-                ProtectedFromAccidentalDeletion = $true
                 Ensure                          = 'Present'
+                ProtectedFromAccidentalDeletion = $true
                 DependsOn                       = '[ADOrganizationalUnit]OU_ManagementPlane'
             }
 
-            # OU under ManagementPlane for groups
             ADOrganizationalUnit 'OU_ManagementPlane_Groups' {
                 Name                            = 'Groups'
                 Path                            = 'OU=ManagementPlane,DC=bolton,DC=corp'
-                ProtectedFromAccidentalDeletion = $true
                 Ensure                          = 'Present'
+                ProtectedFromAccidentalDeletion = $true
                 DependsOn                       = '[ADOrganizationalUnit]OU_ManagementPlane'
             }
 
@@ -257,10 +204,6 @@ Configuration StudentBaseline {
                 DependsOn  = '[ADOrganizationalUnit]OU_ManagementPlane_Groups'
             }
 
-            # =========================
-            # Tier 2 Users (UserAccessPlane)
-            # =========================
-
             ADUser 'User_Adam_Khan' {
                 DomainName  = $Node.DomainName
                 UserName    = 'adam.khan'
@@ -284,10 +227,6 @@ Configuration StudentBaseline {
                 Ensure      = 'Present'
                 Password    = $DomainAdminCredential
             }
-
-            # =========================
-            # Tier 1 Users (ManagementPlane)
-            # =========================
 
             ADUser 'User_Ismail_Admin' {
                 DomainName  = $Node.DomainName
@@ -313,38 +252,36 @@ Configuration StudentBaseline {
                 Password    = $DomainAdminCredential
             }
 
-            # =========================
-            # RBAC Membership
-            # =========================
-
             ADGroupMember 'Adam_HR_Membership' {
                 GroupName        = 'GG-HR-Staff'
                 MembersToInclude = @('adam.khan')
                 Ensure           = 'Present'
-                DependsOn        = '[ADUser]User_Adam_Khan','[ADGroup]GG_HR_Staff'
+                DependsOn        = '[ADUser]User_Adam_Khan'
             }
 
             ADGroupMember 'Katy_Finance_Membership' {
                 GroupName        = 'GG-Finance-Staff'
                 MembersToInclude = @('katy.smith')
                 Ensure           = 'Present'
-                DependsOn        = '[ADUser]User_Katy_Smith','[ADGroup]GG_Finance_Staff'
+                DependsOn        = '[ADUser]User_Katy_Smith'
             }
 
             ADGroupMember 'Ismail_ServerAdmin_Membership' {
                 GroupName        = 'GG-Server-Admins'
                 MembersToInclude = @('ismail.admin')
                 Ensure           = 'Present'
-                DependsOn        = '[ADUser]User_Ismail_Admin','[ADGroup]GG_Server_Admins'
+                DependsOn        = '[ADUser]User_Ismail_Admin'
             }
 
             ADGroupMember 'Paul_Helpdesk_Membership' {
                 GroupName        = 'GG-IT-Admins'
                 MembersToInclude = @('paul.evans')
                 Ensure           = 'Present'
-                DependsOn        = '[ADUser]User_Paul_Evans','[ADGroup]GG_IT_Admins'
+                DependsOn        = '[ADUser]User_Paul_Evans'
             }
 
         }
+
     }
+
 }
