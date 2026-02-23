@@ -6,33 +6,41 @@
 #
 # The test fails if any OU is missing or incorrectly named,
 # providing clear feedback about misconfiguration.
- 
+
+# Uses Get-ADOrganizationalUnit to assert correct creation and location.
+# Fails if any OU is missing or incorrectly placed.
+
 Describe 'Student OU Governance Structure' {
 
-    $DomainDN = (Get-ADDomain).DistinguishedName
+    BeforeAll {
+        Import-Module ActiveDirectory -ErrorAction Stop
+        $script:DomainDN = (Get-ADDomain -ErrorAction Stop).DistinguishedName.Trim()
+    }
 
     It 'ControlPlane OU should exist' {
-        (Get-ADOrganizationalUnit -LDAPFilter "(ou=ControlPlane)" -SearchBase $DomainDN -ErrorAction Stop).DistinguishedName |
-            Should -Match "OU=ControlPlane,$DomainDN"
+        (Get-ADOrganizationalUnit -LDAPFilter "(ou=ControlPlane)" -SearchBase $script:DomainDN -ErrorAction Stop).DistinguishedName |
+            Should -Be "OU=ControlPlane,$($script:DomainDN)"
     }
 
     It 'ManagementPlane OU should exist' {
-        (Get-ADOrganizationalUnit -LDAPFilter "(ou=ManagementPlane)" -SearchBase $DomainDN -ErrorAction Stop).DistinguishedName |
-            Should -Match "OU=ManagementPlane,$DomainDN"
+        (Get-ADOrganizationalUnit -LDAPFilter "(ou=ManagementPlane)" -SearchBase $script:DomainDN -ErrorAction Stop).DistinguishedName |
+            Should -Be "OU=ManagementPlane,$($script:DomainDN)"
     }
 
     It 'UserAccessPlane OU should exist' {
-        (Get-ADOrganizationalUnit -LDAPFilter "(ou=UserAccessPlane)" -SearchBase $DomainDN -ErrorAction Stop).DistinguishedName |
-            Should -Match "OU=UserAccessPlane,$DomainDN"
+        (Get-ADOrganizationalUnit -LDAPFilter "(ou=UserAccessPlane)" -SearchBase $script:DomainDN -ErrorAction Stop).DistinguishedName |
+            Should -Be "OU=UserAccessPlane,$($script:DomainDN)"
     }
 
     It 'Users OU should exist under UserAccessPlane' {
-        (Get-ADOrganizationalUnit -LDAPFilter "(ou=Users)" -SearchBase "OU=UserAccessPlane,$DomainDN" -ErrorAction Stop).DistinguishedName |
-            Should -Match "OU=Users,OU=UserAccessPlane,$DomainDN"
+        $base = "OU=UserAccessPlane,$($script:DomainDN)"
+        (Get-ADOrganizationalUnit -LDAPFilter "(ou=Users)" -SearchBase $base -ErrorAction Stop).DistinguishedName |
+            Should -Be "OU=Users,OU=UserAccessPlane,$($script:DomainDN)"
     }
 
     It 'Computers OU should exist under UserAccessPlane' {
-        (Get-ADOrganizationalUnit -LDAPFilter "(ou=Computers)" -SearchBase "OU=UserAccessPlane,$DomainDN" -ErrorAction Stop).DistinguishedName |
-            Should -Match "OU=Computers,OU=UserAccessPlane,$DomainDN"
+        $base = "OU=UserAccessPlane,$($script:DomainDN)"
+        (Get-ADOrganizationalUnit -LDAPFilter "(ou=Computers)" -SearchBase $base -ErrorAction Stop).DistinguishedName |
+            Should -Be "OU=Computers,OU=UserAccessPlane,$($script:DomainDN)"
     }
 }
