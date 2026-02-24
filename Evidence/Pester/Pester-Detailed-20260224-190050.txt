@@ -706,3 +706,102 @@ PS C:\Users\Administrator\repo\COM5411-BarmBuzz> git commit -m " baseline"
 
 PS C:\Users\Administrator\repo\COM5411-BarmBuzz> git push
 
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> ./Run_BuildMain.ps1
+==========================================
+        COM5411 BarmBuzz Build Runner
+==========================================
+[*] Repo root: C:\Users\Administrator\repo\COM5411-BarmBuzz
+[*] PowerShell: 7.5.4
+[*] You edit ONLY: DSC\\Configurations\\StudentConfig.ps1 and DSC\\Data\\AllNodes.psd1
+[+] Transcript started: Evidence\\Transcripts\\20260224_191818_Run_BuildMain.txt
+[+] Admin privileges confirmed.
+
+[Phase 1] Prerequisites...
+[*] Invoke-BarmBuzz-OneShots: LCM then Network
+[*] LCM already configured (flag present).
+[*] Network already configured (flag present).
+[*] LCM already configured (skipping).
+[*] Network already configured (skipping).
+[+] Phase 1 complete.
+
+[Credential] Domain Administrator Password Required...
+[*] This is the LOCAL Administrator account that will perform the promotion.
+[*] After promotion, this becomes BARMBUZZ\\Administrator (Domain Admin).
+[+] Domain Admin credential captured (not logged).
+
+[Credential] DSRM Password Required...
+[*] This password is for Directory Services Restore Mode (DC recovery).
+[*] Use this to boot into recovery mode if AD database is corrupted.
+[*] Can be same as Admin password, or different for extra security.
+[+] DSRM credential captured (not logged).
+
+[Phase 2] Compile + Apply DSC...
+[+] Found configuration: StudentBaseline
+[*] Compiling -> DSC\\Outputs\\StudentBaseline
+
+    Directory: C:\Users\Administrator\repo\COM5411-BarmBuzz\DSC\Outputs\StudentBaseline
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---           2/24/2026  7:18 PM          14223 localhost.mof
+[+] Compilation complete.
+[*] Applying configuration (waits until complete)...
+[+] Apply complete.
+
+[Phase 3] Validation...
+[*] Pester validation will be added later.
+
+[+] BUILD SUCCESS
+[*] Next steps (commit outputs + evidence):
+    git add DSC\Outputs Evidence
+    git commit -m \ Build 20260224_191818\
+
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> ./Run_BuildMain.ps1
+==========================================
+        COM5411 BarmBuzz Build Runner
+==========================================
+[*] Repo root: C:\Users\Administrator\repo\COM5411-BarmBuzz
+[*] PowerShell: 7.5.4
+[*] You edit ONLY: DSC\\Configurations\\StudentConfig.ps1 and DSC\\Data\\AllNodes.psd1
+[+] Transcript started: Evidence\\Transcripts\\20260224_191850_Run_BuildMain.txt
+[+] Admin privileges confirmed.
+
+[Phase 1] Prerequisites...
+[*] Invoke-BarmBuzz-OneShots: LCM then Network
+[*] LCM already configured (flag present).
+[*] Network already configured (flag present).
+[*] LCM already configured (skipping).
+[*] Network already configured (skipping).
+[+] Phase 1 complete.
+
+[Credential] Domain Administrator Password Required...
+[*] This is the LOCAL Administrator account that will perform the promotion.
+[*] After promotion, this becomes BARMBUZZ\\Administrator (Domain Admin).
+[+] Domain Admin credential captured (not logged).
+
+[Credential] DSRM Password Required...
+[*] This password is for Directory Services Restore Mode (DC recovery).
+[*] Use this to boot into recovery mode if AD database is corrupted.
+[*] Can be same as Admin password, or different for extra security.
+[+] DSRM credential captured (not logged).
+
+[Phase 2] Compile + Apply DSC...
+[+] Found configuration: StudentBaseline
+[*] Compiling -> DSC\\Outputs\\StudentBaseline
+
+    Directory: C:\Users\Administrator\repo\COM5411-BarmBuzz\DSC\Outputs\StudentBaseline
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---           2/24/2026  7:18 PM          14223 localhost.mof
+[+] Compilation complete.
+[*] Applying configuration (waits until complete)...
+[+] Apply complete.
+
+[Phase 3] Validation...
+[*] Pester validation will be added later.
+
+[+] BUILD SUCCESS
+[*] Next steps (commit outputs + evidence):
+    git add DSC\Outputs Evidence
+    git commit -m \ Build 20260224_191850\
