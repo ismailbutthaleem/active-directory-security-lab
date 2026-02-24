@@ -5,9 +5,6 @@
 # - DSC-created users exist in correct OUs and are ENABLED
 # - Security-relevant GPOs exist and are linked to the correct OUs (enabled links)
 #   (checks both direct links and inherited links to avoid false negatives)
-# Notes:
-# - GPO link checks match by GPO GUID (reliable across GPInheritance object shapes)
-# - User DN checks validate OU placement (not brittle CN equality)
 
 Describe 'Student OU Governance Structure' {
 
@@ -30,33 +27,9 @@ Describe 'Student OU Governance Structure' {
         $script:ComputerGpoName = 'BBZ-Computer-Baseline-Firewall-SMBv1'
         $script:UserGpoName     = 'BBZ-User-Hardening-Reduce-AttackSurface'
 
-        # Cache GPO objects once (also implicitly verifies they exist)
+        # Cache GPO existence early (these should throw if names are wrong)
         $script:ComputerGpo = Get-GPO -Name $script:ComputerGpoName -ErrorAction Stop
         $script:UserGpo     = Get-GPO -Name $script:UserGpoName     -ErrorAction Stop
-
-        function Get-GpoLinkByGuid {
-            [CmdletBinding()]
-            param(
-                [Parameter(Mandatory)]
-                [string]$TargetDn,
-
-                [Parameter(Mandatory)]
-                [Guid]$GpoGuid
-            )
-
-            $inherit  = Get-GPInheritance -Target $TargetDn -ErrorAction Stop
-            $allLinks = @($inherit.GpoLinks + $inherit.InheritedGpoLinks)
-
-            # Different environments expose GpoId differently; handle common shapes.
-            return ($allLinks | Where-Object {
-                ($null -ne $_.GpoId) -and (
-                    $_.GpoId -eq $GpoGuid -or
-                    $_.GpoId -eq "{$GpoGuid}" -or
-                    ($_.GpoId -is [Guid] -and $_.GpoId.Guid -eq $GpoGuid.Guid) -or
-                    ($_.GpoId.PSObject.Properties.Name -contains 'Guid' -and $_.GpoId.Guid -eq $GpoGuid.Guid)
-                )
-            } | Select-Object -First 1)
-        }
 
         function Assert-UserInOuAndEnabled {
             [CmdletBinding()]
@@ -72,6 +45,64 @@ Describe 'Student OU Governance Structure' {
             $u.DistinguishedName | Should -Match "$escapedOu$"
 
             $u.Enabled | Should -BeTrue
+        }
+
+        function Resolve-GpoLinkByDisplayName {
+            [CmdletBinding()]
+            param(
+                [Parameter(Mandatory)][string]$TargetDn,
+                [Parameter(Mandatory)][string]$GpoDisplayName
+            )
+
+            $inherit = Get-GPInheritance -Target $TargetDn -ErrorAction Stop
+            $links   = @($inherit.GpoLinks + $inherit.InheritedGpoLinks) | Where-Object { $_ }
+
+            # Regex for GUIDs with/without braces
+            $guidRegex = '\{?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}?'
+
+            foreach ($l in $links) {
+
+                # 1) Try to find any GUID-looking value in ANY property value
+                $candidateStrings = @()
+
+                foreach ($p in $l.PSObject.Properties) {
+                    if ($null -eq $p.Value) { continue }
+
+                    # Flatten scalars / arrays into strings safely
+                    if ($p.Value -is [System.Collections.IEnumerable] -and -not ($p.Value -is [string])) {
+                        foreach ($item in $p.Value) {
+                            if ($null -ne $item) { $candidateStrings += [string]$item }
+                        }
+                    } else {
+                        $candidateStrings += [string]$p.Value
+                    }
+                }
+
+                # Also add a full string dump as a last resort (covers nested objects)
+                $candidateStrings += ($l | Out-String)
+
+                $match = $candidateStrings |
+                    Select-String -Pattern $guidRegex -AllMatches |
+                    ForEach-Object { $_.Matches } |
+                    Select-Object -First 1
+
+                if (-not $match) { continue }
+
+                $guidText = $match.Value.Trim('{}')
+
+                # 2) Resolve GUID back to a GPO and compare DisplayName
+                try {
+                    $gpo = Get-GPO -Guid $guidText -ErrorAction Stop
+                    if ($gpo.DisplayName -eq $GpoDisplayName) {
+                        # Return the original link object (so we can check Enabled/Enforced)
+                        return $l
+                    }
+                } catch {
+                    continue
+                }
+            }
+
+            return $null
         }
     }
 
@@ -169,23 +200,23 @@ Describe 'Student OU Governance Structure' {
         }
 
         It 'Computer baseline GPO should be linked to UserAccessPlane\Computers OU (enabled link)' {
-            $link = Get-GpoLinkByGuid -TargetDn $script:ComputersOU -GpoGuid $script:ComputerGpo.Id
+            $link = Resolve-GpoLinkByDisplayName -TargetDn $script:ComputersOU -GpoDisplayName $script:ComputerGpoName
             $link | Should -Not -BeNullOrEmpty
             $link.Enabled | Should -BeTrue
         }
 
         It 'User hardening GPO should be linked to UserAccessPlane\Users OU (enabled link)' {
-            $link = Get-GpoLinkByGuid -TargetDn $script:UsersOU -GpoGuid $script:UserGpo.Id
+            $link = Resolve-GpoLinkByDisplayName -TargetDn $script:UsersOU -GpoDisplayName $script:UserGpoName
             $link | Should -Not -BeNullOrEmpty
             $link.Enabled | Should -BeTrue
         }
 
         It 'GPO links should not be enforced (best practice for scoped OUs)' {
-            $compLink = Get-GpoLinkByGuid -TargetDn $script:ComputersOU -GpoGuid $script:ComputerGpo.Id
+            $compLink = Resolve-GpoLinkByDisplayName -TargetDn $script:ComputersOU -GpoDisplayName $script:ComputerGpoName
             $compLink | Should -Not -BeNullOrEmpty
             $compLink.Enforced | Should -BeFalse
 
-            $userLink = Get-GpoLinkByGuid -TargetDn $script:UsersOU -GpoGuid $script:UserGpo.Id
+            $userLink = Resolve-GpoLinkByDisplayName -TargetDn $script:UsersOU -GpoDisplayName $script:UserGpoName
             $userLink | Should -Not -BeNullOrEmpty
             $userLink.Enforced | Should -BeFalse
         }
