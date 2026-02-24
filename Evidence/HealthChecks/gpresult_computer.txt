@@ -1,0 +1,50 @@
+
+Microsoft (R) Windows (R) Operating System Group Policy Result tool v2.0
+¸ Microsoft Corporation. All rights reserved.
+
+Created on ?24/?02/?2026 at 02:01:40
+
+
+RSOP data for  on DESKTOP-4KDR5HC : Logging Mode
+-------------------------------------------------
+
+OS Configuration:            Member Workstation
+OS Version:                  10.0.26200
+Site Name:                   Default-First-Site-Name
+Roaming Profile:             
+Local Profile:               
+Connected over a slow link?: No
+
+
+COMPUTER SETTINGS
+------------------
+    
+    Last time Group Policy was applied: 24/02/2026 at 02:00:41
+    Group Policy was applied from:      SERVER25-DC-01.bolton.corp
+    Group Policy slow link threshold:   500 kbps
+    Domain Name:                        BOLTON
+    Domain Type:                        Windows 2008 or later
+
+    Applied Group Policy Objects
+    -----------------------------
+        BBZ-Computer-Baseline-Firewall-SMBv1
+        Default Domain Policy
+
+    The following GPOs were not applied because they were filtered out
+    -------------------------------------------------------------------
+        Local Group Policy
+            Filtering:  Not Applied (Empty)
+
+    The computer is a part of the following security groups
+    -------------------------------------------------------
+        BUILTIN\Administrators
+        Everyone
+        BUILTIN\Users
+        NT AUTHORITY\NETWORK
+        NT AUTHORITY\Authenticated Users
+        This Organization
+        DESKTOP-4KDR5HC$
+        Domain Computers
+        Authentication authority asserted identity
+        System Mandatory Level
+        

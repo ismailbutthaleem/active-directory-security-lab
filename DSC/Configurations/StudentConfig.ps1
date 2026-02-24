@@ -215,7 +215,7 @@ Configuration StudentBaseline {
                 UserName    = 'adam.khan'
                 Path        = "OU=Users,OU=UserAccessPlane,$($Node.DomainDN)"
                 Ensure      = 'Present'
-                Enabled     = $false
+                Enabled     = $true
             }
 
             ADUser 'User_Katy_Smith' {
@@ -223,7 +223,7 @@ Configuration StudentBaseline {
                 UserName    = 'katy.smith'
                 Path        = "OU=Users,OU=UserAccessPlane,$($Node.DomainDN)"
                 Ensure      = 'Present'
-                Enabled     = $false
+                Enabled     = $true
             }
 
             ADUser 'User_Ismail_Admin' {
@@ -231,7 +231,7 @@ Configuration StudentBaseline {
                 UserName    = 'ismail.admin'
                 Path        = "OU=AdminUsers,OU=ManagementPlane,$($Node.DomainDN)"
                 Ensure      = 'Present'
-                Enabled     = $false
+                Enabled     = $true
             }
 
             ADUser 'User_Paul_Evans' {
@@ -239,7 +239,7 @@ Configuration StudentBaseline {
                 UserName    = 'paul.evans'
                 Path        = "OU=AdminUsers,OU=ManagementPlane,$($Node.DomainDN)"
                 Ensure      = 'Present'
-                Enabled     = $false
+                Enabled     = $true
             }
 
 
