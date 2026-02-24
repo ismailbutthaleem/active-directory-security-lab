@@ -1,0 +1,295 @@
+**********************
+PowerShell transcript start
+Start time: 20260224192045
+Username: BOLTON\Administrator
+RunAs User: BOLTON\Administrator
+Configuration Name: 
+Machine: SERVER25-DC-01 (Microsoft Windows NT 10.0.26100.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -WorkingDirectory ~
+Process ID: 4080
+PSVersion: 7.5.4
+PSEdition: Core
+GitCommitId: 7.5.4
+OS: Microsoft Windows 10.0.26100
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Transcript started, output file is .\Evidence\Pester\Pester-Detailed-20260224-192037.txt
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> Invoke-Pester -Path .\Tests\Pester\Invoke-Validation.ps1 -Output Detailed
+Pester v5.7.1
+
+Starting discovery in 1 files.
+Pester runner:
+  Repo root:  C:\Users\Administrator\repo\COM5411-BarmBuzz
+  Test count: 7
+  Output:     Detailed
+  Results:    C:\Users\Administrator\repo\COM5411-BarmBuzz\Evidence\Pester\PesterResults_20260224_192056.xml
+Pester v5.7.1
+
+Starting discovery in 7 files.
+Discovery found 89 tests in 343ms.
+Running tests.
+
+Running tests from 'C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\ADDS_Promotion.Tests.ps1'
+Describing Active Directory Domain Services (AD DS) Promotion
+ Context Prerequisites and Installation
+   [+] Computer has expected name
+ 26ms (11ms|15ms)
+   [+] AD Domain Services feature is installed
+ 27ms (27ms|1ms)
+   [+] RSAT AD Tools feature is installed
+ 6ms (4ms|2ms)
+   [+] Internal network adapter is configured with static IP
+ 13ms (13ms|1ms)
+   [+] DNS points to localhost (127.0.0.1)
+ 28ms (28ms|1ms)
+ Context Domain Controller Services
+   [+] Active Directory Domain Services is running
+ 15ms (7ms|8ms)
+   [+] DNS Server service is running
+ 7ms (6ms|1ms)
+   [+] Netlogon service is running
+ 11ms (10ms|1ms)
+   [+] Kerberos Key Distribution Center is running
+ 9ms (8ms|1ms)
+   [+] File Replication Service or DFS Replication is running
+ 10ms (9ms|1ms)
+ Context Domain and Forest Configuration
+   [+] Computer is part of the expected domain
+ 56ms (55ms|2ms)
+   [+] Domain exists and is accessible
+ 279ms (278ms|1ms)
+   [+] Forest exists and has correct name
+ 85ms (84ms|1ms)
+   [+] Domain has correct NetBIOS name
+ 148ms (147ms|1ms)
+   [+] Forest functional level is modern (2016+)
+ 85ms (85ms|1ms)
+   [+] Domain functional level is modern (2016+)
+ 140ms (139ms|1ms)
+   [+] This computer is a domain controller
+ 135ms (134ms|1ms)
+ Context DNS Functionality
+   [+] DNS zones are created for the domain
+ 234ms (233ms|1ms)
+Reverse DNS zone '56.168.192.in-addr.arpa' not found, but PTR resolution works
+   [+] Reverse DNS zone exists for internal subnet or PTR resolution works
+ 24ms (23ms|1ms)
+   [+] Domain controller has DNS A record
+ 25ms (24ms|1ms)
+   [+] Domain has NS record pointing to this DC
+ 18ms (17ms|1ms)
+   [+] Can resolve domain name to IP
+ 6ms (6ms|1ms)
+ Context Administrative Functionality
+   [+] Can query domain users
+ 147ms (136ms|10ms)
+   [+] Built-in Administrator account exists
+ 9ms (8ms|1ms)
+   [+] Domain Admins group exists
+ 11ms (10ms|1ms)
+   [+] Default domain containers exist
+ 48ms (47ms|1ms)
+   [+] SYSVOL share is accessible
+ 26ms (25ms|1ms)
+   [+] NETLOGON share is accessible
+ 11ms (10ms|1ms)
+ Context Health and Status Checks
+   [+] Event logs show successful promotion
+ 55ms (53ms|1ms)
+   [+] No recent critical errors in AD logs
+ 13ms (12ms|1ms)
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> TerminatingError(): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Cannot verify the secure channel for the local computer. Operation failed with the following exception: The specified domain either does not exist or could not be contacted."
+>> TerminatingError(): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Cannot verify the secure channel for the local computer. Operation failed with the following exception: The specified domain either does not exist or could not be contacted."
+WARNING: Secure channel test failed: Cannot verify the secure channel for the local computer. Operation failed with the following exception: The specified domain either does not exist or could not be contacted.
+WARNING: This may be expected during initial DC setup or if domain is still initializing
+Alternative validation: Successfully queried AD domain 'bolton'
+   [+] Domain controller can authenticate itself
+ 197ms (197ms|1ms)
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> TerminatingError(): "The property 'Domain' cannot be found on this object. Verify that the property exists."
+[-] Context Active Directory Domain Services (AD DS) Promotion.Health and Status Checks failed
+   PropertyNotFoundException: The property 'Domain' cannot be found on this object. Verify that the property exists.
+   at <ScriptBlock>, C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\ADDS_Promotion.Tests.ps1:593
+
+Running tests from 'C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\Baseline.Tests.ps1'
+Describing Server Baseline Validation
+  [+] Hostname matches declared intent in AllNodes
+ 6ms (1ms|4ms)
+  [+] Timezone matches declared intent in AllNodes
+ 12ms (11ms|0ms)
+  [+] Windows Time service is running
+ 2ms (1ms|1ms)
+
+Running tests from 'C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\Hello.Tests.ps1'
+Describing Hello World Test
+  [+] 2 + 2 should equal 4
+ 4ms (2ms|2ms)
+
+Running tests from 'C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\PreDCPromo.Tests.ps1'
+WARNING: Module ServerManager is loaded in Windows PowerShell using WinPSCompatSession remoting session; please note that all input and output of commands from this module will be deserialized objects. If you want to load this module into PowerShell please use 'Import-Module -SkipEditionCheck' syntax.
+Describing Pre-DC Readiness (Dual NIC) - localhost
+  [+] Internal and NAT adapters exist
+ 6ms (3ms|3ms)
+  [+] Internal NIC has static IPv4 (Manual prefix origin)
+ 3ms (3ms|1ms)
+  [+] Internal NIC IPv4 address matches AllNodes
+ 2ms (2ms|1ms)
+  [+] Internal NIC prefix length matches AllNodes
+ 3ms (3ms|1ms)
+  [+] Internal NIC has NO default gateway (single-gateway rule)
+ 1ms (1ms|0ms)
+  [+] NAT NIC has a default gateway
+ 2ms (1ms|0ms)
+  [+] Internal NIC DNS servers match AllNodes (order-insensitive)
+ 4ms (3ms|0ms)
+  [+] NAT NIC does not register in DNS when DisableDnsRegistrationOnNat is true
+ 2ms (1ms|0ms)
+  [+] Internal NIC registers in DNS
+ 2ms (1ms|0ms)
+  [+] NAT NIC is DHCP (when Expect_NAT_Dhcp is true)
+ 3ms (3ms|1ms)
+  [+] AD-Domain-Services is installed when requested
+ 1ms (1ms|0ms)
+  [+] RSAT-ADDS is installed when requested
+ 1ms (1ms|0ms)
+
+Running tests from 'C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\Preflight-Environment.Tests.ps1'
+Describing COM5411 IaC Environment Preflight (Dual-Shell)
+ Context Entry requirements
+   [+] Must be run from PowerShell 7 (pwsh) (this is the orchestration shell)
+ 7ms (2ms|5ms)
+   [+] Should be run as Administrator (recommended for meaningful preflight)
+ 1ms (1ms|0ms)
+   [+] Repo root contains Run_BuildMain.ps1 (orchestrator)
+ 5ms (5ms|0ms)
+ Context Diagnostics (support visibility)
+   [+] PSModulePath is set in PowerShell 7 (current process)
+ 5ms (1ms|3ms)
+   [+] PSModulePath is set in Windows PowerShell 5.1
+ 454ms (453ms|1ms)
+ Context Toolchain (PowerShell 7)
+   [+] DSC v3 CLI exists on PATH (dsc.exe)
+ 8ms (5ms|3ms)
+   [+] PSResourceGet is available (Microsoft.PowerShell.PSResourceGet)
+ 15ms (15ms|1ms)
+ Context DSC resource modules (pinned + placed for adapter visibility)
+   [+] Canonical module root exists (C:\Program Files\WindowsPowerShell\Modules)
+ 5ms (2ms|3ms)
+   [+] PowerShell 7: ActiveDirectoryDsc is installed and pinned to 6.6.0
+ 17ms (16ms|1ms)
+   [+] PowerShell 7: GroupPolicyDsc is installed and pinned to 1.0.3
+ 27ms (14ms|12ms)
+   [+] PowerShell 7: Pester is installed and pinned to 5.7.1
+ 57ms (57ms|1ms)
+   [+] Windows PowerShell 5.1: ActiveDirectoryDsc is installed, pinned to 6.6.0, and stored under WindowsPowerShell\Modules
+ 875ms (875ms|1ms)
+   [+] Windows PowerShell 5.1: GroupPolicyDsc is installed, pinned to 1.0.3, and stored under WindowsPowerShell\Modules
+ 832ms (831ms|1ms)
+   [+] Windows PowerShell 5.1: Pester is installed, pinned to 5.7.1, and stored under WindowsPowerShell\Modules
+ 1.04s (1.04s|1ms)
+   [+] PowerShell 7: PSDesiredStateConfiguration is installed and pinned to 2.0.7 (PS7-only)
+ 15ms (15ms|1ms)
+   [+] PowerShell 7: ComputerManagementDsc is installed
+ 16ms (16ms|1ms)
+   [+] Windows PowerShell 5.1: ComputerManagementDsc is installed under WindowsPowerShell\Modules
+ 397ms (397ms|1ms)
+ Context RSAT / admin tooling (AD + GPO management)
+   [+] Windows PowerShell 5.1: ActiveDirectory module is available
+ 362ms (359ms|2ms)
+   [+] Windows PowerShell 5.1: GroupPolicy module is available
+ 367ms (366ms|1ms)
+   [+] PowerShell 7: ActiveDirectory module discoverable (informational)
+ 16ms (15ms|1ms)
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> TerminatingError(): "is skipped, because GroupPolicy not discoverable in PS7. Acceptable if WinPS 5.1 has it (adapter path)."
+>> TerminatingError(): "is skipped, because GroupPolicy not discoverable in PS7. Acceptable if WinPS 5.1 has it (adapter path)."
+   [!] PowerShell 7: GroupPolicy module discoverable (informational) is skipped, because GroupPolicy not discoverable in PS7. Acceptable if WinPS 5.1 has it (adapter path).
+ 19ms (18ms|1ms)
+ Context WinRM / WS-Man local connectivity (common lab failure)
+   [+] WinRM service exists
+ 6ms (3ms|3ms)
+   [+] WinRM should be Running (if not: run Run_BuildMain.ps1 which calls OneShot Network)
+ 3ms (3ms|1ms)
+   [+] WS-Man should respond locally (Test-WSMan localhost)
+ 19ms (19ms|1ms)
+ Context Developer tooling
+   [+] Git is installed (git.exe on PATH)
+ 6ms (4ms|3ms)
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> TerminatingError(): "is skipped, because VS Code not found on PATH (OK if not installed on this VM)."
+>> TerminatingError(): "is skipped, because VS Code not found on PATH (OK if not installed on this VM)."
+   [!] VS Code installed (code.exe on PATH) [optional] is skipped, because VS Code not found on PATH (OK if not installed on this VM).
+ 41ms (40ms|1ms)
+
+Running tests from 'C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\Template.Tests.ps1'
+Describing My Feature Tests
+  [+] Example test: PowerShell version is 7+
+ 5ms (1ms|4ms)
+  [+] Example test: Repo root exists
+ 2ms (1ms|1ms)
+  [+] Example test: Can load AllNodes.psd1
+ 3ms (3ms|0ms)
+
+Describing Dynamic Test Example
+  [+] Module 'Pester' should be installed
+ 22ms (17ms|5ms)
+  [+] Module 'ActiveDirectoryDsc' should be installed
+ 18ms (17ms|1ms)
+  [+] Module 'ComputerManagementDsc' should be installed
+ 20ms (19ms|1ms)
+
+Describing Common Testing Patterns
+ Context File and Directory Tests
+   [+] Tests a file exists
+ 5ms (1ms|4ms)
+   [+] Tests a directory exists
+ 3ms (2ms|1ms)
+ Context Service and Process Tests
+   [+] Tests a Windows service status
+ 8ms (3ms|5ms)
+ Context Network Tests
+   [+] Tests network adapter exists
+ 35ms (33ms|3ms)
+ Context String and Value Tests
+   [+] Tests exact string match
+ 4ms (1ms|3ms)
+   [+] Tests string contains pattern
+ 1ms (1ms|0ms)
+   [+] Tests numeric comparison
+ 4ms (4ms|0ms)
+
+Running tests from 'C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\Test-ProofOfLife.Tests.ps1'
+Describing Proof-of-Life (DSC created files)
+  [+] C:\\TEST directory exists
+ 8ms (6ms|2ms)
+  [+] C:\\TEST\\test.txt exists
+ 2ms (1ms|1ms)
+  [+] test.txt has expected contents
+ 5ms (4ms|0ms)
+Tests completed in 15.09s
+Tests Passed: 87, 
+Failed: 0, 
+Skipped: 2, 
+Inconclusive: 0, 
+
+NotRun: 0
+BeforeAll \ AfterAll failed: 1
+  - Active Directory Domain Services (AD DS) Promotion.Health and Status Checks
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> TerminatingError(): "System error."
+Discovery found 0 tests in 15.39s.
+Running tests.
+Tests completed in 15.39s
+Tests Passed: 0, 
+Failed: 0, 
+Skipped: 0, 
+Inconclusive: 0, 
+
+NotRun: 0
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> git status
+
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> stop-transcript
+**********************
+PowerShell transcript end
+End time: 20260224192159
+**********************
