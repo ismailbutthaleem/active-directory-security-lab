@@ -152,6 +152,13 @@ Configuration StudentBaseline {
                 ProtectedFromAccidentalDeletion = $true
             }
 
+            ADOrganizationalUnit 'OU_UserAccessPlane_Computers' {
+                Name  = 'Computers'
+                Path  = "OU=UserAccessPlane,$($Node.DomainDN)"
+                Ensure = 'Present'
+                ProtectedFromAccidentalDeletion = $true
+            }
+
             ADOrganizationalUnit 'OU_ManagementPlane_AdminUsers' {
                 Name  = 'AdminUsers'
                 Path  = "OU=ManagementPlane,$($Node.DomainDN)"

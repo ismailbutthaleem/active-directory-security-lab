@@ -14,7 +14,7 @@
             InterfaceAlias_Internal = 'Ethernet 2'
             IPv4Address_Internal    = '192.168.56.107'
             PrefixLength_Internal   = 24
-            DnsServers_Internal     = @('127.0.0.1')
+            DnsServers_Internal     = @('192.168.56.107') # Point to itself for DNS resolution
 
             # Network configuration for NAT network
             InterfaceAlias_NAT      = 'Ethernet'
