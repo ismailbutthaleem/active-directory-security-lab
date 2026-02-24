@@ -4,6 +4,7 @@
 # - Security groups exist in correct OUs
 # - DSC-created users exist in correct OUs and are ENABLED (per StudentConfig change)
 # - Security-relevant GPOs exist and are linked to the correct OUs (enabled links)
+#   (checks both direct links and inherited links to avoid false negatives)
 
 Describe 'Student OU Governance Structure' {
 
@@ -131,27 +132,35 @@ Describe 'Student OU Governance Structure' {
         }
 
         It 'Computer baseline GPO should be linked to UserAccessPlane\Computers OU (enabled link)' {
-            $links = (Get-GPInheritance -Target $script:ComputersOU -ErrorAction Stop).GpoLinks
+            $inherit  = Get-GPInheritance -Target $script:ComputersOU -ErrorAction Stop
+            $allLinks = @($inherit.GpoLinks + $inherit.InheritedGpoLinks)
 
-            $link = $links | Where-Object { $_.DisplayName -eq $script:ComputerGpoName } | Select-Object -First 1
+            $link = $allLinks | Where-Object { $_.DisplayName -eq $script:ComputerGpoName } | Select-Object -First 1
             $link | Should -Not -BeNullOrEmpty
             $link.Enabled | Should -BeTrue
         }
 
         It 'User hardening GPO should be linked to UserAccessPlane\Users OU (enabled link)' {
-            $links = (Get-GPInheritance -Target $script:UsersOU -ErrorAction Stop).GpoLinks
+            $inherit  = Get-GPInheritance -Target $script:UsersOU -ErrorAction Stop
+            $allLinks = @($inherit.GpoLinks + $inherit.InheritedGpoLinks)
 
-            $link = $links | Where-Object { $_.DisplayName -eq $script:UserGpoName } | Select-Object -First 1
+            $link = $allLinks | Where-Object { $_.DisplayName -eq $script:UserGpoName } | Select-Object -First 1
             $link | Should -Not -BeNullOrEmpty
             $link.Enabled | Should -BeTrue
         }
 
         It 'GPO links should not be enforced (best practice for scoped OUs)' {
-            $compLinks = (Get-GPInheritance -Target $script:ComputersOU -ErrorAction Stop).GpoLinks
-            $userLinks = (Get-GPInheritance -Target $script:UsersOU -ErrorAction Stop).GpoLinks
+            $compInherit  = Get-GPInheritance -Target $script:ComputersOU -ErrorAction Stop
+            $compAllLinks = @($compInherit.GpoLinks + $compInherit.InheritedGpoLinks)
+            $compLink = $compAllLinks | Where-Object { $_.DisplayName -eq $script:ComputerGpoName } | Select-Object -First 1
+            $compLink | Should -Not -BeNullOrEmpty
+            $compLink.Enforced | Should -BeFalse
 
-            ($compLinks | Where-Object DisplayName -eq $script:ComputerGpoName | Select-Object -First 1).Enforced | Should -BeFalse
-            ($userLinks | Where-Object DisplayName -eq $script:UserGpoName     | Select-Object -First 1).Enforced | Should -BeFalse
+            $userInherit  = Get-GPInheritance -Target $script:UsersOU -ErrorAction Stop
+            $userAllLinks = @($userInherit.GpoLinks + $userInherit.InheritedGpoLinks)
+            $userLink = $userAllLinks | Where-Object { $_.DisplayName -eq $script:UserGpoName } | Select-Object -First 1
+            $userLink | Should -Not -BeNullOrEmpty
+            $userLink.Enforced | Should -BeFalse
         }
     }
 }
