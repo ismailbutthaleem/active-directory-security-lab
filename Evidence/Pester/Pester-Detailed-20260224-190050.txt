@@ -698,3 +698,11 @@ PS C:\Users\Administrator\repo\COM5411-BarmBuzz> git clean -f -x
 
 PS C:\Users\Administrator\repo\COM5411-BarmBuzz> git status
 
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> git commit -m " baseline"
+
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> git add .
+
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> git commit -m " baseline"
+
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> git push
+
