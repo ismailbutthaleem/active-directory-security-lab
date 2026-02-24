@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="89" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="2" invalid="0" date="2026-02-24" time="19:32:34">
+  <environment nunit-version="2.5.8.0" os-version="10.0.26100" machine-name="SERVER25-DC-01" user-domain="BOLTON" cwd="C:\Users\Administrator\repo\COM5411-BarmBuzz" clr-version="9.0.10" platform="Microsoft Windows Server 2025 Datacenter|C:\WINDOWS|\Device\Harddisk0\Partition4" user="Administrator" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Ignored" success="True" time="14.9397" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\ADDS_Promotion.Tests.ps1" executed="True" result="Success" success="True" time="7.0117" asserts="0" description="C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\ADDS_Promotion.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion" executed="True" result="Success" success="True" time="6.8404" asserts="0" description="Active Directory Domain Services (AD DS) Promotion">
+            <results>
+              <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation" executed="True" result="Success" success="True" time="0.0818" asserts="0" description="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation">
+                <results>
+                  <test-case description="Computer has expected name" name="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation.Computer has expected name" time="0.0177" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="AD Domain Services feature is installed" name="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation.AD Domain Services feature is installed" time="0.0073" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="RSAT AD Tools feature is installed" name="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation.RSAT AD Tools feature is installed" time="0.0054" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Internal network adapter is configured with static IP" name="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation.Internal network adapter is configured with static IP" time="0.0226" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="DNS points to localhost (127.0.0.1)" name="Active Directory Domain Services (AD DS) Promotion.Prerequisites and Installation.DNS points to localhost (127.0.0.1)" time="0.0225" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services" executed="True" result="Success" success="True" time="0.136" asserts="0" description="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services">
+                <results>
+                  <test-case description="Active Directory Domain Services is running" name="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services.Active Directory Domain Services is running" time="0.0186" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="DNS Server service is running" name="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services.DNS Server service is running" time="0.0069" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Netlogon service is running" name="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services.Netlogon service is running" time="0.006" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Kerberos Key Distribution Center is running" name="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services.Kerberos Key Distribution Center is running" time="0.0057" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="File Replication Service or DFS Replication is running" name="Active Directory Domain Services (AD DS) Promotion.Domain Controller Services.File Replication Service or DFS Replication is running" time="0.0143" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration" executed="True" result="Success" success="True" time="1.5694" asserts="0" description="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration">
+                <results>
+                  <test-case description="Computer is part of the expected domain" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.Computer is part of the expected domain" time="0.7153" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Domain exists and is accessible" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.Domain exists and is accessible" time="0.3016" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Forest exists and has correct name" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.Forest exists and has correct name" time="0.0603" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Domain has correct NetBIOS name" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.Domain has correct NetBIOS name" time="0.1045" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Forest functional level is modern (2016+)" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.Forest functional level is modern (2016+)" time="0.0546" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Domain functional level is modern (2016+)" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.Domain functional level is modern (2016+)" time="0.1047" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="This computer is a domain controller" name="Active Directory Domain Services (AD DS) Promotion.Domain and Forest Configuration.This computer is a domain controller" time="0.0898" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion.DNS Functionality" executed="True" result="Success" success="True" time="1.8026" asserts="0" description="Active Directory Domain Services (AD DS) Promotion.DNS Functionality">
+                <results>
+                  <test-case description="DNS zones are created for the domain" name="Active Directory Domain Services (AD DS) Promotion.DNS Functionality.DNS zones are created for the domain" time="0.162" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Reverse DNS zone exists for internal subnet or PTR resolution works" name="Active Directory Domain Services (AD DS) Promotion.DNS Functionality.Reverse DNS zone exists for internal subnet or PTR resolution works" time="0.0253" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Domain controller has DNS A record" name="Active Directory Domain Services (AD DS) Promotion.DNS Functionality.Domain controller has DNS A record" time="0.0208" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Domain has NS record pointing to this DC" name="Active Directory Domain Services (AD DS) Promotion.DNS Functionality.Domain has NS record pointing to this DC" time="0.0166" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Can resolve domain name to IP" name="Active Directory Domain Services (AD DS) Promotion.DNS Functionality.Can resolve domain name to IP" time="0.0059" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality" executed="True" result="Success" success="True" time="1.9406" asserts="0" description="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality">
+                <results>
+                  <test-case description="Can query domain users" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality.Can query domain users" time="0.0558" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Built-in Administrator account exists" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality.Built-in Administrator account exists" time="0.0093" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Domain Admins group exists" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality.Domain Admins group exists" time="0.0102" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Default domain containers exist" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality.Default domain containers exist" time="0.029" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="SYSVOL share is accessible" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality.SYSVOL share is accessible" time="0.0229" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="NETLOGON share is accessible" name="Active Directory Domain Services (AD DS) Promotion.Administrative Functionality.NETLOGON share is accessible" time="0.0082" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Active Directory Domain Services (AD DS) Promotion.Health and Status Checks" executed="True" result="Success" success="True" time="2.7942" asserts="0" description="Active Directory Domain Services (AD DS) Promotion.Health and Status Checks">
+                <results>
+                  <test-case description="Event logs show successful promotion" name="Active Directory Domain Services (AD DS) Promotion.Health and Status Checks.Event logs show successful promotion" time="0.0395" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="No recent critical errors in AD logs" name="Active Directory Domain Services (AD DS) Promotion.Health and Status Checks.No recent critical errors in AD logs" time="0.0117" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Domain controller can authenticate itself" name="Active Directory Domain Services (AD DS) Promotion.Health and Status Checks.Domain controller can authenticate itself" time="0.1588" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\Baseline.Tests.ps1" executed="True" result="Success" success="True" time="0.0698" asserts="0" description="C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\Baseline.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Server Baseline Validation" executed="True" result="Success" success="True" time="0.029" asserts="0" description="Server Baseline Validation">
+            <results>
+              <test-case description="Hostname matches declared intent in AllNodes" name="Server Baseline Validation.Hostname matches declared intent in AllNodes" time="0.0093" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Timezone matches declared intent in AllNodes" name="Server Baseline Validation.Timezone matches declared intent in AllNodes" time="0.0043" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Windows Time service is running" name="Server Baseline Validation.Windows Time service is running" time="0.0073" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\Hello.Tests.ps1" executed="True" result="Success" success="True" time="0.0608" asserts="0" description="C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\Hello.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Hello World Test" executed="True" result="Success" success="True" time="0.0096" asserts="0" description="Hello World Test">
+            <results>
+              <test-case description="2 + 2 should equal 4" name="Hello World Test.2 + 2 should equal 4" time="0.0059" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\PreDCPromo.Tests.ps1" executed="True" result="Success" success="True" time="3.3338" asserts="0" description="C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\PreDCPromo.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Pre-DC Readiness (Dual NIC) - localhost" executed="True" result="Success" success="True" time="1.0137" asserts="0" description="Pre-DC Readiness (Dual NIC) - localhost">
+            <results>
+              <test-case description="Internal and NAT adapters exist" name="Pre-DC Readiness (Dual NIC) - localhost.Internal and NAT adapters exist" time="0.0056" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Internal NIC has static IPv4 (Manual prefix origin)" name="Pre-DC Readiness (Dual NIC) - localhost.Internal NIC has static IPv4 (Manual prefix origin)" time="0.0032" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Internal NIC IPv4 address matches AllNodes" name="Pre-DC Readiness (Dual NIC) - localhost.Internal NIC IPv4 address matches AllNodes" time="0.0022" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Internal NIC prefix length matches AllNodes" name="Pre-DC Readiness (Dual NIC) - localhost.Internal NIC prefix length matches AllNodes" time="0.0036" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Internal NIC has NO default gateway (single-gateway rule)" name="Pre-DC Readiness (Dual NIC) - localhost.Internal NIC has NO default gateway (single-gateway rule)" time="0.0034" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="NAT NIC has a default gateway" name="Pre-DC Readiness (Dual NIC) - localhost.NAT NIC has a default gateway" time="0.003" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Internal NIC DNS servers match AllNodes (order-insensitive)" name="Pre-DC Readiness (Dual NIC) - localhost.Internal NIC DNS servers match AllNodes (order-insensitive)" time="0.0037" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="NAT NIC does not register in DNS when DisableDnsRegistrationOnNat is true" name="Pre-DC Readiness (Dual NIC) - localhost.NAT NIC does not register in DNS when DisableDnsRegistrationOnNat is true" time="0.0023" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Internal NIC registers in DNS" name="Pre-DC Readiness (Dual NIC) - localhost.Internal NIC registers in DNS" time="0.0049" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="NAT NIC is DHCP (when Expect_NAT_Dhcp is true)" name="Pre-DC Readiness (Dual NIC) - localhost.NAT NIC is DHCP (when Expect_NAT_Dhcp is true)" time="0.0035" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="AD-Domain-Services is installed when requested" name="Pre-DC Readiness (Dual NIC) - localhost.AD-Domain-Services is installed when requested" time="0.0052" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="RSAT-ADDS is installed when requested" name="Pre-DC Readiness (Dual NIC) - localhost.RSAT-ADDS is installed when requested" time="0.0046" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\Preflight-Environment.Tests.ps1" executed="True" result="Ignored" success="True" time="4.0821" asserts="0" description="C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\Preflight-Environment.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="COM5411 IaC Environment Preflight (Dual-Shell)" executed="True" result="Ignored" success="True" time="4.0331" asserts="0" description="COM5411 IaC Environment Preflight (Dual-Shell)">
+            <results>
+              <test-suite type="TestFixture" name="COM5411 IaC Environment Preflight (Dual-Shell).Entry requirements" executed="True" result="Success" success="True" time="0.0161" asserts="0" description="COM5411 IaC Environment Preflight (Dual-Shell).Entry requirements">
+                <results>
+                  <test-case description="Must be run from PowerShell 7 (pwsh) (this is the orchestration shell)" name="COM5411 IaC Environment Preflight (Dual-Shell).Entry requirements.Must be run from PowerShell 7 (pwsh) (this is the orchestration shell)" time="0.0066" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Should be run as Administrator (recommended for meaningful preflight)" name="COM5411 IaC Environment Preflight (Dual-Shell).Entry requirements.Should be run as Administrator (recommended for meaningful preflight)" time="0.0039" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Repo root contains Run_BuildMain.ps1 (orchestrator)" name="COM5411 IaC Environment Preflight (Dual-Shell).Entry requirements.Repo root contains Run_BuildMain.ps1 (orchestrator)" time="0.0033" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="COM5411 IaC Environment Preflight (Dual-Shell).Diagnostics (support visibility)" executed="True" result="Success" success="True" time="0.3549" asserts="0" description="COM5411 IaC Environment Preflight (Dual-Shell).Diagnostics (support visibility)">
+                <results>
+                  <test-case description="PSModulePath is set in PowerShell 7 (current process)" name="COM5411 IaC Environment Preflight (Dual-Shell).Diagnostics (support visibility).PSModulePath is set in PowerShell 7 (current process)" time="0.0072" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="PSModulePath is set in Windows PowerShell 5.1" name="COM5411 IaC Environment Preflight (Dual-Shell).Diagnostics (support visibility).PSModulePath is set in Windows PowerShell 5.1" time="0.3293" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="COM5411 IaC Environment Preflight (Dual-Shell).Toolchain (PowerShell 7)" executed="True" result="Success" success="True" time="0.385" asserts="0" description="COM5411 IaC Environment Preflight (Dual-Shell).Toolchain (PowerShell 7)">
+                <results>
+                  <test-case description="DSC v3 CLI exists on PATH (dsc.exe)" name="COM5411 IaC Environment Preflight (Dual-Shell).Toolchain (PowerShell 7).DSC v3 CLI exists on PATH (dsc.exe)" time="0.0063" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="PSResourceGet is available (Microsoft.PowerShell.PSResourceGet)" name="COM5411 IaC Environment Preflight (Dual-Shell).Toolchain (PowerShell 7).PSResourceGet is available (Microsoft.PowerShell.PSResourceGet)" time="0.0215" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility)" executed="True" result="Success" success="True" time="3.211" asserts="0" description="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility)">
+                <results>
+                  <test-case description="Canonical module root exists (C:\Program Files\WindowsPowerShell\Modules)" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).Canonical module root exists (C:\Program Files\WindowsPowerShell\Modules)" time="0.0068" asserts="0" success="True" result="Success" executed="True" />
+                  <test-suite type="ParameterizedTest" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).PowerShell 7: &lt;name&gt; is installed and pinned to &lt;ver&gt;" executed="True" result="Success" success="True" time="0.092" asserts="0" description="PowerShell 7: &lt;name&gt; is installed and pinned to &lt;ver&gt;">
+                    <results>
+                      <test-case description="PowerShell 7: ActiveDirectoryDsc is installed and pinned to 6.6.0" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).PowerShell 7: ActiveDirectoryDsc is installed and pinned to 6.6.0" time="0.026" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="PowerShell 7: GroupPolicyDsc is installed and pinned to 1.0.3" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).PowerShell 7: GroupPolicyDsc is installed and pinned to 1.0.3" time="0.0121" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="PowerShell 7: Pester is installed and pinned to 5.7.1" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).PowerShell 7: Pester is installed and pinned to 5.7.1" time="0.0539" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).Windows PowerShell 5.1: &lt;name&gt; is installed, pinned to &lt;ver&gt;, and stored under WindowsPowerShell\Modules" executed="True" result="Success" success="True" time="2.3498" asserts="0" description="Windows PowerShell 5.1: &lt;name&gt; is installed, pinned to &lt;ver&gt;, and stored under WindowsPowerShell\Modules">
+                    <results>
+                      <test-case description="Windows PowerShell 5.1: ActiveDirectoryDsc is installed, pinned to 6.6.0, and stored under WindowsPowerShell\Modules" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).Windows PowerShell 5.1: ActiveDirectoryDsc is installed, pinned to 6.6.0, and stored under WindowsPowerShell\Modules" time="0.7461" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Windows PowerShell 5.1: GroupPolicyDsc is installed, pinned to 1.0.3, and stored under WindowsPowerShell\Modules" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).Windows PowerShell 5.1: GroupPolicyDsc is installed, pinned to 1.0.3, and stored under WindowsPowerShell\Modules" time="0.6693" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Windows PowerShell 5.1: Pester is installed, pinned to 5.7.1, and stored under WindowsPowerShell\Modules" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).Windows PowerShell 5.1: Pester is installed, pinned to 5.7.1, and stored under WindowsPowerShell\Modules" time="0.9344" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).PowerShell 7: &lt;name&gt; is installed and pinned to &lt;ver&gt; (PS7-only)" executed="True" result="Success" success="True" time="0.0295" asserts="0" description="PowerShell 7: &lt;name&gt; is installed and pinned to &lt;ver&gt; (PS7-only)">
+                    <results>
+                      <test-case description="PowerShell 7: PSDesiredStateConfiguration is installed and pinned to 2.0.7 (PS7-only)" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).PowerShell 7: PSDesiredStateConfiguration is installed and pinned to 2.0.7 (PS7-only)" time="0.0295" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).PowerShell 7: &lt;name&gt; is installed" executed="True" result="Success" success="True" time="0.0425" asserts="0" description="PowerShell 7: &lt;name&gt; is installed">
+                    <results>
+                      <test-case description="PowerShell 7: ComputerManagementDsc is installed" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).PowerShell 7: ComputerManagementDsc is installed" time="0.0425" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).Windows PowerShell 5.1: &lt;name&gt; is installed under WindowsPowerShell\Modules" executed="True" result="Success" success="True" time="0.3028" asserts="0" description="Windows PowerShell 5.1: &lt;name&gt; is installed under WindowsPowerShell\Modules">
+                    <results>
+                      <test-case description="Windows PowerShell 5.1: ComputerManagementDsc is installed under WindowsPowerShell\Modules" name="COM5411 IaC Environment Preflight (Dual-Shell).DSC resource modules (pinned + placed for adapter visibility).Windows PowerShell 5.1: ComputerManagementDsc is installed under WindowsPowerShell\Modules" time="0.3028" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="COM5411 IaC Environment Preflight (Dual-Shell).RSAT / admin tooling (AD + GPO management)" executed="True" result="Ignored" success="True" time="3.9055" asserts="0" description="COM5411 IaC Environment Preflight (Dual-Shell).RSAT / admin tooling (AD + GPO management)">
+                <results>
+                  <test-case description="Windows PowerShell 5.1: ActiveDirectory module is available" name="COM5411 IaC Environment Preflight (Dual-Shell).RSAT / admin tooling (AD + GPO management).Windows PowerShell 5.1: ActiveDirectory module is available" time="0.3518" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Windows PowerShell 5.1: GroupPolicy module is available" name="COM5411 IaC Environment Preflight (Dual-Shell).RSAT / admin tooling (AD + GPO management).Windows PowerShell 5.1: GroupPolicy module is available" time="0.3095" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="PowerShell 7: ActiveDirectory module discoverable (informational)" name="COM5411 IaC Environment Preflight (Dual-Shell).RSAT / admin tooling (AD + GPO management).PowerShell 7: ActiveDirectory module discoverable (informational)" time="0.0132" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="PowerShell 7: GroupPolicy module discoverable (informational)" name="COM5411 IaC Environment Preflight (Dual-Shell).RSAT / admin tooling (AD + GPO management).PowerShell 7: GroupPolicy module discoverable (informational)" time="0.0175" asserts="0" success="False" result="Ignored" executed="False" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="COM5411 IaC Environment Preflight (Dual-Shell).WinRM / WS-Man local connectivity (common lab failure)" executed="True" result="Success" success="True" time="3.9647" asserts="0" description="COM5411 IaC Environment Preflight (Dual-Shell).WinRM / WS-Man local connectivity (common lab failure)">
+                <results>
+                  <test-case description="WinRM service exists" name="COM5411 IaC Environment Preflight (Dual-Shell).WinRM / WS-Man local connectivity (common lab failure).WinRM service exists" time="0.0053" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="WinRM should be Running (if not: run Run_BuildMain.ps1 which calls OneShot Network)" name="COM5411 IaC Environment Preflight (Dual-Shell).WinRM / WS-Man local connectivity (common lab failure).WinRM should be Running (if not: run Run_BuildMain.ps1 which calls OneShot Network)" time="0.0032" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="WS-Man should respond locally (Test-WSMan localhost)" name="COM5411 IaC Environment Preflight (Dual-Shell).WinRM / WS-Man local connectivity (common lab failure).WS-Man should respond locally (Test-WSMan localhost)" time="0.0483" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="COM5411 IaC Environment Preflight (Dual-Shell).Developer tooling" executed="True" result="Ignored" success="True" time="4.0285" asserts="0" description="COM5411 IaC Environment Preflight (Dual-Shell).Developer tooling">
+                <results>
+                  <test-case description="Git is installed (git.exe on PATH)" name="COM5411 IaC Environment Preflight (Dual-Shell).Developer tooling.Git is installed (git.exe on PATH)" time="0.0048" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="VS Code installed (code.exe on PATH) [optional]" name="COM5411 IaC Environment Preflight (Dual-Shell).Developer tooling.VS Code installed (code.exe on PATH) [optional]" time="0.056" asserts="0" success="False" result="Ignored" executed="False" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\Template.Tests.ps1" executed="True" result="Success" success="True" time="0.3122" asserts="0" description="C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\Template.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="My Feature Tests" executed="True" result="Success" success="True" time="0.0273" asserts="0" description="My Feature Tests">
+            <results>
+              <test-case description="Example test: PowerShell version is 7+" name="My Feature Tests.Example test: PowerShell version is 7+" time="0.0139" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Example test: Repo root exists" name="My Feature Tests.Example test: Repo root exists" time="0.002" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Example test: Can load AllNodes.psd1" name="My Feature Tests.Example test: Can load AllNodes.psd1" time="0.0075" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Dynamic Test Example" executed="True" result="Success" success="True" time="0.1676" asserts="0" description="Dynamic Test Example">
+            <results>
+              <test-suite type="ParameterizedTest" name="Dynamic Test Example.Module '&lt;_&gt;' should be installed" executed="True" result="Success" success="True" time="0.1352" asserts="0" description="Module '&lt;_&gt;' should be installed">
+                <results>
+                  <test-case description="Module 'Pester' should be installed" name="Dynamic Test Example.Module 'Pester' should be installed" time="0.0747" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Module 'ActiveDirectoryDsc' should be installed" name="Dynamic Test Example.Module 'ActiveDirectoryDsc' should be installed" time="0.0206" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Module 'ComputerManagementDsc' should be installed" name="Dynamic Test Example.Module 'ComputerManagementDsc' should be installed" time="0.0399" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Common Testing Patterns" executed="True" result="Success" success="True" time="0.2466" asserts="0" description="Common Testing Patterns">
+            <results>
+              <test-suite type="TestFixture" name="Common Testing Patterns.File and Directory Tests" executed="True" result="Success" success="True" time="0.02" asserts="0" description="Common Testing Patterns.File and Directory Tests">
+                <results>
+                  <test-case description="Tests a file exists" name="Common Testing Patterns.File and Directory Tests.Tests a file exists" time="0.0148" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Tests a directory exists" name="Common Testing Patterns.File and Directory Tests.Tests a directory exists" time="0.0031" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Common Testing Patterns.Service and Process Tests" executed="True" result="Success" success="True" time="0.0272" asserts="0" description="Common Testing Patterns.Service and Process Tests">
+                <results>
+                  <test-case description="Tests a Windows service status" name="Common Testing Patterns.Service and Process Tests.Tests a Windows service status" time="0.004" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Common Testing Patterns.Network Tests" executed="True" result="Success" success="True" time="0.0569" asserts="0" description="Common Testing Patterns.Network Tests">
+                <results>
+                  <test-case description="Tests network adapter exists" name="Common Testing Patterns.Network Tests.Tests network adapter exists" time="0.0276" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Common Testing Patterns.String and Value Tests" executed="True" result="Success" success="True" time="0.0765" asserts="0" description="Common Testing Patterns.String and Value Tests">
+                <results>
+                  <test-case description="Tests exact string match" name="Common Testing Patterns.String and Value Tests.Tests exact string match" time="0.0028" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Tests string contains pattern" name="Common Testing Patterns.String and Value Tests.Tests string contains pattern" time="0.005" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Tests numeric comparison" name="Common Testing Patterns.String and Value Tests.Tests numeric comparison" time="0.0094" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\Test-ProofOfLife.Tests.ps1" executed="True" result="Success" success="True" time="0.0694" asserts="0" description="C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\Test-ProofOfLife.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Proof-of-Life (DSC created files)" executed="True" result="Success" success="True" time="0.0221" asserts="0" description="Proof-of-Life (DSC created files)">
+            <results>
+              <test-case description="C:\\TEST directory exists" name="Proof-of-Life (DSC created files).C:\\TEST directory exists" time="0.0092" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="C:\\TEST\\test.txt exists" name="Proof-of-Life (DSC created files).C:\\TEST\\test.txt exists" time="0.0026" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="test.txt has expected contents" name="Proof-of-Life (DSC created files).test.txt has expected contents" time="0.007" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
