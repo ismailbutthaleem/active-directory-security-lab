@@ -8,332 +8,362 @@ what was executed (commands)
 
 where evidence is stored (paths)
 
-1. Purpose
+Runbook – Development Log (Student)
 
-This runbook documents the build, validation and operational process of the Enterprise Active Directory Domain Services (AD DS) environment deployed using PowerShell Desired State Configuration (DSC).
+This document records how the environment was actually built, what issues were encountered, how they were resolved, and where evidence was stored.
 
-The environment is designed to:
+This is not the final professional system documentation.
+It reflects the development process and troubleshooting journey.
 
-Automate the full AD build via DSC
+1. Initial Environment Preparation
 
-Enforce a structured OU governance model
+The project started with setting up the Windows Server VM and preparing the networking correctly before attempting any domain promotion.
 
-Provision security groups and users
+The internal adapter was configured with a static IP address. The NAT adapter was left for internet access but later configured not to register in DNS to avoid duplicate or incorrect records.
 
-Apply baseline GPO hardening
+Early on, module installation became the first obstacle.
 
-Validate configuration deterministically using Pester
+2. Module Installation Issues
 
-The configuration can be recompiled and applied at any time to return the system to its defined baseline state.
+Installing required DSC modules using the normal method did not work immediately.
 
-2. Environment Overview
-Component	Description
-Operating System	Windows Server
-Configuration Tool	PowerShell DSC
-Validation Framework	Pester 5
-Domain	bolton.corp
-Domain Controller Role	Single DC deployment
-Network Model	Static internal IP, NAT adapter not registered in DNS
-
-The Domain Controller uses a static internal IP.
-The NAT adapter is configured not to register in DNS to prevent incorrect name resolution entries.
-
-3. Build Procedure
-3.1 Prerequisites
-
-Windows Server installed
-
-Administrative privileges available
-
-Repository cloned locally
-
-Required DSC modules installed (ActiveDirectoryDsc, NetworkingDsc, ComputerManagementDsc)
-
-Execution policy configured to allow script execution
-
-3.2 Compile Configuration
-.\BuildMain.ps1
-
-Compiling the configuration reads data variables from AllNodes.psd1.
-
-In this design:
-
-AllNodes.psd1 defines environment values (IP address, DNS, domain name, node role, etc.)
-
-StudentConfig.ps1 contains the configuration logic
-
-StudentBaseline enforces the desired state using the values defined in AllNodes
-
-In practical terms:
-
-AllNodes defines the configuration values.
-StudentConfig enforces those values through DSC resources.
-
-Compilation produces MOF output in:
-
-.\DSC\Outputs\
-3.3 Apply Configuration
-Start-DscConfiguration -Path .\DSC\Outputs -Wait -Verbose -Force
-
-Running the configuration applies:
-
-Computer renaming
-
-Static IP configuration
-
-DNS configuration
-
-AD DS feature installation
-
-Forest creation
-
-OU creation
-
-Security group provisioning
-
-User provisioning
-
-GPO linking
-
-3.4 Reboot Behaviour
-
-During domain promotion, the system reboots automatically.
-
-If baseline configuration is applied but promotion does not complete during orchestrator execution, a manual restart finalises the promotion process.
-
-4. Validation Procedure
-
-After promotion and baseline enforcement, the system must be validated.
-
-4.1 Tutor Validation Suite
-Invoke-Validation
-
-This executes the full tutor Pester suite from the repository to confirm compliance with required baseline standards.
-
-Expected result:
-
-All tests pass
-
-No failed assertions
-
-4.2 Student Pester Suite
-Invoke-Pester -Path .\Tests\Pester\Student-Pester_ProofOfLife.ps1 -Output Detailed
-
-Expected result:
-
-Passed: 21
-Failed: 0
-
-Validation confirms:
-
-OU governance structure is correct
-
-Security groups are correctly placed
-
-Users are provisioned in correct OUs
-
-GPOs exist and are linked correctly
-
-DNS configuration meets DC best practice
-
-4.3 Evidence Capture
-
-Validation output is captured using:
-
-Start-Transcript -Path .\Evidence\Pester\Pester-Detailed.txt -Force
-Invoke-Pester -Path .\Tests\Pester\Student-Pester_ProofOfLife.ps1 -Output Detailed
-Stop-Transcript
-
-Evidence is stored under:
-
-.\Evidence\Pester\
-
-.\Evidence\Transcripts\
-
-.\DSC\Outputs\
-
-5. Design Decisions
-5.1 OU Governance Model
-
-The directory structure follows a three-plane model:
-
-ControlPlane – Core infrastructure
-
-ManagementPlane – Administrative objects
-
-UserAccessPlane – End-user objects
-
-This separation:
-
-Reduces risk of misconfiguration
-
-Allows clear GPO scoping
-
-Supports administrative delegation
-
-Separates privileged accounts from standard users
-
-5.2 Group Strategy
-
-Global Security Groups are used:
-
-GG-HR-Staff
-
-GG-Finance-Staff
-
-GG-IT-Admins
-
-GG-Server-Admins
-
-Global groups support:
-
-Role-based access control
-
-Alignment with AGDLP model
-
-Scalable future delegation
-
-Access should be assigned to groups, not directly to users.
-
-5.3 GPO Strategy
-
-Two baseline GPOs are implemented:
-
-Computer baseline (Firewall configuration and SMBv1 disabled)
-
-User baseline (Attack surface reduction settings)
-
-GPO links are:
-
-Enabled
-
-Not enforced
-
-Enforcement was avoided to prevent unnecessary precedence override and to maintain layered policy control.
-
-5.4 DNS Configuration
-
-The internal NIC on the Domain Controller is configured to:
-
-127.0.0.1
-
-This ensures:
-
-Local AD-integrated DNS resolution
-
-No dependency on external resolvers
-
-Compliance with Domain Controller best practice
-
-This configuration is validated through Pester testing.
-
-5.5 Idempotence
-
-The DSC configuration is idempotent.
-
-Re-running:
-
-Start-DscConfiguration -Path .\DSC\Outputs -Wait -Verbose
-
-does not recreate objects or introduce duplication if the system state already matches the defined baseline.
-
-Pester validation confirms:
-
-No duplicate objects
-
-No mislinked GPOs
-
-No OU placement errors
-
-6. Weekly Execution Log
-Week 1–2: Environment Preparation
-
-Focus areas:
-
-Windows Server installation
-
-RSAT and required DSC module installation
-
-Network configuration
-
-Repository setup
-
-Module verification
-
-Commands executed included:
+Running:
 
 Install-Module ActiveDirectoryDsc
-Install-Module NetworkingDsc
-Install-Module ComputerManagementDsc
+
+either failed or did not behave as expected.
+
+Issues encountered included:
+
+PowerShellGet not behaving correctly
+
+NuGet provider prompts
+
+Repository trust issues
+
+Modules installing but not being recognised
+
+To resolve this:
+
+TLS 1.2 was enforced
+
+PowerShellGet was updated
+
+Modules were installed using -Scope CurrentUser
+
+In some cases -Force or -AllowClobber was required
+
+Modules were verified using:
+
+Get-Module -ListAvailable
+
+It became clear that simply installing a module does not mean it is available in every shell context.
 
 Evidence stored in:
 
 .\Evidence\Screenshots\
-
 .\Evidence\Transcripts\
+3. PowerShell 7 vs Windows PowerShell Confusion
 
-Week 3: DSC Configuration & Domain Promotion
+Another issue occurred when running AD-related commands.
 
-Focus areas:
+Inside PowerShell 7 (pwsh), commands such as:
 
-Development of StudentConfig.ps1
+Get-ADUser
 
-Structuring of AllNodes.psd1
+were not recognised.
 
-MOF compilation
+However, running the same command inside Windows PowerShell 5.1 (powershell.exe) worked immediately.
 
-Baseline application
+This happened because:
 
-Domain Controller promotion
+The ActiveDirectory module is built for Windows PowerShell
 
-DNS correction to 127.0.0.1
+It is not fully native to PowerShell 7
 
-Initial Pester validation
+Compatibility loading is required
 
-Commands executed:
+The solution was to perform AD management tasks inside Windows PowerShell 5.1.
+
+This clarified the difference between the shells and prevented further confusion during validation.
+
+4. PATH and Shell Recognition Issues
+
+At one stage, pwsh itself was not recognised after installation.
+
+Although PowerShell 7 had been installed, it was not available in PATH.
+
+This caused commands to fail until the system PATH variable was corrected and verified.
+
+Shell context became important throughout development, especially when running DSC and AD cmdlets.
+
+5. Pre-Promotion Troubleshooting Phase
+
+Before domain promotion successfully completed, several environment issues needed to be resolved.
+
+5.1 Network Adapter Confusion
+
+There was confusion between:
+
+Host-only adapter (internal)
+
+NAT adapter (internet)
+
+Which adapter DNS should point to
+
+Why 127.0.0.1 appeared in some outputs
+
+Key clarifications:
+
+The internal adapter must use a static IP
+
+The Domain Controller must point to itself for DNS
+
+NAT adapter should not register in DNS
+
+DNS was validated using:
+
+dcdiag /test:dns
+
+After adjusting adapter settings, name resolution stabilised.
+
+5.2 AD DS Role vs Promotion
+
+There was initial confusion between:
+
+Installing AD DS role
+
+Promoting the server to a Domain Controller
+
+Checking:
+
+Get-WindowsFeature AD-Domain-Services
+
+showed the role was installed, but that does not mean the server is a DC.
+
+Promotion is triggered during the DSC configuration stage.
+
+This distinction became clearer after reviewing the sequence of events during BuildMain.
+
+6. First Successful Domain Promotion
+
+Running:
 
 .\BuildMain.ps1
 Start-DscConfiguration -Path .\DSC\Outputs -Wait -Verbose -Force
-Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses 127.0.0.1
-Invoke-Validation
 
-Evidence stored in:
+initiated the full configuration.
 
-.\DSC\Outputs\
+During promotion, the server rebooted automatically as expected.
+
+However, post-reboot, another issue appeared.
+
+7. Network Profile Conflict After Promotion
+
+After promotion, the network profile changed to DomainAuthenticated.
+
+DSC was still attempting to enforce a Private profile.
+
+Running:
+
+Get-NetConnectionProfile
+
+confirmed that the profile could not be changed manually.
+
+This caused the DSC configuration to fail.
+
+Resolution involved adjusting the network configuration logic so it would not attempt to change the profile after promotion.
+
+After modification, the configuration completed successfully.
+
+8. AD Cmdlet Not Recognised During Build
+
+While running BuildMain, errors appeared suggesting that AD commands such as Get-ADUser were not recognised.
+
+This was traced back to shell usage.
+
+The commands were being executed in PowerShell 7 instead of Windows PowerShell 5.1.
+
+Switching to Windows PowerShell resolved the issue.
+
+Module availability was confirmed using:
+
+Get-Module -ListAvailable ActiveDirectory
+9. User Account Enablement and Password Complexity Issue
+
+During domain promotion and early validation, an issue occurred where DSC reported that the password did not meet complexity requirements.
+
+The error appeared during the user provisioning stage while running:
+
+.\BuildMain.ps1
+
+The configuration would fail with a message indicating that the supplied password did not satisfy domain password policy requirements.
+
+Initially, the assumption was that password policy settings inside Active Directory were preventing user creation. Attempts were made to review and adjust password-related settings within AD.
+
+However, the issue was not caused by domain password policy.
+
+After reviewing the configuration file, it was identified that the line:
+
+Enabled = $true
+
+was missing from the user resource definition in the DSC configuration.
+
+This meant:
+
+The user object was being created
+
+But not explicitly enabled in the configuration
+
+Leading to inconsistent state during validation
+
+After correcting the configuration and ensuring Enabled = $true was included for the user resource, DSC completed successfully and domain promotion finalised correctly.
+
+Post-Promotion Validation Issue
+
+After successful promotion and configuration completion, validation was performed using:
+
+Get-ADUser -Identity <Username> -Properties Enabled
+
+The result returned:
+
+Enabled : False
+
+Even though the desired state specified the account should be enabled.
+
+Attempting to enable the user manually using:
+
+Enable-ADAccount -Identity <Username>
+
+resulted in an error stating that the account required a password before it could be enabled.
+
+This clarified that:
+
+An AD user cannot be enabled without a valid password
+
+DSC desired state alone does not override AD security requirements
+
+Password must be set before enabling the account
+
+The issue was resolved by setting a compliant password:
+
+Set-ADAccountPassword -Identity <Username> -Reset -NewPassword (ConvertTo-SecureString "Bolton!1" -AsPlainText -Force)
+Enable-ADAccount -Identity <Username>
+
+After this, validation using:
+
+Get-ADUser -Identity <Username> -Properties Enabled
+
+returned:
+
+Enabled : True
+Security Consideration
+
+Hardcoding passwords directly inside the DSC configuration file was avoided.
+
+Instead, passwords were set within the Active Directory environment after promotion.
+
+This approach:
+
+Avoided storing plaintext credentials in configuration
+
+Reduced exposure of sensitive data
+
+Aligned more closely with security best practices
+
+This issue highlighted the interaction between:
+
+Domain password complexity rules
+
+Account state (Enabled vs Disabled)
+
+DSC desired configuration
+
+Active Directory enforcement behaviour
+
+10. Custom Pester GPO Link Failure
+
+During execution of the custom student Pester suite, an assertion failure reported that a GPO was not linked to the expected OU.
+
+The test was checking:
+
+GPO existence
+
+Correct OU scope
+
+Link status
+
+Investigation involved checking:
+
+Get-GPInheritance -Target "OU=UserAccessPlane,DC=bolton,DC=corp"
+
+It was confirmed that the GPO was either linked at the wrong level or not linked directly.
+
+The link was corrected to the appropriate OU and verified as Enabled.
+
+After correction, Pester was re-run and passed successfully.
+
+This reinforced the importance of validating scope, not just existence.
+
+11. GPG Commit Signing Issue
+
+When configuring Git commit signing, the original GPG key was unusable because the passphrase had not been saved securely.
+
+This prevented signed commits from functioning.
+
+A new GPG key was generated and configured with:
+
+git config --global user.signingkey <keyID>
+git config --global commit.gpgsign true
+
+This was important for:
+
+Validating commit authorship
+
+Following industry best practice
+
+Supporting provenance requirements
+
+After configuration, signed commits worked correctly.
+
+12. Idempotence Verification
+
+After stabilising the build, the configuration was re-run:
+
+Start-DscConfiguration -Path .\DSC\Outputs -Wait -Verbose
+
+No duplicate OUs, users, or groups were created.
+
+Pester validation confirmed the system remained compliant with the defined baseline.
+
+This confirmed that the configuration converges correctly.
+
+13. Evidence Storage
+
+Throughout development, evidence was stored under:
 
 .\Evidence\Pester\
-
 .\Evidence\Transcripts\
+.\Evidence\HealthChecks\
+.\DSC\Outputs\
+.\Evidence\Screenshots\
 
-Week 4: AD Baseline Stabilisation & Final Validation
+Both tutor and student Pester suites passed in the final stable state.
 
-Focus areas:
+Final State
 
-Final OU governance confirmation
+Domain bolton.corp deployed
 
-Group placement validation
+OU governance model applied
 
-GPO link verification
+Security groups provisioned
 
-Full tutor and student Pester validation
+Users created
 
-Final evidence capture
+Baseline GPOs linked correctly
 
-Commands executed:
+DNS stabilised
 
-Invoke-Validation
-Invoke-Pester -Path .\Tests\Pester\Student-Pester_ProofOfLife.ps1 -Output Detailed
+Custom and tutor Pester suites passing
 
-Final state:
-
-All tutor tests passed
-
-All student tests passed
-
-AD baseline compliant
-
-Evidence stored in:
-
-.\Evidence\Pester\Pester-Detailed.txt
-
-.\Evidence\Pester\Pester-Results.xm
+Configuration re-run safe
