@@ -35,6 +35,38 @@
             DomainDN = 'DC=bolton,DC=corp'
             ForestMode        = 'WinThreshold'
             DomainMode        = 'WinThreshold'
+
+            # OUs List
+
+            OUList = @(
+                @{ Name='ControlPlane'    ; Path=$null },
+                @{ Name='ManagementPlane' ; Path=$null },
+                @{ Name='UserAccessPlane' ; Path=$null },
+
+                @{ Name='Users'     ; Path='OU=UserAccessPlane' },
+                @{ Name='Groups'    ; Path='OU=UserAccessPlane' },
+                @{ Name='Computers' ; Path='OU=UserAccessPlane' },
+
+                @{ Name='AdminUsers'; Path='OU=ManagementPlane' },
+                @{ Name='Groups'    ; Path='OU=ManagementPlane' }
+        )
+            # Security Groups List
+
+            Groups = @(
+                @{ GroupName='GG-HR-Staff'      ; Path='OU=Groups,OU=UserAccessPlane' ; Scope='Global'; Category='Security' },
+                @{ GroupName='GG-Finance-Staff' ; Path='OU=Groups,OU=UserAccessPlane' ; Scope='Global'; Category='Security' },
+                @{ GroupName='GG-IT-Admins'     ; Path='OU=Groups,OU=ManagementPlane' ; Scope='Global'; Category='Security' },
+                @{ GroupName='GG-Server-Admins' ; Path='OU=Groups,OU=ManagementPlane' ; Scope='Global'; Category='Security' }
+            )
+
+            # Users List ( Password must be configured in AD)
+
+            Users = @(
+                @{ UserName='adam.khan'    ; Path='OU=Users,OU=UserAccessPlane'      ; Enabled=$true  ; MemberOf=@('GG-Finance-Staff') },
+                @{ UserName='katy.smith'   ; Path='OU=Users,OU=UserAccessPlane'      ; Enabled=$true  ; MemberOf=@('GG-HR-Staff') },
+                @{ UserName='ismail.admin' ; Path='OU=AdminUsers,OU=ManagementPlane' ; Enabled=$true  ; MemberOf=@('GG-IT-Admins') },
+                @{ UserName='paul.evans'   ; Path='OU=AdminUsers,OU=ManagementPlane' ; Enabled=$true  ; MemberOf=@('GG-Server-Admins') }
+            )
             # SafeModeAdministratorPassword is required for domain join and Active Directory installation
             Features = @{
                 Add = @('AD-Domain-Services','DNS')

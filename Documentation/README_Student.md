@@ -388,3 +388,196 @@ Add this near the end:
 The validation suite is structured to test multiple categories of the environment, including domain state, OU structure, security group placement, user provisioning, GPO linking and DNS configuration. This ensures that the baseline is assessed as a complete system rather than in isolation.
 
 Validation can be executed repeatedly after configuration runs to confirm that no drift has occurred and that the environment remains compliant with the defined state.
+
+8. Security Considerations
+
+8.1 Credentials Hardening
+
+Credential management is not handled directly by DSC in the deployment of this environment. This decision aligns with best security practices, as sensitive data such as passwords should never be stored in plain text within configuration files. Instead, PSCredential objects are used to pass password values during Active Directory setup, but these credentials are not hardcoded anywhere.
+
+MOF files are generated artifacts that should not contain or expose any credentials. If exposed, these could allow a threat actor to modify, disrupt, or compromise the system.
+
+The Local Configuration Manager (LCM) reads the MOF files and enforces the defined configuration locally. No external sources or credential management systems are used to read or deploy the desired configuration in this lab environment.
+
+Considerations for Production-level Security:
+In a production environment, certificate-based MOF encryption and integration with a secure vault (e.g., Azure Key Vault) would be implemented for enhanced security, ensuring credentials are protected at all times.
+
+8.2 DNS Security and Network Exposure
+
+For the deployment of this environment, two NICs have been configured: NAT and Host-Only.
+
+The NAT NIC is required for both the Domain Controller (DC) and the development machine (Dev) to download updates or access external resources.
+
+The Host-Only adapter is used specifically for DNS resolution. The DC uses the loopback address of this adapter to resolve DNS queries. Clients can only join the domain if they share the same local network adapter.
+
+NAT is disabled for DNS registration to enhance security by isolating the DC from the external network. This prevents potential threats like DNS spoofing, caching poisoning, or other man-in-the-middle attacks.
+
+This setup ensures that only authorized and trusted machines can join the domain and query DNS, significantly reducing the risk of unauthorized access.
+
+8.3 OU and Delegation Design Intent
+
+The OU structure is split into three sections:
+
+Control Plane: Contains critical assets like the Domain Controller (DC) and related administrative policies.
+
+Management Plane: Houses IT admins and privileged accounts, but these are scoped outside of domain-level policies.
+
+User Access Plane: Covers user endpoints, clients, and service accounts with restricted privileges.
+
+The purpose of this structure is to apply GPOs and delegation logically, ensuring that policies only impact the intended objects. This setup follows the least privilege model, granting only the necessary permissions for each group or OU, preventing unnecessary access or conflicts across different objects.
+
+8.4 RBAC Design
+
+RBAC is implemented based on the least privilege principle. The security groups reflect necessary roles within the organization, and permissions are assigned to these groups, not individual users.
+
+Key security groups:
+
+GG-IT-Admins: Full administrative access to the IT infrastructure.
+
+GG-HR-Staff: Access to HR-related resources with no admin rights.
+
+GG-Server-Admins: Admin access to server resources.
+
+Security Group Usage
+
+To give users outside an OU the ability to perform privileged tasks, a security group is created and added to the OU's permissions.
+
+For example, if a user from the User Access Plane needs access to resources in the Computers OU:
+
+A security group like GG-Computer-Admins is created.
+
+The user is added to this group.
+
+The group is granted the necessary permissions.
+
+This ensures that access is specific and controlled, keeping the environment secure while enabling required actions without over-privileging users.
+
+8.6 Explicit Trade-Offs Made for Lab Realism vs Enterprise Practice
+Trade-Off 1: Use of a Single Domain Controller
+
+Only one Domain Controller (DC) is deployed because higher-level complexity is not required for the scope of this project demonstration. This increases simplicity, reduces configuration overhead, and allows controlled testing of the automation workflow.
+
+In an enterprise environment, multiple Domain Controllers would be deployed to eliminate a single point of failure, provide redundancy, improve fault tolerance, and support scalability. Active Directory replication between DCs would ensure directory consistency and availability across the network. The lab design prioritises clarity and reproducibility over high availability.
+
+Trade-Off 2: Limited GPO Depth
+
+The GPO configuration implemented in this lab is security-relevant and functions as intended, however it does not reflect the depth expected in a production enterprise environment.
+
+In a real-world infrastructure, GPO design would be significantly more layered and structured. Additional policies would typically include:
+
+Advanced auditing
+
+Security baselines aligned to frameworks (e.g., CIS)
+
+Password complexity enforcement for privileged accounts
+
+WMI filtering for precise targeting
+
+Layered inheritance strategies
+
+In this lab, GPOs are intentionally scoped only to the relevant OUs to demonstrate policy targeting and avoid over-complication. The objective is to prove correct linkage and enforcement, not to implement a full enterprise governance framework.
+
+Trade-Off 3: DNS Architecture
+
+In this lab environment, DNS is hosted on the single Domain Controller. This is sufficient to demonstrate the relationship between DNS, clients, and Active Directory name resolution.
+
+In an enterprise infrastructure, DNS redundancy is required to avoid a single point of failure and to support load balancing. Multiple DNS servers would be deployed, often across different sites, with replication and potentially conditional forwarders or split-DNS configurations. The lab environment simplifies DNS to focus on functional correctness rather than infrastructure resilience.
+
+9. Evidence Mapping
+
+9.1 Domain Controller Build & Automation
+
+DC promoted using DSC via Run_BuildMain.ps1	
+Evidence/Transcripts/20260225_000339_Run_BuildMain.txt
+
+DSC configuration compiled successfully	
+Evidence/DSC/BuildMain-Compile.txt
+
+MOF generated for StudentBaseline	
+DSC/Outputs/StudentBaseline/localhost.mof
+
+Idempotent re-run confirmed	
+Evidence/Transcripts/20260225_000339_Run_BuildMain.txt
+
+9.2 Active Directory Health & Core Services
+
+Domain information validated 
+Evidence/HealthChecks/domain_info.txt
+
+Forest information validated
+Evidence/HealthChecks/forest_info.txt
+
+DC health verified (dcdiag)
+Evidence/AD/dcdiag_output.txt
+
+Kerberos functioning
+Evidence/HealthChecks/Kerberos_info.txt
+
+Windows Time service verified
+Evidence/HealthChecks/Windows_Time_Service_info.txt
+
+9.3 OU Structure & Governance Model
+
+ControlPlane, ManagementPlane, UserAccessPlane exist
+Evidence/HealthChecks/ou_listing.txt
+
+Sub-OUs (Users, Groups, Computers, AdminUsers) created
+Evidence/HealthChecks/ou_listing.txt
+
+9.4 Group Policy Design & Enforcement
+
+User hardening GPO created and backed up 
+Evidence/GPOBackups/
+
+Computer baseline GPO created and backed up
+Evidence/GPOBackups/
+
+Computer GPO applied successfully
+Evidence/HealthChecks/gpresult_computer.txt
+
+User GPO applied successfully
+Evidence/HealthChecks/gpresult_user.txt
+
+9.5 DNS & Network Validation
+
+DNS zone information verified
+Evidence/HealthChecks/DNS_Records_info.txt
+
+Global DNS records verified	
+Evidence/HealthChecks/DNS_Records_Global_info.txt
+
+Network configuration verified
+Evidence/Network/*_ipconfig.txt
+
+9.6 Validation & Testing (Pester)
+
+Tutor baseline tests pass
+Evidence/Pester/PesterResults_20260224_193234.xml
+
+Student tests validate OU and RBAC 
+Evidence/Pester/Pester_RBAC_Groups.txt
+
+Detailed Pester execution log
+Evidence/Pester/Pester-Detailed-20260224-192037.txt
+
+9.7 Provenance & Academic Integrity
+
+AI usage declared 
+Evidence/AI_LOG/AI-Usage.md
+
+Git reflog captured	
+Evidence/Git/Reflog/
+
+This implementation prioritises automation clarity and reproducibility over enterprise-scale resilience.
+
+A single Domain Controller is deployed; no replication or multi-DC failover is demonstrated.
+
+DNS is hosted on the DC and is not redundant.
+
+GPO design demonstrates correct targeting and enforcement but does not represent a full enterprise security baseline.
+
+No multi-site topology or WAN replication scenario is implemented.
+
+Secret management is handled via PSCredential objects; certificate-based MOF encryption is not configured.
+
+These constraints reflect the scope of the lab environment rather than a production deployment model.
