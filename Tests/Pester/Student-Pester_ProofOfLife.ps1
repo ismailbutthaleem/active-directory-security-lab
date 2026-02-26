@@ -5,7 +5,7 @@
 # - DSC-created users exist in correct OUs and are ENABLED
 # - Security-relevant GPOs exist and are linked to the correct OUs (enabled links)
 #   (checks both direct links and inherited links to avoid false negatives)
-#
+# Checks correct membership of users in security groups to validate DSC provisioning and RBAC design
 # FIX:
 # - GroupPolicy loads via WinPSCompatSession -> deserialized objects
 # - Therefore we normalize GUID strings before comparing GpoId to GPO.Id
@@ -33,8 +33,6 @@ Describe 'Student OU Governance Structure' {
 
         function Normalize-GuidString {
             param([Parameter(Mandatory)][object]$Value)
-
-            # Convert anything (Guid, string, deserialized) to "guid" lowercase without braces
             $s = [string]$Value
             $s = $s.Trim()
             $s = $s.TrimStart('{').TrimEnd('}')
@@ -55,7 +53,6 @@ Describe 'Student OU Governance Structure' {
             $links   = @($inherit.GpoLinks + $inherit.InheritedGpoLinks)
 
             $match = $links | Where-Object {
-                # Some deserialized objects may still have GpoId but as string/wrapper
                 $linkGuid = Normalize-GuidString $_.GpoId
                 $linkGuid -eq $gpoGuid
             } | Select-Object -First 1
@@ -187,6 +184,30 @@ Describe 'Student OU Governance Structure' {
             $userLink = Find-GpoLink -TargetDn $script:UsersOU -GpoDisplayName $script:UserGpoName
             $userLink | Should -Not -BeNullOrEmpty
             $userLink.Enforced | Should -BeFalse
+        }
+    }
+
+    # ---------- Memberships ----------
+    Describe 'RBAC Group Memberships' {
+
+        It 'katy.smith should be a member of GG-HR-Staff' {
+            $m = Get-ADGroupMember -Identity 'GG-HR-Staff' -Recursive | Where-Object { $_.SamAccountName -eq 'katy.smith' }
+            $m | Should -Not -BeNullOrEmpty
+        }
+
+        It 'adam.khan should be a member of GG-Finance-Staff' {
+            $m = Get-ADGroupMember -Identity 'GG-Finance-Staff' -Recursive | Where-Object { $_.SamAccountName -eq 'adam.khan' }
+            $m | Should -Not -BeNullOrEmpty
+        }
+
+        It 'ismail.admin should be a member of GG-IT-Admins' {
+            $m = Get-ADGroupMember -Identity 'GG-IT-Admins' -Recursive | Where-Object { $_.SamAccountName -eq 'ismail.admin' }
+            $m | Should -Not -BeNullOrEmpty
+        }
+
+        It 'paul.evans should be a member of GG-Server-Admins' {
+            $m = Get-ADGroupMember -Identity 'GG-Server-Admins' -Recursive | Where-Object { $_.SamAccountName -eq 'paul.evans' }
+            $m | Should -Not -BeNullOrEmpty
         }
     }
 }
