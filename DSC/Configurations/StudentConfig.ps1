@@ -135,7 +135,9 @@ Configuration StudentBaseline {
             # ---------- Groups (Data-driven) ----------
             foreach ($g in $node.Groups) {
 
-                ADGroup "Group_$($g.GroupName)" {
+                $safeGrp = ($g.GroupName -replace '[^a-zA-Z0-9]', '_')
+
+                ADGroup "Group_$safeGrp" {
                     GroupName  = $g.GroupName
                     GroupScope = $g.Scope
                     Category   = $g.Category
@@ -148,13 +150,36 @@ Configuration StudentBaseline {
             # ---------- Users (Data-driven) ----------
             foreach ($u in $node.Users) {
 
-                ADUser "User_$($u.UserName)" {
+                $safeUser = ($u.UserName -replace '[^a-zA-Z0-9]', '_')
+
+                ADUser "User_$safeUser" {
                     DomainName = $Node.DomainName
                     UserName   = $u.UserName
                     Path       = "$($u.Path),$($Node.DomainDN)"
                     Ensure     = 'Present'
                     Enabled    = [bool]$u.Enabled
                     DependsOn  = '[ADDomain]CreateForest'
+                }
+            }
+
+            # ---------- Memberships (Data-driven) ----------
+            foreach ($u in $node.Users) {
+
+                $safeUser = ($u.UserName -replace '[^a-zA-Z0-9]', '_')
+
+                foreach ($grp in ($u.MemberOf | Where-Object { $_ })) {
+
+                    $safeGrp = ($grp -replace '[^a-zA-Z0-9]', '_')
+
+                    ADGroupMember "Member_${safeUser}_To_${safeGrp}" {
+                        GroupName        = $grp
+                        MembersToInclude = @($u.UserName)
+                        Ensure           = 'Present'
+                        DependsOn        = @(
+                            "[ADUser]User_$safeUser",
+                            "[ADGroup]Group_$safeGrp"
+                        )
+                    }
                 }
             }
         }
