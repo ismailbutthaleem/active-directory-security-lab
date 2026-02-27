@@ -1,17 +1,17 @@
 /*
 @TargetNode='localhost'
 @GeneratedBy=Administrator
-@GenerationDate=02/25/2026 00:03:51
+@GenerationDate=02/27/2026 00:04:56
 @GenerationHost=SERVER25-DC-01
 */
 
 instance of MSFT_FileDirectoryConfiguration as $MSFT_FileDirectoryConfiguration1ref
 {
-ResourceID = "[File]TestFolder";
- Ensure = "Present";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::40::9::File";
+SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::40::9::File";
+ ResourceID = "[File]TestFolder";
  ModuleName = "PSDesiredStateConfiguration";
  DestinationPath = "C:\\TEST";
+ Ensure = "Present";
  Type = "Directory";
 
 ModuleVersion = "1.0";
@@ -20,11 +20,11 @@ ModuleVersion = "1.0";
 instance of MSFT_FileDirectoryConfiguration as $MSFT_FileDirectoryConfiguration2ref
 {
 Contents = "Proof-of-life: DSC created this file.";
- ResourceID = "[File]TestFile";
- Ensure = "Present";
  SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::46::9::File";
+ ResourceID = "[File]TestFile";
  ModuleName = "PSDesiredStateConfiguration";
  DestinationPath = "C:\\TEST\\test.txt";
+ Ensure = "Present";
  Type = "File";
 
 ModuleVersion = "1.0";
@@ -36,29 +36,29 @@ instance of DSC_Computer as $DSC_Computer1ref
 {
 ModuleVersion = "10.0.0";
  Name = "SERVER25-DC-01";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::54::9::Computer";
+ ModuleName = "ComputerManagementDsc";
  ResourceID = "[Computer]SetComputerName";
- ModuleName = "ComputerManagementDsc";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::54::9::Computer";
  ConfigurationName = "StudentBaseline";
 };
 instance of DSC_TimeZone as $DSC_TimeZone1ref
 {
-ResourceID = "[TimeZone]SetTimeZone";
- ModuleVersion = "10.0.0";
+IsSingleInstance = "Yes";
  SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::58::9::TimeZone";
+ ResourceID = "[TimeZone]SetTimeZone";
  ModuleName = "ComputerManagementDsc";
- IsSingleInstance = "Yes";
- TimeZone = "GMT Standard Time";
+ TimeZone = "GMT Standard Time";
+ ModuleVersion = "10.0.0";
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_ServiceResource as $MSFT_ServiceResource1ref
 {
-State = "Running";
- Name = "W32Time";
- StartupType = "Automatic";
- ResourceID = "[Service]WindowsTime";
+Name = "W32Time";
  SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::63::9::Service";
+ ResourceID = "[Service]WindowsTime";
  ModuleName = "PsDesiredStateConfiguration";
+ State = "Running";
+ StartupType = "Automatic";
 
 ModuleVersion = "1.0";
 DependsOn = {
@@ -68,10 +68,10 @@ DependsOn = {
 instance of MSFT_RoleResource as $MSFT_RoleResource1ref
 {
 Name = "AD-Domain-Services";
- ResourceID = "[WindowsFeature]ADDS";
- Ensure = "Present";
  SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::70::9::WindowsFeature";
+ ResourceID = "[WindowsFeature]ADDS";
  ModuleName = "PsDesiredStateConfiguration";
+ Ensure = "Present";
 
 ModuleVersion = "1.0";
  ConfigurationName = "StudentBaseline";
@@ -79,10 +79,10 @@ ModuleVersion = "1.0";
 instance of MSFT_RoleResource as $MSFT_RoleResource2ref
 {
 Name = "RSAT-ADDS";
- ResourceID = "[WindowsFeature]RSATADDS";
- Ensure = "Present";
  SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::75::9::WindowsFeature";
+ ResourceID = "[WindowsFeature]RSATADDS";
  ModuleName = "PsDesiredStateConfiguration";
+ Ensure = "Present";
 
 ModuleVersion = "1.0";
 DependsOn = {
@@ -91,16 +91,16 @@ DependsOn = {
 };
 instance of DSC_IPAddress as $DSC_IPAddress1ref
 {
-IPAddress = {
-    "192.168.56.107/24"
-};
- KeepExistingAddress = False;
- AddressFamily = "IPv4";
- ResourceID = "[IPAddress]StaticIPv4";
- ModuleVersion = "9.1.0";
+KeepExistingAddress = False;
  SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::81::9::IPAddress";
+ ResourceID = "[IPAddress]StaticIPv4";
  ModuleName = "NetworkingDsc";
  InterfaceAlias = "Ethernet 2";
+ AddressFamily = "IPv4";
+ ModuleVersion = "9.1.0";
+ IPAddress = {
+    "192.168.56.107/24"
+};
 
 DependsOn = {
     "[Computer]SetComputerName"};
@@ -108,15 +108,15 @@ DependsOn = {
 };
 instance of DSC_DnsServerAddress as $DSC_DnsServerAddress1ref
 {
-AddressFamily = "IPv4";
+SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::89::9::DnsServerAddress";
  ResourceID = "[DnsServerAddress]InternalDNS";
- ModuleVersion = "9.1.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::89::9::DnsServerAddress";
  ModuleName = "NetworkingDsc";
- InterfaceAlias = "Ethernet 2";
  Address = {
     "127.0.0.1"
 };
+ InterfaceAlias = "Ethernet 2";
+ AddressFamily = "IPv4";
+ ModuleVersion = "9.1.0";
 
 DependsOn = {
     "[IPAddress]StaticIPv4"};
@@ -124,13 +124,13 @@ DependsOn = {
 };
 instance of DSC_DnsConnectionSuffix as $DSC_DnsConnectionSuffix1ref
 {
-RegisterThisConnectionsAddress = False;
+SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::96::9::DnsConnectionSuffix";
  ResourceID = "[DnsConnectionSuffix]DisableNatDnsRegistration";
- ConnectionSpecificSuffix = "nat";
- ModuleVersion = "9.1.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::96::9::DnsConnectionSuffix";
  ModuleName = "NetworkingDsc";
  InterfaceAlias = "Ethernet";
+ RegisterThisConnectionsAddress = False;
+ ConnectionSpecificSuffix = "nat";
+ ModuleVersion = "9.1.0";
 
 DependsOn = {
     "[DnsServerAddress]InternalDNS"};
@@ -138,30 +138,30 @@ DependsOn = {
 };
 instance of MSFT_Credential as $MSFT_Credential1ref
 {
-Password = "Ittaniga";
- UserName = "Administrator";
+UserName = "Administrator";
+ Password = "Ittaniga";
 
 };
 
 instance of MSFT_Credential as $MSFT_Credential2ref
 {
-Password = "Ittaniga!1";
- UserName = "Administrator";
+UserName = "Administrator";
+ Password = "Ittaniga!1";
 
 };
 
 instance of MSFT_ADDomain as $MSFT_ADDomain1ref
 {
-ForestMode = "WinThreshold";
- DomainMode = "WinThreshold";
- DomainNetBiosName = "BOLTON";
- ResourceID = "[ADDomain]CreateForest";
- ModuleVersion = "6.6.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::103::9::ADDomain";
- ModuleName = "ActiveDirectoryDsc";
+DomainName = "bolton.corp";
  Credential = $MSFT_Credential1ref;
- DomainName = "bolton.corp";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::103::9::ADDomain";
+ ResourceID = "[ADDomain]CreateForest";
+ ModuleName = "ActiveDirectoryDsc";
+ ForestMode = "WinThreshold";
+ DomainNetBiosName = "BOLTON";
  SafeModeAdministratorPassword = $MSFT_Credential2ref;
+ DomainMode = "WinThreshold";
+ ModuleVersion = "6.6.0";
 
 DependsOn = {
     "[WindowsFeature]RSATADDS"};
@@ -169,14 +169,14 @@ DependsOn = {
 };
 instance of MSFT_ADOrganizationalUnit as $MSFT_ADOrganizationalUnit1ref
 {
-ProtectedFromAccidentalDeletion = True;
- Name = "ControlPlane";
- ResourceID = "[ADOrganizationalUnit]OU_ControlPlane";
- Ensure = "Present";
- ModuleVersion = "6.6.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::117::13::ADOrganizationalUnit";
+Name = "ControlPlane";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::126::17::ADOrganizationalUnit";
+ ResourceID = "[ADOrganizationalUnit]OU_ControlPlane_379213000";
+ ProtectedFromAccidentalDeletion = True;
  ModuleName = "ActiveDirectoryDsc";
+ Ensure = "Present";
  Path = "DC=bolton,DC=corp";
+ ModuleVersion = "6.6.0";
 
 DependsOn = {
     "[ADDomain]CreateForest"};
@@ -184,14 +184,14 @@ DependsOn = {
 };
 instance of MSFT_ADOrganizationalUnit as $MSFT_ADOrganizationalUnit2ref
 {
-ProtectedFromAccidentalDeletion = True;
- Name = "ManagementPlane";
- ResourceID = "[ADOrganizationalUnit]OU_ManagementPlane";
- Ensure = "Present";
- ModuleVersion = "6.6.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::125::13::ADOrganizationalUnit";
+Name = "ManagementPlane";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::126::17::ADOrganizationalUnit";
+ ResourceID = "[ADOrganizationalUnit]OU_ManagementPlane_379213000";
+ ProtectedFromAccidentalDeletion = True;
  ModuleName = "ActiveDirectoryDsc";
+ Ensure = "Present";
  Path = "DC=bolton,DC=corp";
+ ModuleVersion = "6.6.0";
 
 DependsOn = {
     "[ADDomain]CreateForest"};
@@ -199,14 +199,14 @@ DependsOn = {
 };
 instance of MSFT_ADOrganizationalUnit as $MSFT_ADOrganizationalUnit3ref
 {
-ProtectedFromAccidentalDeletion = True;
- Name = "UserAccessPlane";
- ResourceID = "[ADOrganizationalUnit]OU_UserAccessPlane";
- Ensure = "Present";
- ModuleVersion = "6.6.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::133::13::ADOrganizationalUnit";
+Name = "UserAccessPlane";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::126::17::ADOrganizationalUnit";
+ ResourceID = "[ADOrganizationalUnit]OU_UserAccessPlane_379213000";
+ ProtectedFromAccidentalDeletion = True;
  ModuleName = "ActiveDirectoryDsc";
+ Ensure = "Present";
  Path = "DC=bolton,DC=corp";
+ ModuleVersion = "6.6.0";
 
 DependsOn = {
     "[ADDomain]CreateForest"};
@@ -214,166 +214,217 @@ DependsOn = {
 };
 instance of MSFT_ADOrganizationalUnit as $MSFT_ADOrganizationalUnit4ref
 {
-ProtectedFromAccidentalDeletion = True;
- Name = "Users";
- ResourceID = "[ADOrganizationalUnit]OU_UserAccessPlane_Users";
- Ensure = "Present";
- ModuleVersion = "6.6.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::141::13::ADOrganizationalUnit";
+Name = "Users";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::126::17::ADOrganizationalUnit";
+ ResourceID = "[ADOrganizationalUnit]OU_Users_1377025465";
+ ProtectedFromAccidentalDeletion = True;
  ModuleName = "ActiveDirectoryDsc";
- Path = "OU=UserAccessPlane,DC=bolton,DC=corp";
+ Ensure = "Present";
+ Path = "OU=UserAccessPlane,DC=bolton,DC=corp";
+ ModuleVersion = "6.6.0";
+
+DependsOn = {
+    "[ADDomain]CreateForest"};
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_ADOrganizationalUnit as $MSFT_ADOrganizationalUnit5ref
 {
-ProtectedFromAccidentalDeletion = True;
- Name = "Groups";
- ResourceID = "[ADOrganizationalUnit]OU_UserAccessPlane_Groups";
- Ensure = "Present";
- ModuleVersion = "6.6.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::148::13::ADOrganizationalUnit";
+Name = "Groups";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::126::17::ADOrganizationalUnit";
+ ResourceID = "[ADOrganizationalUnit]OU_Groups_1377025465";
+ ProtectedFromAccidentalDeletion = True;
  ModuleName = "ActiveDirectoryDsc";
- Path = "OU=UserAccessPlane,DC=bolton,DC=corp";
+ Ensure = "Present";
+ Path = "OU=UserAccessPlane,DC=bolton,DC=corp";
+ ModuleVersion = "6.6.0";
+
+DependsOn = {
+    "[ADDomain]CreateForest"};
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_ADOrganizationalUnit as $MSFT_ADOrganizationalUnit6ref
 {
-ProtectedFromAccidentalDeletion = True;
- Name = "Computers";
- ResourceID = "[ADOrganizationalUnit]OU_UserAccessPlane_Computers";
- Ensure = "Present";
- ModuleVersion = "6.6.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::155::13::ADOrganizationalUnit";
+Name = "Computers";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::126::17::ADOrganizationalUnit";
+ ResourceID = "[ADOrganizationalUnit]OU_Computers_1377025465";
+ ProtectedFromAccidentalDeletion = True;
  ModuleName = "ActiveDirectoryDsc";
- Path = "OU=UserAccessPlane,DC=bolton,DC=corp";
+ Ensure = "Present";
+ Path = "OU=UserAccessPlane,DC=bolton,DC=corp";
+ ModuleVersion = "6.6.0";
+
+DependsOn = {
+    "[ADDomain]CreateForest"};
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_ADOrganizationalUnit as $MSFT_ADOrganizationalUnit7ref
 {
-ProtectedFromAccidentalDeletion = True;
- Name = "AdminUsers";
- ResourceID = "[ADOrganizationalUnit]OU_ManagementPlane_AdminUsers";
- Ensure = "Present";
- ModuleVersion = "6.6.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::162::13::ADOrganizationalUnit";
+Name = "AdminUsers";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::126::17::ADOrganizationalUnit";
+ ResourceID = "[ADOrganizationalUnit]OU_AdminUsers_231018683";
+ ProtectedFromAccidentalDeletion = True;
  ModuleName = "ActiveDirectoryDsc";
- Path = "OU=ManagementPlane,DC=bolton,DC=corp";
+ Ensure = "Present";
+ Path = "OU=ManagementPlane,DC=bolton,DC=corp";
+ ModuleVersion = "6.6.0";
+
+DependsOn = {
+    "[ADDomain]CreateForest"};
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_ADOrganizationalUnit as $MSFT_ADOrganizationalUnit8ref
 {
-ProtectedFromAccidentalDeletion = True;
- Name = "Groups";
- ResourceID = "[ADOrganizationalUnit]OU_ManagementPlane_Groups";
- Ensure = "Present";
- ModuleVersion = "6.6.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::169::13::ADOrganizationalUnit";
+Name = "Groups";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::126::17::ADOrganizationalUnit";
+ ResourceID = "[ADOrganizationalUnit]OU_Groups_231018683";
+ ProtectedFromAccidentalDeletion = True;
  ModuleName = "ActiveDirectoryDsc";
- Path = "OU=ManagementPlane,DC=bolton,DC=corp";
+ Ensure = "Present";
+ Path = "OU=ManagementPlane,DC=bolton,DC=corp";
+ ModuleVersion = "6.6.0";
+
+DependsOn = {
+    "[ADDomain]CreateForest"};
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_ADGroup as $MSFT_ADGroup1ref
 {
 GroupName = "GG-HR-Staff";
- GroupScope = "Global";
- ResourceID = "[ADGroup]GG_HR_Staff";
- Ensure = "Present";
- ModuleVersion = "6.6.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::178::13::ADGroup";
+ MembersToInclude = {
+    "katy.smith"
+};
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::149::17::ADGroup";
+ ResourceID = "[ADGroup]Group_GG_HR_Staff";
  ModuleName = "ActiveDirectoryDsc";
  Category = "Security";
- Path = "OU=Groups,OU=UserAccessPlane,DC=bolton,DC=corp";
+ Ensure = "Present";
+ Path = "OU=Groups,OU=UserAccessPlane,DC=bolton,DC=corp";
+ GroupScope = "Global";
+ ModuleVersion = "6.6.0";
+
+DependsOn = {
+    "[ADDomain]CreateForest"};
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_ADGroup as $MSFT_ADGroup2ref
 {
 GroupName = "GG-Finance-Staff";
- GroupScope = "Global";
- ResourceID = "[ADGroup]GG_Finance_Staff";
- Ensure = "Present";
- ModuleVersion = "6.6.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::186::13::ADGroup";
+ MembersToInclude = {
+    "adam.khan"
+};
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::149::17::ADGroup";
+ ResourceID = "[ADGroup]Group_GG_Finance_Staff";
  ModuleName = "ActiveDirectoryDsc";
  Category = "Security";
- Path = "OU=Groups,OU=UserAccessPlane,DC=bolton,DC=corp";
+ Ensure = "Present";
+ Path = "OU=Groups,OU=UserAccessPlane,DC=bolton,DC=corp";
+ GroupScope = "Global";
+ ModuleVersion = "6.6.0";
+
+DependsOn = {
+    "[ADDomain]CreateForest"};
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_ADGroup as $MSFT_ADGroup3ref
 {
 GroupName = "GG-IT-Admins";
- GroupScope = "Global";
- ResourceID = "[ADGroup]GG_IT_Admins";
- Ensure = "Present";
- ModuleVersion = "6.6.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::194::13::ADGroup";
+ MembersToInclude = {
+    "ismail.admin"
+};
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::149::17::ADGroup";
+ ResourceID = "[ADGroup]Group_GG_IT_Admins";
  ModuleName = "ActiveDirectoryDsc";
  Category = "Security";
- Path = "OU=Groups,OU=ManagementPlane,DC=bolton,DC=corp";
+ Ensure = "Present";
+ Path = "OU=Groups,OU=ManagementPlane,DC=bolton,DC=corp";
+ GroupScope = "Global";
+ ModuleVersion = "6.6.0";
+
+DependsOn = {
+    "[ADDomain]CreateForest"};
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_ADGroup as $MSFT_ADGroup4ref
 {
 GroupName = "GG-Server-Admins";
- GroupScope = "Global";
- ResourceID = "[ADGroup]GG_Server_Admins";
- Ensure = "Present";
- ModuleVersion = "6.6.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::202::13::ADGroup";
+ MembersToInclude = {
+    "paul.evans"
+};
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::149::17::ADGroup";
+ ResourceID = "[ADGroup]Group_GG_Server_Admins";
  ModuleName = "ActiveDirectoryDsc";
  Category = "Security";
- Path = "OU=Groups,OU=ManagementPlane,DC=bolton,DC=corp";
+ Ensure = "Present";
+ Path = "OU=Groups,OU=ManagementPlane,DC=bolton,DC=corp";
+ GroupScope = "Global";
+ ModuleVersion = "6.6.0";
+
+DependsOn = {
+    "[ADDomain]CreateForest"};
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_ADUser as $MSFT_ADUser1ref
 {
-Enabled = True;
- Path = "OU=Users,OU=UserAccessPlane,DC=bolton,DC=corp";
- ResourceID = "[ADUser]User_Adam_Khan";
- Ensure = "Present";
- ModuleVersion = "6.6.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::213::13::ADUser";
- ModuleName = "ActiveDirectoryDsc";
+DomainName = "bolton.corp";
  UserName = "adam.khan";
- DomainName = "bolton.corp";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::168::17::ADUser";
+ ResourceID = "[ADUser]User_adam_khan";
+ ModuleName = "ActiveDirectoryDsc";
+ Ensure = "Present";
+ Enabled = True;
+ Path = "OU=Users,OU=UserAccessPlane,DC=bolton,DC=corp";
+ ModuleVersion = "6.6.0";
+
+DependsOn = {
+    "[ADDomain]CreateForest"};
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_ADUser as $MSFT_ADUser2ref
 {
-Enabled = True;
- Path = "OU=Users,OU=UserAccessPlane,DC=bolton,DC=corp";
- ResourceID = "[ADUser]User_Katy_Smith";
- Ensure = "Present";
- ModuleVersion = "6.6.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::221::13::ADUser";
- ModuleName = "ActiveDirectoryDsc";
+DomainName = "bolton.corp";
  UserName = "katy.smith";
- DomainName = "bolton.corp";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::168::17::ADUser";
+ ResourceID = "[ADUser]User_katy_smith";
+ ModuleName = "ActiveDirectoryDsc";
+ Ensure = "Present";
+ Enabled = True;
+ Path = "OU=Users,OU=UserAccessPlane,DC=bolton,DC=corp";
+ ModuleVersion = "6.6.0";
+
+DependsOn = {
+    "[ADDomain]CreateForest"};
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_ADUser as $MSFT_ADUser3ref
 {
-Enabled = True;
- Path = "OU=AdminUsers,OU=ManagementPlane,DC=bolton,DC=corp";
- ResourceID = "[ADUser]User_Ismail_Admin";
- Ensure = "Present";
- ModuleVersion = "6.6.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::229::13::ADUser";
- ModuleName = "ActiveDirectoryDsc";
+DomainName = "bolton.corp";
  UserName = "ismail.admin";
- DomainName = "bolton.corp";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::168::17::ADUser";
+ ResourceID = "[ADUser]User_ismail_admin";
+ ModuleName = "ActiveDirectoryDsc";
+ Ensure = "Present";
+ Enabled = True;
+ Path = "OU=AdminUsers,OU=ManagementPlane,DC=bolton,DC=corp";
+ ModuleVersion = "6.6.0";
+
+DependsOn = {
+    "[ADDomain]CreateForest"};
  ConfigurationName = "StudentBaseline";
 };
 instance of MSFT_ADUser as $MSFT_ADUser4ref
 {
-Enabled = True;
- Path = "OU=AdminUsers,OU=ManagementPlane,DC=bolton,DC=corp";
- ResourceID = "[ADUser]User_Paul_Evans";
- Ensure = "Present";
- ModuleVersion = "6.6.0";
- SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::237::13::ADUser";
- ModuleName = "ActiveDirectoryDsc";
+DomainName = "bolton.corp";
  UserName = "paul.evans";
- DomainName = "bolton.corp";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::168::17::ADUser";
+ ResourceID = "[ADUser]User_paul_evans";
+ ModuleName = "ActiveDirectoryDsc";
+ Ensure = "Present";
+ Enabled = True;
+ Path = "OU=AdminUsers,OU=ManagementPlane,DC=bolton,DC=corp";
+ ModuleVersion = "6.6.0";
+
+DependsOn = {
+    "[ADDomain]CreateForest"};
  ConfigurationName = "StudentBaseline";
 };
 instance of OMI_ConfigurationDocument
@@ -387,7 +438,7 @@ instance of OMI_ConfigurationDocument
 
                         Author="Administrator";
 
-                        GenerationDate="02/25/2026 00:03:51";
+                        GenerationDate="02/27/2026 00:04:56";
 
                         GenerationHost="SERVER25-DC-01";
 

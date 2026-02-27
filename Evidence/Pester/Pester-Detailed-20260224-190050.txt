@@ -1486,3 +1486,9 @@ Mode                 LastWriteTime         Length Name
 
 PS C:\Users\Administrator\repo\COM5411-BarmBuzz> stop-transcript
 Transcript stopped, output file is C:\Users\Administrator\repo\COM5411-BarmBuzz\Evidence\DSC\BuildMain-Compile.txt
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> git status
+
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> git add .
+
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> git commit -m " Orchestrator, no changes transcript"
+

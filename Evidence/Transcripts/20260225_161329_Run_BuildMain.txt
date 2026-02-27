@@ -1,0 +1,46 @@
+**********************
+PowerShell transcript start
+Start time: 20260225161329
+Username: BOLTON\Administrator
+RunAs User: BOLTON\Administrator
+Configuration Name: 
+Machine: SERVER25-DC-01 (Microsoft Windows NT 10.0.26100.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -WorkingDirectory ~
+Process ID: 5184
+PSVersion: 7.5.4
+PSEdition: Core
+GitCommitId: 7.5.4
+OS: Microsoft Windows 10.0.26100
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+[+] Transcript started: Evidence\\Transcripts\\20260225_161329_Run_BuildMain.txt
+[+] Admin privileges confirmed.
+
+[Phase 1] Prerequisites...
+[*] Invoke-BarmBuzz-OneShots: LCM then Network
+--- [STAFF-ONLY] Configuring Persistent LCM Settings ---
+[*] Applying persistent automation settings...
+[+] LCM configured. Server is now reboot-ready.
+[*] Ensuring DSC modules are installed/pinned (PSResourceGet) ...
+    -> PSDesiredStateConfiguration@2.0.7 already present (skipping).
+    -> Pester@5.7.1 already present (skipping).
+    -> ActiveDirectoryDsc@6.6.0 already present (skipping).
+    -> GroupPolicyDsc@1.0.3 already present (skipping).
+[+] DSC module baseline ensured at C:\\Program Files\\WindowsPowerShell\\Modules.
+--- BarmBuzz Network, PSRemoting & RSAT Prep ---
+[*] Checking Network Connection Profiles (all connected NICs)...
+    Changing 'bolton.corp' (Idx 6) from DomainAuthenticated -> Private
+PS>TerminatingError(Set-NetConnectionProfile): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Unable to set the NetworkCategory due to one of the following possible reasons: not running PowerShell elevated; the NetworkCategory cannot be changed from 'DomainAuthenticated'; user initiated changes to NetworkCategory are being prevented due to the Group Policy setting 'Network List Manager Policies'."
+>> TerminatingError(Set-NetConnectionProfile): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Unable to set the NetworkCategory due to one of the following possible reasons: not running PowerShell elevated; the NetworkCategory cannot be changed from 'DomainAuthenticated'; user initiated changes to NetworkCategory are being prevented due to the Group Policy setting 'Network List Manager Policies'."
+>> TerminatingError(Set-NetConnectionProfile): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Unable to set the NetworkCategory due to one of the following possible reasons: not running PowerShell elevated; the NetworkCategory cannot be changed from 'DomainAuthenticated'; user initiated changes to NetworkCategory are being prevented due to the Group Policy setting 'Network List Manager Policies'."
+
+[-] BUILD FAILED
+Message: Unable to set the NetworkCategory due to one of the following possible reasons: not running PowerShell elevated; the NetworkCategory cannot be changed from 'DomainAuthenticated'; user initiated changes to NetworkCategory are being prevented due to the Group Policy setting 'Network List Manager Policies'.
+**********************
+PowerShell transcript end
+End time: 20260225161333
+**********************
