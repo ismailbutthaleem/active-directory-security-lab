@@ -27,6 +27,11 @@ Describe 'Student OU Governance Structure' {
         $script:AdminUsersOU      = "OU=AdminUsers,OU=ManagementPlane,$($script:DomainDN)"
         $script:MgmtGroupsOU      = "OU=Groups,OU=ManagementPlane,$($script:DomainDN)"
 
+        # --- ControlPlane additions ---
+        $script:ControlPlaneDN    = "OU=ControlPlane,$($script:DomainDN)"
+        $script:ControlAdminUsersOU = "OU=AdminUsers,OU=ControlPlane,$($script:DomainDN)"
+        $script:ControlGroupsOU     = "OU=Groups,OU=ControlPlane,$($script:DomainDN)"
+
         # --- Set these to your exact GPO DisplayNames ---
         $script:ComputerGpoName = 'BBZ-Computer-Baseline-Firewall-SMBv1'
         $script:UserGpoName     = 'BBZ-User-Hardening-Reduce-AttackSurface'
@@ -102,6 +107,17 @@ Describe 'Student OU Governance Structure' {
             Should -Be $script:MgmtGroupsOU
     }
 
+    # --- ControlPlane sub-OUs ---
+    It 'AdminUsers OU should exist under ControlPlane' {
+        (Get-ADOrganizationalUnit -LDAPFilter "(ou=AdminUsers)" -SearchBase $script:ControlPlaneDN -ErrorAction Stop).DistinguishedName |
+            Should -Be $script:ControlAdminUsersOU
+    }
+
+    It 'Groups OU should exist under ControlPlane' {
+        (Get-ADOrganizationalUnit -LDAPFilter "(ou=Groups)" -SearchBase $script:ControlPlaneDN -ErrorAction Stop).DistinguishedName |
+            Should -Be $script:ControlGroupsOU
+    }
+
     # ---------- Groups ----------
     It 'GG-HR-Staff should exist under UserAccessPlane\Groups' {
         (Get-ADGroup -LDAPFilter "(cn=GG-HR-Staff)" -SearchBase $script:UAPGroupsOU -ErrorAction Stop).DistinguishedName |
@@ -121,6 +137,11 @@ Describe 'Student OU Governance Structure' {
     It 'GG-Server-Admins should exist under ManagementPlane\Groups' {
         (Get-ADGroup -LDAPFilter "(cn=GG-Server-Admins)" -SearchBase $script:MgmtGroupsOU -ErrorAction Stop).DistinguishedName |
             Should -Be "CN=GG-Server-Admins,$($script:MgmtGroupsOU)"
+    }
+
+    It 'GG-Domain-Admins should exist under ControlPlane\Groups' {
+        (Get-ADGroup -LDAPFilter "(cn=GG-Domain-Admins)" -SearchBase $script:ControlGroupsOU -ErrorAction Stop).DistinguishedName |
+            Should -Be "CN=GG-Domain-Admins,$($script:ControlGroupsOU)"
     }
 
     # ---------- Users ----------
@@ -147,6 +168,12 @@ Describe 'Student OU Governance Structure' {
         It 'paul.evans should exist in ManagementPlane\AdminUsers and be enabled' {
             $u = Get-ADUser -Identity 'paul.evans' -Properties Enabled, DistinguishedName -ErrorAction Stop
             $u.DistinguishedName | Should -Match ([regex]::Escape(",$($script:AdminUsersOU)") + '$')
+            $u.Enabled | Should -BeTrue
+        }
+
+        It 'raul.alejandro should exist in ControlPlane\AdminUsers and be enabled' {
+            $u = Get-ADUser -Identity 'raul.alejandro' -Properties Enabled, DistinguishedName -ErrorAction Stop
+            $u.DistinguishedName | Should -Match ([regex]::Escape(",$($script:ControlAdminUsersOU)") + '$')
             $u.Enabled | Should -BeTrue
         }
     }
@@ -207,6 +234,11 @@ Describe 'Student OU Governance Structure' {
 
         It 'paul.evans should be a member of GG-Server-Admins' {
             $m = Get-ADGroupMember -Identity 'GG-Server-Admins' -Recursive | Where-Object { $_.SamAccountName -eq 'paul.evans' }
+            $m | Should -Not -BeNullOrEmpty
+        }
+
+        It 'raul.alejandro should be a member of GG-Domain-Admins' {
+            $m = Get-ADGroupMember -Identity 'GG-Domain-Admins' -Recursive | Where-Object { $_.SamAccountName -eq 'raul.alejandro' }
             $m | Should -Not -BeNullOrEmpty
         }
     }
