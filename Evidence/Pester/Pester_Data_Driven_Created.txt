@@ -1,0 +1,103 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260227014350
+Username: BOLTON\Administrator
+RunAs User: BOLTON\Administrator
+Configuration Name: 
+Machine: SERVER25-DC-01 (Microsoft Windows NT 10.0.26100.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+Process ID: 7196
+PSVersion: 5.1.26100.32370
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.32370
+BuildVersion: 10.0.26100.32370
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is .\Evidence\Pester\Pester_Data_Driven_Created.txt
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> invoke-pester .\Tests\Pester\Student-Pester_ProofOfLife.ps1 -output detailed
+[95mPester v5.7.1[0m
+[95m
+[95mStarting discovery in 1 files.[0m
+[95mDiscovery found 30 tests in 256ms.[0m
+[95mRunning tests.[0m
+[95m
+[95mRunning tests from 'C:\Users\Administrator\repo\COM5411-BarmBuzz\Tests\Pester\Student-Pester_ProofOfLife.ps1'[0m
+[92mDescribing Student OU Governance Structure[0m
+[32m  [+] ControlPlane OU should exist[0m
+[90m 96ms (78ms|18ms)[0m
+[32m  [+] ManagementPlane OU should exist[0m
+[90m 7ms (6ms|1ms)[0m
+[32m  [+] UserAccessPlane OU should exist[0m
+[90m 8ms (7ms|1ms)[0m
+[32m  [+] Users OU should exist under UserAccessPlane[0m
+[90m 15ms (8ms|7ms)[0m
+[32m  [+] Computers OU should exist under UserAccessPlane[0m
+[90m 6ms (6ms|1ms)[0m
+[32m  [+] Groups OU should exist under UserAccessPlane[0m
+[90m 7ms (6ms|1ms)[0m
+[32m  [+] AdminUsers OU should exist under ManagementPlane[0m
+[90m 7ms (6ms|1ms)[0m
+[32m  [+] Groups OU should exist under ManagementPlane[0m
+[90m 7ms (6ms|1ms)[0m
+[32m  [+] AdminUsers OU should exist under ControlPlane[0m
+[90m 24ms (24ms|1ms)[0m
+[32m  [+] Groups OU should exist under ControlPlane[0m
+[90m 19ms (19ms|1ms)[0m
+[32m  [+] GG-HR-Staff should exist under UserAccessPlane\Groups[0m
+[90m 27ms (26ms|1ms)[0m
+[32m  [+] GG-Finance-Staff should exist under UserAccessPlane\Groups[0m
+[90m 8ms (7ms|1ms)[0m
+[32m  [+] GG-IT-Admins should exist under ManagementPlane\Groups[0m
+[90m 9ms (8ms|1ms)[0m
+[32m  [+] GG-Server-Admins should exist under ManagementPlane\Groups[0m
+[90m 20ms (19ms|1ms)[0m
+[32m  [+] GG-Domain-Admins should exist under ControlPlane\Groups[0m
+[90m 21ms (21ms|1ms)[0m
+[92m Describing User Provisioning via DSC[0m
+[32m   [+] adam.khan should exist in UserAccessPlane\Users and be enabled[0m
+[90m 19ms (16ms|3ms)[0m
+[32m   [+] katy.smith should exist in UserAccessPlane\Users and be enabled[0m
+[90m 9ms (8ms|1ms)[0m
+[32m   [+] ismail.admin should exist in ManagementPlane\AdminUsers and be enabled[0m
+[90m 7ms (6ms|1ms)[0m
+[32m   [+] paul.evans should exist in ManagementPlane\AdminUsers and be enabled[0m
+[90m 9ms (8ms|1ms)[0m
+[32m   [+] raul.alejandro should exist in ControlPlane\AdminUsers and be enabled[0m
+[90m 22ms (21ms|1ms)[0m
+[92m Describing Student GPO Security Baseline[0m
+[32m   [+] Computer baseline GPO should exist[0m
+[90m 56ms (53ms|3ms)[0m
+[32m   [+] User hardening GPO should exist[0m
+[90m 18ms (17ms|1ms)[0m
+[32m   [+] Computer baseline GPO should be linked to UserAccessPlane\Computers OU (enabled link)[0m
+[90m 63ms (63ms|1ms)[0m
+[32m   [+] User hardening GPO should be linked to UserAccessPlane\Users OU (enabled link)[0m
+[90m 52ms (51ms|1ms)[0m
+[32m   [+] GPO links should not be enforced (best practice for scoped OUs)[0m
+[90m 45ms (45ms|1ms)[0m
+[92m Describing RBAC Group Memberships[0m
+[32m   [+] katy.smith should be a member of GG-HR-Staff[0m
+[90m 61ms (59ms|3ms)[0m
+[32m   [+] adam.khan should be a member of GG-Finance-Staff[0m
+[90m 33ms (33ms|1ms)[0m
+[32m   [+] ismail.admin should be a member of GG-IT-Admins[0m
+[90m 32ms (31ms|1ms)[0m
+[32m   [+] paul.evans should be a member of GG-Server-Admins[0m
+[90m 38ms (38ms|1ms)[0m
+[32m   [+] raul.alejandro should be a member of GG-Domain-Admins[0m
+[90m 128ms (128ms|1ms)[0m
+[97mTests completed in 1.73s[0m
+[32mTests Passed: 30, [0m
+[90mFailed: 0, [0m
+[90mSkipped: 0, [0m
+[90mInconclusive: 0, [0m
+[37m[0m
+[90mNotRun: 0[0m
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> stop-transcript
+**********************
+Windows PowerShell transcript end
+End time: 20260227014408
+**********************
