@@ -137,13 +137,26 @@ Configuration StudentBaseline {
 
                 $safeGrp = ($g.GroupName -replace '[^a-zA-Z0-9]', '_')
 
+                # Build members list from Users[] where MemberOf contains this group
+                $membersForGroup = @(
+                    foreach ($u in $node.Users) {
+                        if ($u.MemberOf -and ($u.MemberOf -contains $g.GroupName)) {
+                            $u.UserName
+                        }
+                    }
+                )
+
                 ADGroup "Group_$safeGrp" {
-                    GroupName  = $g.GroupName
-                    GroupScope = $g.Scope
-                    Category   = $g.Category
-                    Path       = "$($g.Path),$($Node.DomainDN)"
-                    Ensure     = 'Present'
-                    DependsOn  = '[ADDomain]CreateForest'
+                    GroupName        = $g.GroupName
+                    GroupScope       = $g.Scope
+                    Category         = $g.Category
+                    Path             = "$($g.Path),$($Node.DomainDN)"
+                    Ensure           = 'Present'
+
+                    # Enforce membership via ADGroup resource (compatible across module versions)
+                    MembersToInclude = $membersForGroup
+
+                    DependsOn        = '[ADDomain]CreateForest'
                 }
             }
 
@@ -159,27 +172,6 @@ Configuration StudentBaseline {
                     Ensure     = 'Present'
                     Enabled    = [bool]$u.Enabled
                     DependsOn  = '[ADDomain]CreateForest'
-                }
-            }
-
-            # ---------- Memberships (Data-driven) ----------
-            foreach ($u in $node.Users) {
-
-                $safeUser = ($u.UserName -replace '[^a-zA-Z0-9]', '_')
-
-                foreach ($grp in ($u.MemberOf | Where-Object { $_ })) {
-
-                    $safeGrp = ($grp -replace '[^a-zA-Z0-9]', '_')
-
-                    ADGroupMember "Member_${safeUser}_To_${safeGrp}" {
-                        GroupName        = $grp
-                        MembersToInclude = @($u.UserName)
-                        Ensure           = 'Present'
-                        DependsOn        = @(
-                            "[ADUser]User_$safeUser",
-                            "[ADGroup]Group_$safeGrp"
-                        )
-                    }
                 }
             }
         }
