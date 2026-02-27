@@ -68,7 +68,7 @@
                 @{ UserName = 'katy.smith'      ; Path = 'OU=Users,OU=UserAccessPlane'       ; Enabled = $true ; MemberOf = @('GG-HR-Staff') },
                 @{ UserName = 'ismail.admin'    ; Path = 'OU=AdminUsers,OU=ManagementPlane'  ; Enabled = $true ; MemberOf = @('GG-IT-Admins') },
                 @{ UserName = 'paul.evans'      ; Path = 'OU=AdminUsers,OU=ManagementPlane'  ; Enabled = $true ; MemberOf = @('GG-Server-Admins') },
-                @{ UserName = 'raul.alejandro'  ; Path = 'OU=AdminUsers,OU=ControlPlane'     ; Enabled = $false ; MemberOf = @('GG-Domain-Admins') }
+                @{ UserName = 'raul.alejandro'  ; Path = 'OU=AdminUsers,OU=ControlPlane'     ; Enabled = $true ; MemberOf = @('GG-Domain-Admins') }
             )
 
             # SafeModeAdministratorPassword is required for domain join and Active Directory installation
