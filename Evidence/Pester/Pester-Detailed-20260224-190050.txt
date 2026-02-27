@@ -1492,3 +1492,5 @@ PS C:\Users\Administrator\repo\COM5411-BarmBuzz> git add .
 
 PS C:\Users\Administrator\repo\COM5411-BarmBuzz> git commit -m " Orchestrator, no changes transcript"
 
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> git push
+
