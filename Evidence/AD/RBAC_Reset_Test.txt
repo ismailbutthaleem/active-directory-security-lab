@@ -1,0 +1,46 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260227020709
+Username: BOLTON\ismail.admin
+RunAs User: BOLTON\ismail.admin
+Configuration Name: 
+Machine: DESKTOP-4KDR5HC (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell
+Process ID: 5940
+PSVersion: 5.1.26100.7920
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.7920
+BuildVersion: 10.0.26100.7920
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Temp\RBAC_Reset_Test.txt
+PS C:\users\ismail> Set-ADAccountPassword -Identity "adam.khan" -Reset `
+-NewPassword (ConvertTo-SecureString "Bolton!2" -AsPlainText -Force)
+PS C:\users\ismail> Set-ADAccountPassword -Identity "paul.evans" -Reset `
+-NewPassword (ConvertTo-SecureString "Bolton!2" -AsPlainText -Force)
+PS C:\users\ismail> TerminatingError(Set-ADAccountPassword): "Access is denied"
+Set-ADAccountPassword : Access is denied
+At line:1 char:1
++ Set-ADAccountPassword -Identity "paul.evans" -Reset `
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (paul.evans:ADAccount) [Set-ADAccountPassword], 
+UnauthorizedAccessException
+    + FullyQualifiedErrorId : ActiveDirectoryCmdlet:System.UnauthorizedAccessException,Microsoft.ActiveDirectory.Managem
+ent.Commands.SetADAccountPassword
+Set-ADAccountPassword : Access is denied
+At line:1 char:1
++ Set-ADAccountPassword -Identity "paul.evans" -Reset `
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (paul.evans:ADAccount) [Set-ADAccountPassword], UnauthorizedAccessExce
+   ption
+    + FullyQualifiedErrorId : ActiveDirectoryCmdlet:System.UnauthorizedAccessException,Microsoft.ActiveDirectory.Manag
+   ement.Commands.SetADAccountPassword
+
+PS C:\users\ismail> stop-transcript
+**********************
+Windows PowerShell transcript end
+End time: 20260227020835
+**********************
