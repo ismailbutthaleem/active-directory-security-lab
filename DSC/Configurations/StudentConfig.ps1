@@ -8,7 +8,6 @@ STUDENT TASK:
 Configuration StudentBaseline {
 
     param(
-
         [Parameter(Mandatory = $true)]
         [PSCredential]
         $DomainAdminCredential,
@@ -17,6 +16,7 @@ Configuration StudentBaseline {
         [PSCredential]
         $DsrmCredential
     )
+
     ## Note: The DomainAdminCredential and DsrmCredential parameters are defined as mandatory to ensure that the configuration cannot be applied without providing these credentials. This is important for security and functionality, as these credentials are required for domain join and Active Directory installation. By using parameters, we avoid hardcoding sensitive information in the configuration script, allowing for secure and flexible deployment.
     Import-DscResource -ModuleName PSDesiredStateConfiguration
     Import-DscResource -ModuleName ComputerManagementDsc
@@ -35,7 +35,6 @@ Configuration StudentBaseline {
             PrefixLength   = $node.PrefixLength_Internal
             DnsServers     = $node.DnsServers_Internal
         }
-
 
         File TestFolder {
             DestinationPath = 'C:\TEST'
@@ -132,6 +131,21 @@ Configuration StudentBaseline {
                 }
             }
 
+            # ---------- Users (Data-driven) ----------
+            foreach ($u in $node.Users) {
+
+                $safeUser = ($u.UserName -replace '[^a-zA-Z0-9]', '_')
+
+                ADUser "User_$safeUser" {
+                    DomainName = $Node.DomainName
+                    UserName   = $u.UserName
+                    Path       = "$($u.Path),$($Node.DomainDN)"
+                    Ensure     = 'Present'
+                    Enabled    = [bool]$u.Enabled
+                    DependsOn  = '[ADDomain]CreateForest'
+                }
+            }
+
             # ---------- Groups (Data-driven) ----------
             foreach ($g in $node.Groups) {
 
@@ -146,32 +160,23 @@ Configuration StudentBaseline {
                     }
                 )
 
-                ADGroup "Group_$safeGrp" {
-                    GroupName        = $g.GroupName
-                    GroupScope       = $g.Scope
-                    Category         = $g.Category
-                    Path             = "$($g.Path),$($Node.DomainDN)"
-                    Ensure           = 'Present'
-
-                    # Enforce membership via ADGroup resource (compatible across module versions)
-                    MembersToInclude = $membersForGroup
-
-                    DependsOn        = '[ADDomain]CreateForest'
+                # Ensure users exist BEFORE trying to include to a group
+                $depends = @('[ADDomain]CreateForest')
+                foreach ($member in $membersForGroup) {
+                    $safeMember = ($member -replace '[^a-zA-Z0-9]', '_')
+                    $depends += "[ADUser]User_$safeMember"
                 }
-            }
 
-            # ---------- Users (Data-driven) ----------
-            foreach ($u in $node.Users) {
-
-                $safeUser = ($u.UserName -replace '[^a-zA-Z0-9]', '_')
-
-                ADUser "User_$safeUser" {
-                    DomainName = $Node.DomainName
-                    UserName   = $u.UserName
-                    Path       = "$($u.Path),$($Node.DomainDN)"
+                ADGroup "Group_$safeGrp" {
+                    GroupName  = $g.GroupName
+                    GroupScope = $g.Scope
+                    Category   = $g.Category
+                    Path       = "$($g.Path),$($Node.DomainDN)"
                     Ensure     = 'Present'
-                    Enabled    = [bool]$u.Enabled
-                    DependsOn  = '[ADDomain]CreateForest'
+                    DependsOn  = $depends
+
+                    # Only set members if they are present
+                    MembersToInclude = $membersForGroup
                 }
             }
         }
