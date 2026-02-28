@@ -18,7 +18,6 @@ Configuration StudentBaseline {
     )
 
     Import-DscResource -ModuleName PSDesiredStateConfiguration
-    Import-DscResource -ModuleName ComputerManagementDsc
     Import-DscResource -ModuleName NetworkingDsc
     Import-DscResource -ModuleName ActiveDirectoryDsc
 
@@ -167,12 +166,12 @@ Configuration StudentBaseline {
                 }
 
                 ADGroup "Group_$safeGrp" {
-                    GroupName  = $g.GroupName
-                    GroupScope = $g.Scope
-                    Category   = $g.Category
-                    Path       = "$($g.Path),$($Node.DomainDN)"
-                    Ensure     = 'Present'
-                    DependsOn  = $depends
+                    GroupName        = $g.GroupName
+                    GroupScope       = $g.Scope
+                    Category         = $g.Category
+                    Path             = "$($g.Path),$($Node.DomainDN)"
+                    Ensure           = 'Present'
+                    DependsOn        = $depends
                     MembersToInclude = $membersForGroup
                 }
             }
@@ -186,11 +185,29 @@ Configuration StudentBaseline {
                 RebootNodeIfNeeded = $true
             }
 
-            Computer JoinDomain {
-                Name       = $Node.NodeName
-                DomainName = $Node.DomainName
-                Credential = $DomainAdminCredential
-                JoinOU     = $Node.DomainJoinOU
+            Script JoinDomain {
+
+                GetScript = {
+                    $cs = Get-CimInstance -ClassName Win32_ComputerSystem
+                    @{
+                        PartOfDomain = [bool]$cs.PartOfDomain
+                        Domain       = $cs.Domain
+                    }
+                }
+
+                TestScript = {
+                    $cs = Get-CimInstance -ClassName Win32_ComputerSystem
+                    return ($cs.PartOfDomain -eq $true -and $cs.Domain -ieq $using:node.DomainName)
+                }
+
+                SetScript = {
+                    Add-Computer -DomainName $using:node.DomainName `
+                        -Credential $using:DomainAdminCredential `
+                        -OUPath $using:node.DomainJoinOU `
+                        -Force -ErrorAction Stop
+
+                    Restart-Computer -Force
+                }
             }
         }
     }
