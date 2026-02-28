@@ -168,6 +168,8 @@ This proves forest relationship of trust without breaking the principle that eac
 
 3. Automation Strategy
 
+3.1 Overview
+
 This solution imposes an idempotent and reproducible environment that can be replicated via automation. The use of manual configurations would increase the risk of settings being overwritten or altered by external changes. DSC reduces this risk because it enforces the desired configuration state defined for the system.
 
 The environment can be easily replicated, as it depends on declared resources and a configuration that defines the required state. The system continuously ensures compliance with the requirements specified in the desired configuration.
@@ -179,6 +181,32 @@ If this step has already been completed, DSC will detect that the state of the m
 It will then check that the OUs, users, security groups, GPOs and links are in the desired state. If not, it will enforce them so that the values from the configuration match the machine state.
 
 A MOF artifact is a set of instructions produced for the system to read and enforce after the DSC configuration has been compiled. When the orchestrator runs and matches values from the data file with the configuration file, it produces a MOF file. This MOF file is then read by the Local Configuration Manager (LCM), which enforces the defined state of the machine.
+
+3.2 Data Driven Configuration Model
+
+The data file is used when objects are repetitive, likely to expand, or expected to change properties over time. Instead of hardcoding these objects directly inside the configuration logic, they are defined inside AllNodes.psd1. This keeps the structure clean and avoids rewriting the configuration each time something small changes.
+
+The data file should act as a controlled definition layer. It does not contain execution logic; it only defines values such as OUs, users, groups, and their attributes. Credentials are not stored here in plain text. This separation improves scalability and reduces the risk of configuration drift caused by manual edits inside the main script.
+
+Objects are stored inside structured lists (arrays). The configuration file then uses loops to iterate through these lists one by one. For example:
+
+OUList defines all required OUs.
+
+Users defines account objects and their properties.
+
+Groups defines security groups.
+
+MemberOf inside Users defines RBAC relationships.
+
+The configuration processes each entry in the list and enforces it using DSC resources. This means the same logic applies regardless of how many objects exist. If ten more users are added to the data file, the configuration does not change — the loop simply processes more entries.
+
+In this model:
+
+The data file defines what must exist.
+
+The configuration file defines how it should exist.
+
+This approach keeps the environment scalable, modular, reduces duplication, and allows future expansion without modifying the core logic of the deployment.
 
 4. Repository Structure
 
@@ -359,6 +387,50 @@ Evidence of the second run of execution:
 
 .\Evidence\Transcripts\20260225_000339_Run_BuildMain.txt
 
+6.1 Idempotence and re-run behaviour
+
+It was observed and verified that dependencies are critical for the correct compilation of the program. DSC follows a logical and structured order when compiling and executing the configuration. However, there are parts where the orchestrator does not automatically understand which resource must execute first unless explicit dependencies are defined. Without those dependencies, DSC builds the configuration based on its resource graph rather than strict top-to-bottom script order.
+
+At first this may not seem like an issue, but when engineering larger structures, drift or ordering problems can occur. For example, if the security group loop is placed before the users loop, this creates a logical misconfiguration and can break the compilation process.
+
+An issue encountered during deployment was that a user did not yet exist in the Active Directory environment, but DSC attempted to create a security group that included that user as a member. Because the user resource had not yet been defined, the build failed and stopped execution.
+
+Solution
+
+A dynamic DependsOn resource was implemented to explicitly force DSC to create the user (if it did not yet exist) before attempting to add that user to a security group.
+
+This reinforces that in declarative code, dependencies should be explicitly defined rather than relying on implicit execution behaviour. It is considered best practice to control resource sequencing using dependency declarations instead of assuming DSC will infer the correct order.
+
+6.2 Password Enforcement Policy
+
+DSC enforces a desired state to be applied to the system. This process includes, for instance, creating new users. However, it is important to note that DSC does not overwrite Active Directory domain policies or security boundaries.
+
+When creating new users, their enabled state must first be set to:
+
+Enabled = $false
+
+This is because if the parameter is set to:
+
+Enabled = $true
+
+the orchestrator will show an error complaining that the password complexity requirements have not been met.
+
+This happens because passwords are not hardcoded in any file within the configuration, which follows best security practice. Since no password is defined in the ADUser resource, DSC attempts to create and enable the account without a compliant password already set. Active Directory enforces its domain password policy and does not allow an account to be enabled unless a valid password meeting complexity requirements exists. Therefore, the account creation is rejected.
+
+Solution
+
+All new accounts that are yet to be created must initially be set to:
+
+Enabled = $false
+
+Once the account object has been created in Active Directory, a compliant password must be set directly on the Domain Controller using AD administrative tools or PowerShell.
+
+After a compliant password has been configured in Active Directory, the DSC configuration file can be edited and updated to:
+
+Enabled = $true
+
+The configuration can then be re-run, and DSC will enable the account successfully while remaining compliant with the domain security policy.
+
 7. Validation and Testing Model
 
 After the system is built by DSC, it is considered best practice to validate whether the desired state has been fully applied or if something is missing. Pester tests are declarative scripts that check whether a given condition is true or not.
@@ -452,6 +524,56 @@ The group is granted the necessary permissions.
 
 This ensures that access is specific and controlled, keeping the environment secure while enabling required actions without over-privileging users.
 
+8.5 Delegation and Least Privilege Enforcement
+
+Delegation in an Active Directory infrastructure must always respect the least privilege principle. Users should be granted privileges only to the minimum level required to carry out a specific task.
+
+A security group must be defined where users inside that group receive delegated privileges. Delegation means that a user from one OU, for example, can perform specific actions within another OU that they are not a direct member of. This is possible because permissions are assigned to the security group at the OU level, not to the individual user. Each security group is designed to specialise in a particular operational area that other parts of the hierarchy may require at some point.
+
+In this infrastructure, GG-IT-Admins includes the user ismail.admin, which is delegated control over the UserAccessPlane OU to reset passwords. This allows ismail.admin to reset the password of adam.khan, who resides within that OU. The only permission granted is the ability to reset passwords within that specific scope. No additional administrative rights are provided outside that boundary.
+
+Delegation must be carefully designed and applied. Granting excessive privileges, or allowing a lower-tier OU to modify objects within a higher-tier OU, would break governance structure and violate least privilege principles. This would weaken the environment and potentially expose it to security risks. Proper OU scoping and group-based delegation ensure administrative control remains controlled and predictable.
+
+1️⃣ Explicit Allow / Deny Evidence Paragraph
+
+You described delegation, but you need 4–5 lines explicitly saying:
+
+Reset of adam.khan succeeded
+
+Reset of paul.evans failed
+
+Transcript stored in Evidence folder
+
+That makes it concrete.
+
+2️⃣ Windows Client Integration Section
+
+You proved it technically, but your documentation must explicitly state:
+
+Client joined to domain
+
+Placed in correct OU
+
+Domain authentication successful
+
+gpresult confirms GPO application
+
+Just one small structured subsection.do these two as i would write it
+
+Perfect. I’ll write them in your tone — structured, engineer-style, direct explanation, not academic fluff.
+
+8.X Delegation Validation (Allow / Deny Outcome)
+
+Delegation was tested to confirm that permissions were applied correctly and scoped only to the intended OU.
+
+The user ismail.admin, as a member of GG-IT-Admins, successfully reset the password of adam.khan, who resides inside the UserAccessPlane OU. This confirms that the delegated permission was correctly applied at the OU level.
+
+An additional test was performed against paul.evans, who is located in the ManagementPlane OU. The password reset attempt failed due to insufficient permissions. This confirms that delegation does not extend outside of the intended OU scope.
+
+This behaviour proves that least privilege has been enforced correctly. The PowerShell transcript capturing both the successful and denied operations is stored under:
+
+.\Evidence\AD\
+
 8.6 Explicit Trade-Offs Made for Lab Realism vs Enterprise Practice
 Trade-Off 1: Use of a Single Domain Controller
 
@@ -516,6 +638,9 @@ Evidence/HealthChecks/Kerberos_info.txt
 Windows Time service verified
 Evidence/HealthChecks/Windows_Time_Service_info.txt
 
+Password Reset Successful
+Evidence\AD\RBAC_Reset_Test.txt
+
 9.3 OU Structure & Governance Model
 
 ControlPlane, ManagementPlane, UserAccessPlane exist
@@ -554,10 +679,10 @@ Evidence/Network/*_ipconfig.txt
 Tutor baseline tests pass
 Evidence/Pester/PesterResults_20260224_193234.xml
 
-Student tests validate OU and RBAC 
+Student tests validate OU and RBAC
 Evidence/Pester/Pester_RBAC_Groups.txt
 
-Detailed Pester execution log
+Student tests validate OU and RBAC 
 Evidence/Pester/Pester-Detailed-20260224-192037.txt
 
 9.7 Provenance & Academic Integrity
@@ -580,4 +705,4 @@ No multi-site topology or WAN replication scenario is implemented.
 
 Secret management is handled via PSCredential objects; certificate-based MOF encryption is not configured.
 
-These constraints reflect the scope of the lab environment rather than a production deployment model.
+These constraints reflect the scope of the lab environment rather than a production deployment model. 

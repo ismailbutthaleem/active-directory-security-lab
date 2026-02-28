@@ -30,11 +30,11 @@
             PsDscAllowDomainUser        = $true
 
             # Domain configuration for Active Directory
-            DomainName       = 'bolton.corp'
+            DomainName        = 'bolton.corp'
             DomainNetBIOSName = 'BOLTON'
-            DomainDN         = 'DC=bolton,DC=corp'
-            ForestMode       = 'WinThreshold'
-            DomainMode       = 'WinThreshold'
+            DomainDN          = 'DC=bolton,DC=corp'
+            ForestMode        = 'WinThreshold'
+            DomainMode        = 'WinThreshold'
 
             # OUs List
             OUList = @(
@@ -79,6 +79,20 @@
             Baseline = @{
                 PowerPlan = 'High Performance'
             }
+        },
+
+        @{
+            # NodeName must match the Windows client hostname exactly
+            NodeName = 'Windows10'
+            Role     = 'Client'
+
+            # Domain configuration for domain join
+            DomainName   = 'bolton.corp'
+            DomainJoinOU = 'OU=Computers,OU=UserAccessPlane,DC=bolton,DC=corp'
+
+            # Security settings required for domain credential usage
+            PsDscAllowPlainTextPassword = $true
+            PsDscAllowDomainUser        = $true
         }
     )
 }

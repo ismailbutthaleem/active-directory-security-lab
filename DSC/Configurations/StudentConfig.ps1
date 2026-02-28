@@ -111,8 +111,6 @@ Configuration StudentBaseline {
 
         if ($node.Role -eq 'DC') {
 
-            # OU Loop to enforce values described in AllNodes.psd1
-            # ---------- OUs (Data-driven) ----------
             foreach ($ou in $node.OUList) {
 
                 $ouPath = if ([string]::IsNullOrWhiteSpace($ou.Path)) {
@@ -131,7 +129,6 @@ Configuration StudentBaseline {
                 }
             }
 
-            # ---------- Users (Data-driven) ----------
             foreach ($u in $node.Users) {
 
                 $safeUser = ($u.UserName -replace '[^a-zA-Z0-9]', '_')
@@ -146,12 +143,10 @@ Configuration StudentBaseline {
                 }
             }
 
-            # ---------- Groups (Data-driven) ----------
             foreach ($g in $node.Groups) {
 
                 $safeGrp = ($g.GroupName -replace '[^a-zA-Z0-9]', '_')
 
-                # Build members list from Users[] where MemberOf contains this group
                 $membersForGroup = @(
                     foreach ($u in $node.Users) {
                         if ($u.MemberOf -and ($u.MemberOf -contains $g.GroupName)) {
@@ -160,7 +155,6 @@ Configuration StudentBaseline {
                     }
                 )
 
-                # Ensure users exist BEFORE trying to include to a group
                 $depends = @('[ADDomain]CreateForest')
                 foreach ($member in $membersForGroup) {
                     $safeMember = ($member -replace '[^a-zA-Z0-9]', '_')
@@ -174,10 +168,24 @@ Configuration StudentBaseline {
                     Path       = "$($g.Path),$($Node.DomainDN)"
                     Ensure     = 'Present'
                     DependsOn  = $depends
-
-                    # Only set members if they are present
                     MembersToInclude = $membersForGroup
                 }
+            }
+        }
+
+        # ---------------- CLIENT ADDITION ONLY ----------------
+
+        if ($node.Role -eq 'Client') {
+
+            LocalConfigurationManager {
+                RebootNodeIfNeeded = $true
+            }
+
+            Computer JoinDomain {
+                Name       = $Node.NodeName
+                DomainName = $Node.DomainName
+                Credential = $DomainAdminCredential
+                JoinOU     = $Node.DomainJoinOU
             }
         }
     }
