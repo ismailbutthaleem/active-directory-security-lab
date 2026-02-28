@@ -20,6 +20,7 @@ Configuration StudentBaseline {
     Import-DscResource -ModuleName PSDesiredStateConfiguration
     Import-DscResource -ModuleName NetworkingDsc
     Import-DscResource -ModuleName ActiveDirectoryDsc
+    Import-DscResource -ModuleName ComputerManagementDsc
 
     Node $AllNodes.NodeName {
 
