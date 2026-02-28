@@ -17,7 +17,6 @@ Configuration StudentBaseline {
         $DsrmCredential
     )
 
-    ## Note: The DomainAdminCredential and DsrmCredential parameters are defined as mandatory to ensure that the configuration cannot be applied without providing these credentials. This is important for security and functionality, as these credentials are required for domain join and Active Directory installation. By using parameters, we avoid hardcoding sensitive information in the configuration script, allowing for secure and flexible deployment.
     Import-DscResource -ModuleName PSDesiredStateConfiguration
     Import-DscResource -ModuleName ComputerManagementDsc
     Import-DscResource -ModuleName NetworkingDsc
@@ -27,14 +26,7 @@ Configuration StudentBaseline {
 
         $node = $ConfigurationData.AllNodes | Where-Object { $_.NodeName -eq $Node.NodeName }
 
-        ## Note: The $node variable is used to access the properties defined in the configuration data for the current node. This allows us to use the values specified in AllNodes.psd1, such as ComputerName, TimeZone, network settings, and domain configuration, without hardcoding them in the configuration script. This approach promotes reusability and maintainability of the configuration, as changes can be made in the configuration data file without modifying the script itself.
-        $Network = @{
-            InterfaceAlias = $node.InterfaceAlias_Internal
-            AddressFamily  = 'IPv4'
-            IPAddress      = $node.IPv4Address_Internal
-            PrefixLength   = $node.PrefixLength_Internal
-            DnsServers     = $node.DnsServers_Internal
-        }
+        # ---------- Common Resources (All Nodes) ----------
 
         File TestFolder {
             DestinationPath = 'C:\TEST'
@@ -50,67 +42,78 @@ Configuration StudentBaseline {
             DependsOn       = '[File]TestFolder'
         }
 
-        Computer SetComputerName {
-            Name = $node.ComputerName
-        }
-
-        TimeZone SetTimeZone {
-            IsSingleInstance = 'Yes'
-            TimeZone         = $node.TimeZone
-        }
-
-        Service WindowsTime {
-            Name        = 'W32Time'
-            State       = 'Running'
-            StartupType = 'Automatic'
-            DependsOn   = '[TimeZone]SetTimeZone'
-        }
-
-        WindowsFeature ADDS {
-            Name   = 'AD-Domain-Services'
-            Ensure = 'Present'
-        }
-
-        WindowsFeature RSATADDS {
-            Name      = 'RSAT-ADDS'
-            Ensure    = 'Present'
-            DependsOn = '[WindowsFeature]ADDS'
-        }
-
-        IPAddress StaticIPv4 {
-            AddressFamily       = $Network.AddressFamily
-            InterfaceAlias      = $Network.InterfaceAlias
-            IPAddress           = @("$($Network.IPAddress)/$($Network.PrefixLength)")
-            KeepExistingAddress = $false
-            DependsOn           = '[Computer]SetComputerName'
-        }
-
-        DnsServerAddress InternalDNS {
-            AddressFamily  = 'IPv4'
-            InterfaceAlias = $node.InterfaceAlias_Internal
-            Address        = $node.DnsServers_Internal
-            DependsOn      = '[IPAddress]StaticIPv4'
-        }
-
-        DnsConnectionSuffix DisableNatDnsRegistration {
-            InterfaceAlias                 = $node.InterfaceAlias_NAT
-            ConnectionSpecificSuffix       = 'nat'
-            RegisterThisConnectionsAddress = $false
-            DependsOn                      = '[DnsServerAddress]InternalDNS'
-        }
-
-        ADDomain CreateForest {
-            DomainName                    = $Node.DomainName
-            DomainNetBIOSName             = $Node.DomainNetBIOSName
-            Credential                    = $DomainAdminCredential
-            SafemodeAdministratorPassword = $DsrmCredential
-            ForestMode                    = $Node.ForestMode
-            DomainMode                    = $Node.DomainMode
-            DependsOn                     = '[WindowsFeature]RSATADDS'
-        }
+        # ================= DC CONFIGURATION =================
 
         if ($node.Role -eq 'DC') {
 
+            $Network = @{
+                InterfaceAlias = $node.InterfaceAlias_Internal
+                AddressFamily  = 'IPv4'
+                IPAddress      = $node.IPv4Address_Internal
+                PrefixLength   = $node.PrefixLength_Internal
+                DnsServers     = $node.DnsServers_Internal
+            }
+
+            Computer SetComputerName {
+                Name = $node.ComputerName
+            }
+
+            TimeZone SetTimeZone {
+                IsSingleInstance = 'Yes'
+                TimeZone         = $node.TimeZone
+            }
+
+            Service WindowsTime {
+                Name        = 'W32Time'
+                State       = 'Running'
+                StartupType = 'Automatic'
+                DependsOn   = '[TimeZone]SetTimeZone'
+            }
+
+            WindowsFeature ADDS {
+                Name   = 'AD-Domain-Services'
+                Ensure = 'Present'
+            }
+
+            WindowsFeature RSATADDS {
+                Name      = 'RSAT-ADDS'
+                Ensure    = 'Present'
+                DependsOn = '[WindowsFeature]ADDS'
+            }
+
+            IPAddress StaticIPv4 {
+                AddressFamily       = $Network.AddressFamily
+                InterfaceAlias      = $Network.InterfaceAlias
+                IPAddress           = @("$($Network.IPAddress)/$($Network.PrefixLength)")
+                KeepExistingAddress = $false
+                DependsOn           = '[Computer]SetComputerName'
+            }
+
+            DnsServerAddress InternalDNS {
+                AddressFamily  = 'IPv4'
+                InterfaceAlias = $node.InterfaceAlias_Internal
+                Address        = $node.DnsServers_Internal
+                DependsOn      = '[IPAddress]StaticIPv4'
+            }
+
+            DnsConnectionSuffix DisableNatDnsRegistration {
+                InterfaceAlias                 = $node.InterfaceAlias_NAT
+                ConnectionSpecificSuffix       = 'nat'
+                RegisterThisConnectionsAddress = $false
+                DependsOn                      = '[DnsServerAddress]InternalDNS'
+            }
+
+            ADDomain CreateForest {
+                DomainName                    = $Node.DomainName
+                DomainNetBIOSName             = $Node.DomainNetBIOSName
+                Credential                    = $DomainAdminCredential
+                SafemodeAdministratorPassword = $DsrmCredential
+                ForestMode                    = $Node.ForestMode
+                DomainMode                    = $Node.DomainMode
+                DependsOn                     = '[WindowsFeature]RSATADDS'
+            }
+
+            # ---------- OUs ----------
             foreach ($ou in $node.OUList) {
 
                 $ouPath = if ([string]::IsNullOrWhiteSpace($ou.Path)) {
@@ -129,6 +132,7 @@ Configuration StudentBaseline {
                 }
             }
 
+            # ---------- Users ----------
             foreach ($u in $node.Users) {
 
                 $safeUser = ($u.UserName -replace '[^a-zA-Z0-9]', '_')
@@ -143,6 +147,7 @@ Configuration StudentBaseline {
                 }
             }
 
+            # ---------- Groups ----------
             foreach ($g in $node.Groups) {
 
                 $safeGrp = ($g.GroupName -replace '[^a-zA-Z0-9]', '_')
@@ -173,7 +178,7 @@ Configuration StudentBaseline {
             }
         }
 
-        # ---------------- CLIENT ADDITION ONLY ----------------
+        # ================= CLIENT CONFIGURATION =================
 
         if ($node.Role -eq 'Client') {
 
