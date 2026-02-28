@@ -178,38 +178,24 @@ Configuration StudentBaseline {
         }
 
         # ================= CLIENT CONFIGURATION =================
+        # Domain join is performed manually (per brief: join + prove GPO + separate MOF).
+        # Client MOF is still required and applied to demonstrate node separation + DSC application.
 
         if ($node.Role -eq 'Client') {
 
-            LocalConfigurationManager {
-                RebootNodeIfNeeded = $true
+            # ---------- Proof-of-life (Client Only) ----------
+            File ClientEvidenceFolder {
+                DestinationPath = 'C:\CLIENT_EVIDENCE'
+                Type            = 'Directory'
+                Ensure          = 'Present'
             }
 
-            # Capture values into simple variables for use with $using:
-            $ClientDomainName = $node.DomainName
-            $ClientJoinOU     = $node.DomainJoinOU
-
-            Script JoinDomain {
-
-                GetScript = {
-                    $cs = Get-CimInstance -ClassName Win32_ComputerSystem
-                    @{ Result = "$($cs.PartOfDomain)|$($cs.Domain)" }
-                }
-
-                TestScript = {
-                    $cs = Get-CimInstance -ClassName Win32_ComputerSystem
-                    return ($cs.PartOfDomain -eq $true -and $cs.Domain -ieq $using:ClientDomainName)
-                }
-
-                SetScript = {
-                    Add-Computer -DomainName $using:ClientDomainName `
-                        -Credential $using:DomainAdminCredential `
-                        -OUPath $using:ClientJoinOU `
-                        -Force -ErrorAction Stop
-
-                    # Tell DSC a reboot is required (don't call Restart-Computer here)
-                    $global:DSCMachineStatus = 1
-                }
+            File ClientEvidenceFile {
+                DestinationPath = 'C:\CLIENT_EVIDENCE\client-proof.txt'
+                Type            = 'File'
+                Ensure          = 'Present'
+                Contents        = 'Proof-of-life: Windows10 client applied its own MOF via DSC.'
+                DependsOn       = '[File]ClientEvidenceFolder'
             }
         }
     }
