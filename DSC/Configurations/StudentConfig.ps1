@@ -185,28 +185,30 @@ Configuration StudentBaseline {
                 RebootNodeIfNeeded = $true
             }
 
+            # Capture values into simple variables for use with $using:
+            $ClientDomainName = $node.DomainName
+            $ClientJoinOU     = $node.DomainJoinOU
+
             Script JoinDomain {
 
                 GetScript = {
                     $cs = Get-CimInstance -ClassName Win32_ComputerSystem
-                    @{
-                        PartOfDomain = [bool]$cs.PartOfDomain
-                        Domain       = $cs.Domain
-                    }
+                    @{ Result = "$($cs.PartOfDomain)|$($cs.Domain)" }
                 }
 
                 TestScript = {
                     $cs = Get-CimInstance -ClassName Win32_ComputerSystem
-                    return ($cs.PartOfDomain -eq $true -and $cs.Domain -ieq $using:node.DomainName)
+                    return ($cs.PartOfDomain -eq $true -and $cs.Domain -ieq $using:ClientDomainName)
                 }
 
                 SetScript = {
-                    Add-Computer -DomainName $using:node.DomainName `
+                    Add-Computer -DomainName $using:ClientDomainName `
                         -Credential $using:DomainAdminCredential `
-                        -OUPath $using:node.DomainJoinOU `
+                        -OUPath $using:ClientJoinOU `
                         -Force -ErrorAction Stop
 
-                    Restart-Computer -Force
+                    # Tell DSC a reboot is required (don't call Restart-Computer here)
+                    $global:DSCMachineStatus = 1
                 }
             }
         }
