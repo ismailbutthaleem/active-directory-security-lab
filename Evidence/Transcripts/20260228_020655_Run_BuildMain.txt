@@ -1,0 +1,65 @@
+**********************
+PowerShell transcript start
+Start time: 20260228020655
+Username: BOLTON\Administrator
+RunAs User: BOLTON\Administrator
+Configuration Name: 
+Machine: SERVER25-DC-01 (Microsoft Windows NT 10.0.26100.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -WorkingDirectory ~
+Process ID: 7732
+PSVersion: 7.5.4
+PSEdition: Core
+GitCommitId: 7.5.4
+OS: Microsoft Windows 10.0.26100
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+[+] Transcript started: Evidence\\Transcripts\\20260228_020655_Run_BuildMain.txt
+[+] Admin privileges confirmed.
+
+[Phase 1] Prerequisites...
+[*] Invoke-BarmBuzz-OneShots: LCM then Network
+[*] LCM already configured (flag present).
+[*] Network already configured (flag present).
+[*] LCM already configured (skipping).
+[*] Network already configured (skipping).
+[+] Phase 1 complete.
+
+[Credential] Domain Administrator Password Required...
+[*] This is the LOCAL Administrator account that will perform the promotion.
+[*] After promotion, this becomes BARMBUZZ\\Administrator (Domain Admin).
+[+] Domain Admin credential captured (not logged).
+
+[Credential] DSRM Password Required...
+[*] This password is for Directory Services Restore Mode (DC recovery).
+[*] Use this to boot into recovery mode if AD database is corrupted.
+[*] Can be same as Admin password, or different for extra security.
+[+] DSRM credential captured (not logged).
+
+[Phase 2] Compile + Apply DSC...
+[+] Found configuration: StudentBaseline
+[*] Compiling -> DSC\\Outputs\\StudentBaseline
+PSDesiredStateConfiguration\node: C:\Users\Administrator\repo\COM5411-BarmBuzz\DSC\Configurations\StudentConfig.ps1:26
+Line |
+  26 |      Node $AllNodes.NodeName {
+     |      ~~~~
+     | The property 'InterfaceAlias_Internal' cannot be found on this object. Verify that the property exists.
+PSDesiredStateConfiguration\node: C:\Users\Administrator\repo\COM5411-BarmBuzz\DSC\Configurations\StudentConfig.ps1:26
+Line |
+  26 |      Node $AllNodes.NodeName {
+     |      ~~~~
+     | The property 'InterfaceAlias_Internal' cannot be found on this object. Verify that the property exists.
+
+PS>TerminatingError(): "Errors occurred while processing configuration 'StudentBaseline'."
+PS>TerminatingError(): "Errors occurred while processing configuration 'StudentBaseline'."
+>> TerminatingError(): "Errors occurred while processing configuration 'StudentBaseline'."
+
+[-] BUILD FAILED
+Message: Errors occurred while processing configuration 'StudentBaseline'.
+**********************
+PowerShell transcript end
+End time: 20260228020708
+**********************

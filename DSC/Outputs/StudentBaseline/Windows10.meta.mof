@@ -1,0 +1,23 @@
+/*
+@TargetNode='Windows10'
+@GeneratedBy=Administrator
+@GenerationDate=02/28/2026 05:58:32
+@GenerationHost=SERVER25-DC-01
+*/
+
+instance of MSFT_DSCMetaConfiguration as $MSFT_DSCMetaConfiguration1ref
+{
+RebootNodeIfNeeded = True;
+
+};
+
+instance of OMI_ConfigurationDocument
+{
+ Version="2.0.0";
+ MinimumCompatibleVersion = "1.0.0";
+ CompatibleVersionAdditionalProperties= { };
+ Author="Administrator";
+ GenerationDate="02/28/2026 05:58:32";
+ GenerationHost="SERVER25-DC-01";
+ Name="StudentBaseline";
+};

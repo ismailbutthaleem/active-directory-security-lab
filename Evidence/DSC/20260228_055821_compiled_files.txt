@@ -1,0 +1,8 @@
+
+FullName                                                                                     Length LastWriteTime
+--------                                                                                     ------ -------------
+C:\Users\Administrator\repo\COM5411-BarmBuzz\DSC\Outputs\StudentBaseline\localhost.mof        17542 2/28/2026 5:58:32 AM
+C:\Users\Administrator\repo\COM5411-BarmBuzz\DSC\Outputs\StudentBaseline\localhost.mof.error  14441 2/23/2026 3:57:48 AM
+C:\Users\Administrator\repo\COM5411-BarmBuzz\DSC\Outputs\StudentBaseline\Windows10.meta.mof     520 2/28/2026 5:58:32 AM
+C:\Users\Administrator\repo\COM5411-BarmBuzz\DSC\Outputs\StudentBaseline\Windows10.mof         2909 2/28/2026 5:58:32 AM
+

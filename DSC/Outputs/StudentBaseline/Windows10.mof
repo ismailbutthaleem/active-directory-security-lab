@@ -1,0 +1,52 @@
+/*
+@TargetNode='Windows10'
+@GeneratedBy=Administrator
+@GenerationDate=02/28/2026 06:13:03
+@GenerationHost=SERVER25-DC-01
+*/
+
+instance of MSFT_FileDirectoryConfiguration as $MSFT_FileDirectoryConfiguration1ref
+{
+Type = "Directory";
+ DestinationPath = "C:\\CLIENT_EVIDENCE";
+ ModuleName = "PSDesiredStateConfiguration";
+ Ensure = "Present";
+ ResourceID = "[File]ClientEvidenceFolder";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::187::13::File";
+
+ModuleVersion = "1.0";
+ ConfigurationName = "StudentBaseline";
+};
+instance of MSFT_FileDirectoryConfiguration as $MSFT_FileDirectoryConfiguration2ref
+{
+Contents = "Proof-of-life: Windows10 client applied its own MOF via DSC.";
+ Type = "File";
+ DestinationPath = "C:\\CLIENT_EVIDENCE\\client-proof.txt";
+ ModuleName = "PSDesiredStateConfiguration";
+ Ensure = "Present";
+ ResourceID = "[File]ClientEvidenceFile";
+ SourceInfo = "C:\\Users\\Administrator\\repo\\COM5411-BarmBuzz\\DSC\\Configurations\\StudentConfig.ps1::193::13::File";
+
+ModuleVersion = "1.0";
+DependsOn = {
+    "[File]ClientEvidenceFolder"};
+ ConfigurationName = "StudentBaseline";
+};
+instance of OMI_ConfigurationDocument
+
+                    {
+ Version="2.0.0";
+
+                        MinimumCompatibleVersion = "1.0.0";
+
+                        CompatibleVersionAdditionalProperties= {"Omi_BaseResource:ConfigurationName"};
+
+                        Author="Administrator";
+
+                        GenerationDate="02/28/2026 06:13:03";
+
+                        GenerationHost="SERVER25-DC-01";
+
+                        Name="StudentBaseline";
+
+                    };
