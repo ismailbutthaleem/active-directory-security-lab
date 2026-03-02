@@ -1,0 +1,534 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260302234602
+Username: BOLTON\Administrator
+RunAs User: BOLTON\Administrator
+Configuration Name: 
+Machine: SERVER25-DC-01 (Microsoft Windows NT 10.0.26100.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+Process ID: 7632
+PSVersion: 5.1.26100.32370
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.32370
+BuildVersion: 10.0.26100.32370
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is c:\Evidence\Transcripts\Build_And_Filehash_run2.txt
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> ./Run_BuildMain.ps1
+==========================================
+        COM5411 BarmBuzz Build Runner
+==========================================
+[*] Repo root: C:\Users\Administrator\repo\COM5411-BarmBuzz
+[*] PowerShell: 5.1.26100.32370
+[*] You edit ONLY: DSC\\Configurations\\StudentConfig.ps1 and DSC\\Data\\AllNodes.psd1
+[+] Transcript started: Evidence\\Transcripts\\20260302_234606_Run_BuildMain.txt
+[+] Admin privileges confirmed.
+
+[Phase 1] Prerequisites...
+[*] Invoke-BarmBuzz-OneShots: LCM then Network
+[*] LCM already configured (flag present).
+[*] Network already configured (flag present).
+[*] LCM already configured (skipping).
+[*] Network already configured (skipping).
+[+] Phase 1 complete.
+
+[Credential] Domain Administrator Password Required...
+[*] This is the LOCAL Administrator account that will perform the promotion.
+[*] After promotion, this becomes BARMBUZZ\\Administrator (Domain Admin).
+[+] Domain Admin credential captured (not logged).
+
+[Credential] DSRM Password Required...
+[*] This password is for Directory Services Restore Mode (DC recovery).
+[*] Use this to boot into recovery mode if AD database is corrupted.
+[*] Can be same as Admin password, or different for extra security.
+[+] DSRM credential captured (not logged).
+
+[Phase 2] Compile + Apply DSC...
+[+] Found configuration: StudentBaseline
+[*] Compiling -> DSC\\Outputs\\StudentBaseline
+[+] Compilation complete.
+[*] Applying configuration (waits until complete)...
+Perform operation 'Invoke CimMethod' with following parameters, ''methodName' = SendConfigurationApply,'className' =
+MSFT_DSCLocalConfigurationManager,'namespaceName' = root/Microsoft/Windows/DesiredStateConfiguration'.
+Perform operation 'Invoke CimMethod' with following parameters, ''methodName' = SendConfigurationApply,'className' =
+MSFT_DSCLocalConfigurationManager,'namespaceName' = root/Microsoft/Windows/DesiredStateConfiguration'.
+An LCM method call arrived from computer SERVER25-DC-01 with user sid S-1-5-21-1239633434-1875597299-1469250292-500.
+[SERVER25-DC-01]: LCM:  [ Start  Set      ]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[File]TestFolder]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[File]TestFolder]
+[SERVER25-DC-01]:                            [[File]TestFolder] The destination object was found and no action is required.
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[File]TestFolder]  in 0.0120 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[File]TestFolder]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[File]TestFolder]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[File]TestFile]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[File]TestFile]
+[SERVER25-DC-01]:                            [[File]TestFile] The destination object was found and no action is required.
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[File]TestFile]  in 0.0010 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[File]TestFile]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[File]TestFile]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[Computer]SetComputerName]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[Computer]SetComputerName]
+[SERVER25-DC-01]:                            [[Computer]SetComputerName] Testing computer state for 'SERVER25-DC-01'.
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[Computer]SetComputerName]  in 0.0100 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[Computer]SetComputerName]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[Computer]SetComputerName]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[TimeZone]SetTimeZone]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[TimeZone]SetTimeZone]
+[SERVER25-DC-01]:                            [[TimeZone]SetTimeZone] Testing the time zone.
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[TimeZone]SetTimeZone]  in 0.0510 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[TimeZone]SetTimeZone]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[TimeZone]SetTimeZone]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[Service]WindowsTime]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[Service]WindowsTime]
+[SERVER25-DC-01]:                            [[Service]WindowsTime] Perform operation 'Query CimInstances' with following
+parameters, ''queryExpression' = SELECT * FROM Win32_Service WHERE Name='W32Time','queryDialect' = WQL,'namespaceName' =
+root\cimv2'.
+[SERVER25-DC-01]:                            [[Service]WindowsTime] Operation 'Query CimInstances' complete.
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[Service]WindowsTime]  in 0.1710 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[Service]WindowsTime]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[Service]WindowsTime]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[WindowsFeature]ADDS]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[WindowsFeature]ADDS]
+[SERVER25-DC-01]:                            [[WindowsFeature]ADDS] The operation 'Get-WindowsFeature' started: AD-Domain-Services
+[SERVER25-DC-01]:                            [[WindowsFeature]ADDS] The operation 'Get-WindowsFeature' succeeded:
+AD-Domain-Services
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[WindowsFeature]ADDS]  in 0.4420 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[WindowsFeature]ADDS]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[WindowsFeature]ADDS]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[WindowsFeature]RSATADDS]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[WindowsFeature]RSATADDS]
+[SERVER25-DC-01]:                            [[WindowsFeature]RSATADDS] The operation 'Get-WindowsFeature' started: RSAT-ADDS
+[SERVER25-DC-01]:                            [[WindowsFeature]RSATADDS] The operation 'Get-WindowsFeature' succeeded: RSAT-ADDS
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[WindowsFeature]RSATADDS]  in 0.2440 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[WindowsFeature]RSATADDS]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[WindowsFeature]RSATADDS]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[IPAddress]StaticIPv4]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[IPAddress]StaticIPv4]
+[SERVER25-DC-01]:                            [[IPAddress]StaticIPv4] Test-TargetResource: Checking the IP Address.
+[SERVER25-DC-01]:                            [[IPAddress]StaticIPv4] Test-TargetResource: IP Address is in desired state.
+[SERVER25-DC-01]:                            [[IPAddress]StaticIPv4] Test-TargetResource: Prefix Length is in desired state.
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[IPAddress]StaticIPv4]  in 0.8550 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[IPAddress]StaticIPv4]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[IPAddress]StaticIPv4]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[DnsServerAddress]InternalDNS]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[DnsServerAddress]InternalDNS]
+[SERVER25-DC-01]:                            [[DnsServerAddress]InternalDNS] Test-TargetResource: Checking the DNS server
+addresses.
+[SERVER25-DC-01]:                            [[DnsServerAddress]InternalDNS] Get-DnsClientServerStaticAddress: Getting statically
+assigned DNS server IPv4 address for interface alias 'Ethernet 2'. (NETC0008)
+[SERVER25-DC-01]:                            [[DnsServerAddress]InternalDNS] Get-DnsClientServerStaticAddress: Statically
+assigned DNS server IPv4 address for interface alias 'Ethernet 2' is '127.0.0.1'. (NETC0013)
+[SERVER25-DC-01]:                            [[DnsServerAddress]InternalDNS] Test-TargetResource: DNS server addresses are set
+correctly.
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[DnsServerAddress]InternalDNS]  in 0.0560 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[DnsServerAddress]InternalDNS]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[DnsServerAddress]InternalDNS]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[DnsConnectionSuffix]DisableNatDnsRegistration]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[DnsConnectionSuffix]DisableNatDnsRegistration]
+[SERVER25-DC-01]:                            [[DnsConnectionSuffix]DisableNatDnsRegistration] Checking connection suffix matches
+'nat'.
+[SERVER25-DC-01]:                            [[DnsConnectionSuffix]DisableNatDnsRegistration] Resource is in the desired state.
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[DnsConnectionSuffix]DisableNatDnsRegistration]  in 0.2810 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[DnsConnectionSuffix]DisableNatDnsRegistration]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[DnsConnectionSuffix]DisableNatDnsRegistration]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADDomain]CreateForest]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADDomain]CreateForest]
+[SERVER25-DC-01]:                            [[ADDomain]CreateForest] Querying for domain 'bolton.corp'. (ADD0001)
+[SERVER25-DC-01]:                            [[ADDomain]CreateForest] Active Directory domain 'bolton.corp' found. (ADD0003)
+[SERVER25-DC-01]:                            [[ADDomain]CreateForest] The domain 'bolton.corp' is in the desired state. (ADD0008)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADDomain]CreateForest]  in 0.4570 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADDomain]CreateForest]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADDomain]CreateForest]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADOrganizationalUnit]OU_ControlPlane_882470316]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADOrganizationalUnit]OU_ControlPlane_882470316]
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_ControlPlane_882470316] Retrieving OU 'ControlPlane' from
+path 'DC=bolton,DC=corp'. (ADOU0001)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_ControlPlane_882470316] The OU 'ControlPlane' is present.
+(ADOU0011)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_ControlPlane_882470316] The parameter
+'ProtectedFromAccidentalDeletion' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_ControlPlane_882470316] The parameter 'Path' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_ControlPlane_882470316] The parameter 'Name' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_ControlPlane_882470316] The parameter 'Ensure' is in
+desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_ControlPlane_882470316] OU 'ControlPlane' exists and is in
+the desired state. (ADOU0006)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADOrganizationalUnit]OU_ControlPlane_882470316]  in 0.0780 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADOrganizationalUnit]OU_ControlPlane_882470316]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADOrganizationalUnit]OU_ControlPlane_882470316]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADOrganizationalUnit]OU_ManagementPlane_882470316]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADOrganizationalUnit]OU_ManagementPlane_882470316]
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_ManagementPlane_882470316] Retrieving OU 'ManagementPlane'
+from path 'DC=bolton,DC=corp'. (ADOU0001)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_ManagementPlane_882470316] The OU 'ManagementPlane' is
+present. (ADOU0011)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_ManagementPlane_882470316] The parameter
+'ProtectedFromAccidentalDeletion' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_ManagementPlane_882470316] The parameter 'Path' is in
+desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_ManagementPlane_882470316] The parameter 'Name' is in
+desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_ManagementPlane_882470316] The parameter 'Ensure' is in
+desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_ManagementPlane_882470316] OU 'ManagementPlane' exists and
+is in the desired state. (ADOU0006)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADOrganizationalUnit]OU_ManagementPlane_882470316]  in 0.0130 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADOrganizationalUnit]OU_ManagementPlane_882470316]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADOrganizationalUnit]OU_ManagementPlane_882470316]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADOrganizationalUnit]OU_UserAccessPlane_882470316]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADOrganizationalUnit]OU_UserAccessPlane_882470316]
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_UserAccessPlane_882470316] Retrieving OU 'UserAccessPlane'
+from path 'DC=bolton,DC=corp'. (ADOU0001)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_UserAccessPlane_882470316] The OU 'UserAccessPlane' is
+present. (ADOU0011)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_UserAccessPlane_882470316] The parameter
+'ProtectedFromAccidentalDeletion' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_UserAccessPlane_882470316] The parameter 'Path' is in
+desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_UserAccessPlane_882470316] The parameter 'Name' is in
+desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_UserAccessPlane_882470316] The parameter 'Ensure' is in
+desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_UserAccessPlane_882470316] OU 'UserAccessPlane' exists and
+is in the desired state. (ADOU0006)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADOrganizationalUnit]OU_UserAccessPlane_882470316]  in 0.0150 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADOrganizationalUnit]OU_UserAccessPlane_882470316]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADOrganizationalUnit]OU_UserAccessPlane_882470316]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADOrganizationalUnit]OU_Users_336862948]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADOrganizationalUnit]OU_Users_336862948]
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Users_336862948] Retrieving OU 'Users' from path
+'OU=UserAccessPlane,DC=bolton,DC=corp'. (ADOU0001)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Users_336862948] The OU 'Users' is present. (ADOU0011)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Users_336862948] The parameter
+'ProtectedFromAccidentalDeletion' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Users_336862948] The parameter 'Path' is in desired state.
+(DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Users_336862948] The parameter 'Name' is in desired state.
+(DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Users_336862948] The parameter 'Ensure' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Users_336862948] OU 'Users' exists and is in the desired
+state. (ADOU0006)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADOrganizationalUnit]OU_Users_336862948]  in 0.0230 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADOrganizationalUnit]OU_Users_336862948]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADOrganizationalUnit]OU_Users_336862948]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADOrganizationalUnit]OU_Groups_336862948]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADOrganizationalUnit]OU_Groups_336862948]
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_336862948] Retrieving OU 'Groups' from path
+'OU=UserAccessPlane,DC=bolton,DC=corp'. (ADOU0001)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_336862948] The OU 'Groups' is present. (ADOU0011)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_336862948] The parameter
+'ProtectedFromAccidentalDeletion' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_336862948] The parameter 'Path' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_336862948] The parameter 'Name' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_336862948] The parameter 'Ensure' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_336862948] OU 'Groups' exists and is in the desired
+state. (ADOU0006)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADOrganizationalUnit]OU_Groups_336862948]  in 0.0160 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADOrganizationalUnit]OU_Groups_336862948]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADOrganizationalUnit]OU_Groups_336862948]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADOrganizationalUnit]OU_Computers_336862948]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADOrganizationalUnit]OU_Computers_336862948]
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Computers_336862948] Retrieving OU 'Computers' from path
+'OU=UserAccessPlane,DC=bolton,DC=corp'. (ADOU0001)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Computers_336862948] The OU 'Computers' is present.
+(ADOU0011)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Computers_336862948] The parameter
+'ProtectedFromAccidentalDeletion' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Computers_336862948] The parameter 'Path' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Computers_336862948] The parameter 'Name' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Computers_336862948] The parameter 'Ensure' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Computers_336862948] OU 'Computers' exists and is in the
+desired state. (ADOU0006)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADOrganizationalUnit]OU_Computers_336862948]  in 0.0040 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADOrganizationalUnit]OU_Computers_336862948]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADOrganizationalUnit]OU_Computers_336862948]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADOrganizationalUnit]OU_AdminUsers_963123746]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADOrganizationalUnit]OU_AdminUsers_963123746]
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_AdminUsers_963123746] Retrieving OU 'AdminUsers' from path
+'OU=ManagementPlane,DC=bolton,DC=corp'. (ADOU0001)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_AdminUsers_963123746] The OU 'AdminUsers' is present.
+(ADOU0011)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_AdminUsers_963123746] The parameter
+'ProtectedFromAccidentalDeletion' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_AdminUsers_963123746] The parameter 'Path' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_AdminUsers_963123746] The parameter 'Name' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_AdminUsers_963123746] The parameter 'Ensure' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_AdminUsers_963123746] OU 'AdminUsers' exists and is in the
+desired state. (ADOU0006)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADOrganizationalUnit]OU_AdminUsers_963123746]  in 0.0000 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADOrganizationalUnit]OU_AdminUsers_963123746]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADOrganizationalUnit]OU_AdminUsers_963123746]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADOrganizationalUnit]OU_Groups_963123746]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADOrganizationalUnit]OU_Groups_963123746]
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_963123746] Retrieving OU 'Groups' from path
+'OU=ManagementPlane,DC=bolton,DC=corp'. (ADOU0001)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_963123746] The OU 'Groups' is present. (ADOU0011)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_963123746] The parameter
+'ProtectedFromAccidentalDeletion' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_963123746] The parameter 'Path' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_963123746] The parameter 'Name' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_963123746] The parameter 'Ensure' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_963123746] OU 'Groups' exists and is in the desired
+state. (ADOU0006)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADOrganizationalUnit]OU_Groups_963123746]  in 0.0300 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADOrganizationalUnit]OU_Groups_963123746]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADOrganizationalUnit]OU_Groups_963123746]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADOrganizationalUnit]OU_Groups_1807545330]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADOrganizationalUnit]OU_Groups_1807545330]
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_1807545330] Retrieving OU 'Groups' from path
+'OU=ControlPlane,DC=bolton,DC=corp'. (ADOU0001)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_1807545330] The OU 'Groups' is present. (ADOU0011)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_1807545330] The parameter
+'ProtectedFromAccidentalDeletion' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_1807545330] The parameter 'Path' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_1807545330] The parameter 'Name' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_1807545330] The parameter 'Ensure' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_Groups_1807545330] OU 'Groups' exists and is in the
+desired state. (ADOU0006)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADOrganizationalUnit]OU_Groups_1807545330]  in 0.0160 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADOrganizationalUnit]OU_Groups_1807545330]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADOrganizationalUnit]OU_Groups_1807545330]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADOrganizationalUnit]OU_AdminUsers_1807545330]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADOrganizationalUnit]OU_AdminUsers_1807545330]
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_AdminUsers_1807545330] Retrieving OU 'AdminUsers' from
+path 'OU=ControlPlane,DC=bolton,DC=corp'. (ADOU0001)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_AdminUsers_1807545330] The OU 'AdminUsers' is present.
+(ADOU0011)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_AdminUsers_1807545330] The parameter
+'ProtectedFromAccidentalDeletion' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_AdminUsers_1807545330] The parameter 'Path' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_AdminUsers_1807545330] The parameter 'Name' is in desired
+state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_AdminUsers_1807545330] The parameter 'Ensure' is in
+desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADOrganizationalUnit]OU_AdminUsers_1807545330] OU 'AdminUsers' exists and is in
+the desired state. (ADOU0006)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADOrganizationalUnit]OU_AdminUsers_1807545330]  in 0.0190 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADOrganizationalUnit]OU_AdminUsers_1807545330]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADOrganizationalUnit]OU_AdminUsers_1807545330]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADUser]User_adam_khan]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADUser]User_adam_khan]
+[SERVER25-DC-01]:                            [[ADUser]User_adam_khan] Retrieving 'adam.khan' from domain 'bolton.corp'. (ADU0004)
+[SERVER25-DC-01]:                            [[ADUser]User_adam_khan] 'adam.khan' is present in domain 'bolton.corp'. (ADU0007)
+[SERVER25-DC-01]:                            [[ADUser]User_adam_khan] 'adam.khan' is in the desired state. (ADU0009)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADUser]User_adam_khan]  in 0.1120 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADUser]User_adam_khan]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADUser]User_adam_khan]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADUser]User_katy_smith]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADUser]User_katy_smith]
+[SERVER25-DC-01]:                            [[ADUser]User_katy_smith] Retrieving 'katy.smith' from domain 'bolton.corp'.
+(ADU0004)
+[SERVER25-DC-01]:                            [[ADUser]User_katy_smith] 'katy.smith' is present in domain 'bolton.corp'. (ADU0007)
+[SERVER25-DC-01]:                            [[ADUser]User_katy_smith] 'katy.smith' is in the desired state. (ADU0009)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADUser]User_katy_smith]  in 0.0150 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADUser]User_katy_smith]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADUser]User_katy_smith]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADUser]User_ismail_admin]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADUser]User_ismail_admin]
+[SERVER25-DC-01]:                            [[ADUser]User_ismail_admin] Retrieving 'ismail.admin' from domain 'bolton.corp'.
+(ADU0004)
+[SERVER25-DC-01]:                            [[ADUser]User_ismail_admin] 'ismail.admin' is present in domain 'bolton.corp'.
+(ADU0007)
+[SERVER25-DC-01]:                            [[ADUser]User_ismail_admin] 'ismail.admin' is in the desired state. (ADU0009)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADUser]User_ismail_admin]  in 0.0050 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADUser]User_ismail_admin]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADUser]User_ismail_admin]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADUser]User_paul_evans]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADUser]User_paul_evans]
+[SERVER25-DC-01]:                            [[ADUser]User_paul_evans] Retrieving 'paul.evans' from domain 'bolton.corp'.
+(ADU0004)
+[SERVER25-DC-01]:                            [[ADUser]User_paul_evans] 'paul.evans' is present in domain 'bolton.corp'. (ADU0007)
+[SERVER25-DC-01]:                            [[ADUser]User_paul_evans] 'paul.evans' is in the desired state. (ADU0009)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADUser]User_paul_evans]  in 0.0070 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADUser]User_paul_evans]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADUser]User_paul_evans]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADUser]User_raul_alejandro]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADUser]User_raul_alejandro]
+[SERVER25-DC-01]:                            [[ADUser]User_raul_alejandro] Retrieving 'raul.alejandro' from domain 'bolton.corp'.
+(ADU0004)
+[SERVER25-DC-01]:                            [[ADUser]User_raul_alejandro] 'raul.alejandro' is present in domain 'bolton.corp'.
+(ADU0007)
+[SERVER25-DC-01]:                            [[ADUser]User_raul_alejandro] 'raul.alejandro' is in the desired state. (ADU0009)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADUser]User_raul_alejandro]  in 0.0090 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADUser]User_raul_alejandro]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADUser]User_raul_alejandro]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADGroup]Group_GG_HR_Staff]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADGroup]Group_GG_HR_Staff]
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_HR_Staff] Retrieving AD Group 'GG-HR-Staff'. (ADG0021)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_HR_Staff] The AD Group 'GG-HR-Staff' is present. (ADG0023)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_HR_Staff] Retrieving group membership based on 'SamAccountName'
+property. (ADG0001)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_HR_Staff] Checking for 'Included' members. (ADCOMMON0019)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_HR_Staff] Membership is in the desired state. (ADCOMMON0023)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_HR_Staff] The parameter 'GroupScope' is in desired state.
+(DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_HR_Staff] The parameter 'Path' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_HR_Staff] The parameter 'Ensure' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_HR_Staff] The parameter 'Category' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_HR_Staff] The parameter 'GroupName' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_HR_Staff] AD Group 'GG-HR-Staff' is in the desired state.
+(ADG0025)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADGroup]Group_GG_HR_Staff]  in 0.0900 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADGroup]Group_GG_HR_Staff]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADGroup]Group_GG_HR_Staff]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADGroup]Group_GG_Finance_Staff]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADGroup]Group_GG_Finance_Staff]
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Finance_Staff] Retrieving AD Group 'GG-Finance-Staff'. (ADG0021)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Finance_Staff] The AD Group 'GG-Finance-Staff' is present.
+(ADG0023)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Finance_Staff] Retrieving group membership based on
+'SamAccountName' property. (ADG0001)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Finance_Staff] Checking for 'Included' members. (ADCOMMON0019)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Finance_Staff] Membership is in the desired state. (ADCOMMON0023)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Finance_Staff] The parameter 'GroupScope' is in desired state.
+(DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Finance_Staff] The parameter 'Path' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Finance_Staff] The parameter 'Ensure' is in desired state.
+(DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Finance_Staff] The parameter 'Category' is in desired state.
+(DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Finance_Staff] The parameter 'GroupName' is in desired state.
+(DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Finance_Staff] AD Group 'GG-Finance-Staff' is in the desired
+state. (ADG0025)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADGroup]Group_GG_Finance_Staff]  in 0.0390 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADGroup]Group_GG_Finance_Staff]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADGroup]Group_GG_Finance_Staff]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADGroup]Group_GG_IT_Admins]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADGroup]Group_GG_IT_Admins]
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_IT_Admins] Retrieving AD Group 'GG-IT-Admins'. (ADG0021)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_IT_Admins] The AD Group 'GG-IT-Admins' is present. (ADG0023)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_IT_Admins] Retrieving group membership based on 'SamAccountName'
+property. (ADG0001)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_IT_Admins] Checking for 'Included' members. (ADCOMMON0019)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_IT_Admins] Membership is in the desired state. (ADCOMMON0023)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_IT_Admins] The parameter 'GroupScope' is in desired state.
+(DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_IT_Admins] The parameter 'Path' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_IT_Admins] The parameter 'Ensure' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_IT_Admins] The parameter 'Category' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_IT_Admins] The parameter 'GroupName' is in desired state.
+(DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_IT_Admins] AD Group 'GG-IT-Admins' is in the desired state.
+(ADG0025)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADGroup]Group_GG_IT_Admins]  in 0.0330 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADGroup]Group_GG_IT_Admins]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADGroup]Group_GG_IT_Admins]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADGroup]Group_GG_Server_Admins]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADGroup]Group_GG_Server_Admins]
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Server_Admins] Retrieving AD Group 'GG-Server-Admins'. (ADG0021)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Server_Admins] The AD Group 'GG-Server-Admins' is present.
+(ADG0023)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Server_Admins] Retrieving group membership based on
+'SamAccountName' property. (ADG0001)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Server_Admins] Checking for 'Included' members. (ADCOMMON0019)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Server_Admins] Membership is in the desired state. (ADCOMMON0023)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Server_Admins] The parameter 'GroupScope' is in desired state.
+(DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Server_Admins] The parameter 'Path' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Server_Admins] The parameter 'Ensure' is in desired state.
+(DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Server_Admins] The parameter 'Category' is in desired state.
+(DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Server_Admins] The parameter 'GroupName' is in desired state.
+(DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Server_Admins] AD Group 'GG-Server-Admins' is in the desired
+state. (ADG0025)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADGroup]Group_GG_Server_Admins]  in 0.0400 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADGroup]Group_GG_Server_Admins]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADGroup]Group_GG_Server_Admins]
+[SERVER25-DC-01]: LCM:  [ Start  Resource ]  [[ADGroup]Group_GG_Domain_Admins]
+[SERVER25-DC-01]: LCM:  [ Start  Test     ]  [[ADGroup]Group_GG_Domain_Admins]
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Domain_Admins] Retrieving AD Group 'GG-Domain-Admins'. (ADG0021)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Domain_Admins] The AD Group 'GG-Domain-Admins' is present.
+(ADG0023)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Domain_Admins] Retrieving group membership based on
+'SamAccountName' property. (ADG0001)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Domain_Admins] Checking for 'Included' members. (ADCOMMON0019)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Domain_Admins] Membership is in the desired state. (ADCOMMON0023)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Domain_Admins] The parameter 'GroupScope' is in desired state.
+(DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Domain_Admins] The parameter 'Path' is in desired state. (DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Domain_Admins] The parameter 'Ensure' is in desired state.
+(DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Domain_Admins] The parameter 'Category' is in desired state.
+(DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Domain_Admins] The parameter 'GroupName' is in desired state.
+(DRC0039)
+[SERVER25-DC-01]:                            [[ADGroup]Group_GG_Domain_Admins] AD Group 'GG-Domain-Admins' is in the desired
+state. (ADG0025)
+[SERVER25-DC-01]: LCM:  [ End    Test     ]  [[ADGroup]Group_GG_Domain_Admins]  in 0.0350 seconds.
+[SERVER25-DC-01]: LCM:  [ Skip   Set      ]  [[ADGroup]Group_GG_Domain_Admins]
+[SERVER25-DC-01]: LCM:  [ End    Resource ]  [[ADGroup]Group_GG_Domain_Admins]
+[SERVER25-DC-01]: LCM:  [ End    Set      ]
+[SERVER25-DC-01]: LCM:  [ End    Set      ]    in  4.2840 seconds.
+Operation 'Invoke CimMethod' complete.
+The client cannot connect to the destination specified in the request. Verify that the service on the destination is 
+running and is accepting requests. Consult the logs and documentation for the WS-Management service running on the 
+destination, most commonly IIS or WinRM. If the destination is the WinRM service, run the following command on the 
+destination to analyze and configure the WinRM service: "winrm quickconfig".
+    + CategoryInfo          : ConnectionError: (root/Microsoft/...gurationManager:String) [], CimException
+    + FullyQualifiedErrorId : HRESULT 0x80338012
+    + PSComputerName        : Windows10
+The client cannot connect to the destination specified in the request. Verify that the service on the destination is running and
+is accepting requests. Consult the logs and documentation for the WS-Management service running on the destination, most commonly
+IIS or WinRM. If the destination is the WinRM service, run the following command on the destination to analyze and configure the
+WinRM service: "winrm quickconfig".
+    + CategoryInfo          : ConnectionError: (root/Microsoft/...gurationManager:String) [], CimException
+    + FullyQualifiedErrorId : HRESULT 0x80338012
+    + PSComputerName        : Windows10
+
+Operation 'Invoke CimMethod' complete.
+Time taken for configuration job to complete is 42.128 seconds
+[+] Apply complete.
+
+[Phase 3] Validation...
+[*] Pester validation will be added later.
+
+[+] BUILD SUCCESS
+[*] Next steps (commit outputs + evidence):
+    git add DSC\Outputs Evidence
+    git commit -m \ Build 20260302_234606\
+
+
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> get-filehash .\DSC\Outputs\StudentBaseline\localhost.mof
+
+Algorithm       Hash                                                                   Path
+---------       ----                                                                   ----
+SHA256          FDE70FC1F8FD6730D4BE1F561D6651DB53CF177D4E63FD1C1AAAF575E7F75EB4       C:\Users\Administrator\repo\COM5411-Barm...
+
+
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> get-filehash .\DSC\Outputs\StudentBaseline\Windows10.mof
+
+Algorithm       Hash                                                                   Path
+---------       ----                                                                   ----
+SHA256          CEEB742EC550164B8B27353BC2DE8CF1B0D58AE3B22A5BEB484EF567A3488EC1       C:\Users\Administrator\repo\COM5411-Barm...
+
+
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> stop-transcript
+**********************
+Windows PowerShell transcript end
+End time: 20260302234755
+**********************
