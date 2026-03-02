@@ -1,0 +1,45 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260228061213
+Username: BOLTON\Administrator
+RunAs User: BOLTON\Administrator
+Configuration Name: 
+Machine: WINDOWS10 (Microsoft Windows NT 10.0.19045.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+Process ID: 808
+PSVersion: 5.1.19041.3803
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.19041.3803
+BuildVersion: 10.0.19041.3803
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Evidence\03-DSC-Applied.txt
+PS C:\Temp> Start-DscConfiguration -Path . -Wait -Verbose -Force
+VERBOSE: Perform operation 'Invoke CimMethod' with following parameters, ''methodName' = SendConfigurationApply,'className' = MSFT_DSCLocalConfigurationManager,'namespaceName' = root/Microsoft/Windows/DesiredStateConfiguration'.
+VERBOSE: An LCM method call arrived from computer WINDOWS10 with user sid S-1-5-21-1239633434-1875597299-1469250292-500.
+VERBOSE: [WINDOWS10]: LCM:  [ Start  Set      ]
+VERBOSE: [WINDOWS10]: LCM:  [ Start  Resource ]  [[File]ClientEvidenceFolder]
+VERBOSE: [WINDOWS10]: LCM:  [ Start  Test     ]  [[File]ClientEvidenceFolder]
+VERBOSE: [WINDOWS10]:                            [[File]ClientEvidenceFolder] The destination object was found and no action is required.
+VERBOSE: [WINDOWS10]: LCM:  [ End    Test     ]  [[File]ClientEvidenceFolder]  in 0.0070 seconds.
+VERBOSE: [WINDOWS10]: LCM:  [ Skip   Set      ]  [[File]ClientEvidenceFolder]
+VERBOSE: [WINDOWS10]: LCM:  [ End    Resource ]  [[File]ClientEvidenceFolder]
+VERBOSE: [WINDOWS10]: LCM:  [ Start  Resource ]  [[File]ClientEvidenceFile]
+VERBOSE: [WINDOWS10]: LCM:  [ Start  Test     ]  [[File]ClientEvidenceFile]
+VERBOSE: [WINDOWS10]:                            [[File]ClientEvidenceFile] The destination object was found and no action is required.
+VERBOSE: [WINDOWS10]: LCM:  [ End    Test     ]  [[File]ClientEvidenceFile]  in 0.0000 seconds.
+VERBOSE: [WINDOWS10]: LCM:  [ Skip   Set      ]  [[File]ClientEvidenceFile]
+VERBOSE: [WINDOWS10]: LCM:  [ End    Resource ]  [[File]ClientEvidenceFile]
+WARNING: Falling back to the previous MOD file or system defaults because the meta configuration mof does not exist or has either been corrupted or an invalid mof property has been set.
+VERBOSE: [WINDOWS10]: LCM:  [ End    Set      ]
+VERBOSE: [WINDOWS10]: LCM:  [ End    Set      ]    in  0.0450 seconds.
+VERBOSE: Operation 'Invoke CimMethod' complete.
+VERBOSE: Time taken for configuration job to complete is 0.457 seconds
+PS C:\Temp> stop-transcript
+**********************
+Windows PowerShell transcript end
+End time: 20260228061221
+**********************
