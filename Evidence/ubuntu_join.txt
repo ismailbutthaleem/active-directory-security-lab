@@ -1,0 +1,38 @@
+Script started on 2026-03-02 03:52:51+00:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="80" LINES="24"]
+[?2004h]0;zeuss@zeuss: ~/ubuntu_evidence[01;32mzeuss@zeuss[00m:[01;34m~/ubuntu_evidence[00m$ klist
+[?2004lTicket cache: FILE:/tmp/krb5cc_1000
+Default principal: administrator@BOLTON.CORP
+
+Valid starting       Expires              Service principal
+03/02/2026 03:48:32  03/02/2026 13:48:32  krbtgt/BOLTON.CORP@BOLTON.CORP
+	renew until 03/03/2026 03:48:27
+[?2004h]0;zeuss@zeuss: ~/ubuntu_evidence[01;32mzeuss@zeuss[00m:[01;34m~/ubuntu_evidence[00m$ realm list
+[?2004lbolton.corp
+  type: kerberos
+  realm-name: BOLTON.CORP
+  domain-name: bolton.corp
+  configured: kerberos-member
+  server-software: active-directory
+  client-software: sssd
+  required-package: sssd-tools
+  required-package: sssd
+  required-package: libnss-sss
+  required-package: libpam-sss
+  required-package: adcli
+  required-package: samba-common-bin
+  login-formats: %U@bolton.corp
+  login-policy: allow-realm-logins
+[?2004h]0;zeuss@zeuss: ~/ubuntu_evidence[01;32mzeuss@zeuss[00m:[01;34m~/ubuntu_evidence[00m$ id adam.khan@bolton.corp
+[?2004luid=247801112(adam.khan@bolton.corp) gid=247800513(domain users@bolton.corp) groups=247800513(domain users@bolton.corp),247801105(gg-finance-staff@bolton.corp)
+[?2004h]0;zeuss@zeuss: ~/ubuntu_evidence[01;32mzeuss@zeuss[00m:[01;34m~/ubuntu_evidence[00m$ su - adam.khan@bolton.corp
+[?2004lPassword: 
+su: warning: cannot change directory to /home/adam.khan@bolton.corp: No such file or directory
+[?2004hadam.khan@bolton.corp@zeuss:/home/zeuss/ubuntu_evidence$ exit
+[?2004llogout
+[?2004h]0;zeuss@zeuss: ~/ubuntu_evidence[01;32mzeuss@zeuss[00m:[01;34m~/ubuntu_evidence[00m$ ls
+[?2004lubuntu_join.txt
+[?2004h]0;zeuss@zeuss: ~/ubuntu_evidence[01;32mzeuss@zeuss[00m:[01;34m~/ubuntu_evidence[00m$ cat ubuntu_join.txt
+[?2004l[?2004h]0;zeuss@zeuss: ~/ubuntu_evidence[01;32mzeuss@zeuss[00m:[01;34m~/ubuntu_evidence[00m$ [?2004l
+exit
+
+Script done on 2026-03-02 03:55:15+00:00 [COMMAND_EXIT_CODE="0"]

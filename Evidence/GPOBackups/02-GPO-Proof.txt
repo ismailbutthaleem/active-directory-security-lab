@@ -1,0 +1,76 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260228055226
+Username: BOLTON\adam.khan
+RunAs User: BOLTON\adam.khan
+Configuration Name: 
+Machine: WINDOWS10 (Microsoft Windows NT 10.0.19045.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+Process ID: 6944
+PSVersion: 5.1.19041.3803
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.19041.3803
+BuildVersion: 10.0.19041.3803
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Evidence\02-GPO-Proof.txt
+PS C:\Users\adam.khan> whoami
+bolton\adam.khan
+PS C:\Users\adam.khan> gpresult /r
+
+Microsoft (R) Windows (R) Operating System Group Policy Result tool v2.0
+© Microsoft Corporation. All rights reserved.
+
+Created on ‎2/‎28/‎2026 at 5:52:45 AM
+
+
+RSOP data for BOLTON\adam.khan on WINDOWS10 : Logging Mode
+-----------------------------------------------------------
+
+OS Configuration:            Member Workstation
+OS Version:                  10.0.19045
+Site Name:                   N/A
+Roaming Profile:             N/A
+Local Profile:               C:\Users\adam.khan
+Connected over a slow link?: No
+
+
+USER SETTINGS
+--------------
+    CN=adam.khan,OU=Users,OU=UserAccessPlane,DC=bolton,DC=corp
+    Last time Group Policy was applied: 2/28/2026 at 5:46:03 AM
+    Group Policy was applied from:      SERVER25-DC-01.bolton.corp
+    Group Policy slow link threshold:   500 kbps
+    Domain Name:                        BOLTON
+    Domain Type:                        Windows 2008 or later
+
+    Applied Group Policy Objects
+    -----------------------------
+        BBZ-User-Hardening-Reduce-AttackSurface
+
+    The following GPOs were not applied because they were filtered out
+    -------------------------------------------------------------------
+        Local Group Policy
+            Filtering:  Not Applied (Empty)
+
+    The user is a part of the following security groups
+    ---------------------------------------------------
+        Domain Users
+        Everyone
+        BUILTIN\Users
+        NT AUTHORITY\INTERACTIVE
+        CONSOLE LOGON
+        NT AUTHORITY\Authenticated Users
+        This Organization
+        LOCAL
+        GG-Finance-Staff
+        Authentication authority asserted identity
+        Medium Mandatory Level
+PS C:\Users\adam.khan> stop-transcript
+**********************
+Windows PowerShell transcript end
+End time: 20260228055255
+**********************
