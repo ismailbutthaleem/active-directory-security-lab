@@ -365,6 +365,128 @@ PowerShell transcripts: .\Evidence\Transcripts\
 
 Screenshots (if required): .\Evidence\Screenshots\
 
+5.7 Windows Client Integration
+
+The Windows 10 client was joined using the System Properties interface (sysdm.cpl). This was done once the Domain Controller build was carried out successfully after editing and applying the DSC configuration.
+
+5.7.1 Join Procedure
+
+On the Windows client:
+
+Run:
+
+sysdm.cpl
+
+Navigate to Computer Name → Change
+
+Select Domain
+
+Enter:
+
+bolton.corp
+
+Provide domain administrative credentials when prompted.
+
+Restart the machine.
+
+Post-Join Validation
+
+After reboot, the following verification steps were executed.
+
+5.7.2 Confirm Domain Authentication Context
+
+On the Windows client:
+
+whoami
+
+Expected result:
+Output reflects domain authentication, for example:
+
+bolton\username
+
+5.7.3 Verify Secure Channel Integrity
+Test-ComputerSecureChannel -Verbose
+
+Expected result:
+
+True
+
+This confirms the trust relationship between the client and the Domain Controller is valid.
+
+5.7.4 Test GPO Applied for the Signed-In User
+
+Run:
+
+gpresult /r
+
+Expected outcome:
+
+The OU-linked GPO for the signed-in user appears under “Applied Group Policy Objects”.
+
+5.8 Ubuntu Join Procedure
+
+5.8.1 Check DNS Resolution
+cat /etc/resolv.conf
+
+Expected result:
+
+The nameserver points to the DC static IPv4 address.
+
+If not:
+
+Check that the host-only adapter is being used for DNS queries, ensure both machines are on the same network, and confirm that the DNS setting for the NIC is the DC IPv4 address.
+
+5.8.2 Discover the Domain Using realmd
+realm discover bolton.corp
+
+Expected result:
+
+The domain name and Kerberos realm match the Domain Controller settings.
+
+If not:
+
+Check DNS configuration and confirm that Kerberos is installed on the machine.
+
+5.8.3 Join the Domain
+
+Using realmd, run:
+
+sudo realm join bolton.corp -U Administrator
+
+Expected result:
+
+Join completes successfully (the command typically returns silently to the prompt without displaying a success message).
+
+Verify:
+
+realm list
+
+Expected result:
+
+bolton.corp
+
+If not:
+
+The join was not successful. Check DNS status, name resolution, and that Kerberos is installed and configured correctly.
+
+5.8.4 Verify User Authentication
+
+Run:
+
+su - adam.khan@bolton.corp
+
+Expected:
+
+The AD password prompt appears for the selected user. Successful login confirms users can authenticate in Ubuntu and that Kerberos integration is functioning correctly.
+
+Evidence Locations
+
+Ubuntu Evidence:
+Evidence\AD\ubuntu_join.txt
+
+Windows Evidence:
+Evidence\AD\01-Windows_DomainJoin.txt
+
 6. Idempotence and Re-Run Behaviour 
 
 - Idempotence
@@ -461,9 +583,100 @@ The validation suite is structured to test multiple categories of the environmen
 
 Validation can be executed repeatedly after configuration runs to confirm that no drift has occurred and that the environment remains compliant with the defined state.
 
-8. Security Considerations
+8. Health-Checks
 
-8.1 Credentials Hardening
+8.1 ControlPlane OU
+
+Risk:
+
+Most valuable OU in the infrastructure as it holds the domain control overall, if compromised an attacker can modify, delete configurations and access sensible data.
+
+Control:
+
+Accounts in this OU are only priviledged no other accounts reside here, accounts in the ControlPlane OU cannot sign in in any other OU directly but only manage from the ControlPlane.
+
+Justification:
+
+This practice reduces lateral movement and avoids radius blast if a lower tier was to get compromised.
+
+Verification:
+OU structure evidence: Evidence\HealthChecks\ou_listing.txt
+
+8.2 ManagementPlane OU
+
+Risk:
+
+IT staff needs priviledged access to some resources or configurations which increases exposure to other risks inside and outside the OU as users here perform duties on the lower level tiers as well thru delegation.
+
+Control:
+
+Role-Based Security groups, specifically GG-IT-Admins are only assigned least proiviledged permissions such as password reset on lower OU tiers.
+
+Justification:
+
+Permissions are not granted blidly at domain root they are targeted to security groups which only have a specific set of permissions over a specific targeted lower OU.
+
+Verification:
+Delegation test evidence: Evidence\AD\RBAC_Reset_Test.txt
+
+8.3 UserAccessPlane OU
+
+Risk:
+
+Standard users and endpoints suppose a high threat actor, represent the primary source of surface attacks ( pishing, malware)
+
+Control:
+
+All User and client computers are located inside this OU whch has hardening GPO.
+
+Justification:
+
+User-targeted policies are only applied inside the UserAccessPlane as these do not need as much permissions to carry out their tasks, relying on a least priviledged model approach, users and accounts outside this OU do not get the same GPO to avoid conflicts between normal and priviledged accounts which need to perform priviledged operations.
+
+Evidence:
+Evidence\AD\01-Windows_DomainJoin.txt
+Evidence\AD\ubuntu_join.txt
+
+8.4 BBZ-User-Hardening-Reduce-AttackSurface
+
+Risk:
+
+Standard users can misuse system tools such as Command Prompt and Control Panel to modify configuration, bypass restrictions, or execute malicious scripts.
+
+Control:
+
+The GPO BBZ-User-Hardening-Reduce-AttackSurface disables access to Control Panel and Command Prompt for users in the UserAccessPlane OU.
+
+Justification:
+
+This GPO is linked specifically to the UserAccessPlane OU and not applied at domain root. This ensures administrative accounts and IT personnel retain necessary system access while reducing risk for standard users.
+
+Verification:
+
+gpresult /r confirms policy application for standard users.
+Evidence: Evidence\AD\01-Windows_DomainJoin.txt
+
+8.5 BBZ-Computer-Baseline-Firewall-SMB
+
+Risk:
+
+Weak Firewall Configuration can lead to lateral movements increasing exposure compromising the system, Unrestricted SMBv1 can increase the chance of legacy explotation
+
+Control:
+
+Enabling firewall rules and disabling SMBv1 to reduce attack vectors
+
+Justification:
+
+This GPO is not applied to ControlPanel OU or management tiers unless needed.
+
+Verification:
+Computer-side gpresult output confirms application.
+Evidence: Evidence\HealthChecks\gpresult_computer.txt
+
+9. Security Considerations
+
+9.1 Credentials Hardening
 
 Credential management is not handled directly by DSC in the deployment of this environment. This decision aligns with best security practices, as sensitive data such as passwords should never be stored in plain text within configuration files. Instead, PSCredential objects are used to pass password values during Active Directory setup, but these credentials are not hardcoded anywhere.
 
@@ -474,7 +687,7 @@ The Local Configuration Manager (LCM) reads the MOF files and enforces the defin
 Considerations for Production-level Security:
 In a production environment, certificate-based MOF encryption and integration with a secure vault (e.g., Azure Key Vault) would be implemented for enhanced security, ensuring credentials are protected at all times.
 
-8.2 DNS Security and Network Exposure
+9.2 DNS Security and Network Exposure
 
 For the deployment of this environment, two NICs have been configured: NAT and Host-Only.
 
@@ -486,7 +699,7 @@ NAT is disabled for DNS registration to enhance security by isolating the DC fro
 
 This setup ensures that only authorized and trusted machines can join the domain and query DNS, significantly reducing the risk of unauthorized access.
 
-8.3 OU and Delegation Design Intent
+9.3 OU and Delegation Design Intent
 
 The OU structure is split into three sections:
 
@@ -498,7 +711,7 @@ User Access Plane: Covers user endpoints, clients, and service accounts with res
 
 The purpose of this structure is to apply GPOs and delegation logically, ensuring that policies only impact the intended objects. This setup follows the least privilege model, granting only the necessary permissions for each group or OU, preventing unnecessary access or conflicts across different objects.
 
-8.4 RBAC Design
+9.4 RBAC Design
 
 RBAC is implemented based on the least privilege principle. The security groups reflect necessary roles within the organization, and permissions are assigned to these groups, not individual users.
 
@@ -524,7 +737,7 @@ The group is granted the necessary permissions.
 
 This ensures that access is specific and controlled, keeping the environment secure while enabling required actions without over-privileging users.
 
-8.5 Delegation and Least Privilege Enforcement
+9.5 Delegation and Least Privilege Enforcement
 
 Delegation in an Active Directory infrastructure must always respect the least privilege principle. Users should be granted privileges only to the minimum level required to carry out a specific task.
 
@@ -534,35 +747,7 @@ In this infrastructure, GG-IT-Admins includes the user ismail.admin, which is de
 
 Delegation must be carefully designed and applied. Granting excessive privileges, or allowing a lower-tier OU to modify objects within a higher-tier OU, would break governance structure and violate least privilege principles. This would weaken the environment and potentially expose it to security risks. Proper OU scoping and group-based delegation ensure administrative control remains controlled and predictable.
 
-1️⃣ Explicit Allow / Deny Evidence Paragraph
-
-You described delegation, but you need 4–5 lines explicitly saying:
-
-Reset of adam.khan succeeded
-
-Reset of paul.evans failed
-
-Transcript stored in Evidence folder
-
-That makes it concrete.
-
-2️⃣ Windows Client Integration Section
-
-You proved it technically, but your documentation must explicitly state:
-
-Client joined to domain
-
-Placed in correct OU
-
-Domain authentication successful
-
-gpresult confirms GPO application
-
-Just one small structured subsection.do these two as i would write it
-
-Perfect. I’ll write them in your tone — structured, engineer-style, direct explanation, not academic fluff.
-
-8.X Delegation Validation (Allow / Deny Outcome)
+9.6 Delegation Validation (Allow / Deny Outcome)
 
 Delegation was tested to confirm that permissions were applied correctly and scoped only to the intended OU.
 
@@ -572,9 +757,9 @@ An additional test was performed against paul.evans, who is located in the Manag
 
 This behaviour proves that least privilege has been enforced correctly. The PowerShell transcript capturing both the successful and denied operations is stored under:
 
-.\Evidence\AD\
+.\Evidence\AD\RBAC_Reset_Test.txt
 
-8.6 Explicit Trade-Offs Made for Lab Realism vs Enterprise Practice
+9.7 Explicit Trade-Offs Made for Lab Realism vs Enterprise Practice
 Trade-Off 1: Use of a Single Domain Controller
 
 Only one Domain Controller (DC) is deployed because higher-level complexity is not required for the scope of this project demonstration. This increases simplicity, reduces configuration overhead, and allows controlled testing of the automation workflow.
@@ -605,9 +790,9 @@ In this lab environment, DNS is hosted on the single Domain Controller. This is 
 
 In an enterprise infrastructure, DNS redundancy is required to avoid a single point of failure and to support load balancing. Multiple DNS servers would be deployed, often across different sites, with replication and potentially conditional forwarders or split-DNS configurations. The lab environment simplifies DNS to focus on functional correctness rather than infrastructure resilience.
 
-9. Evidence Mapping
+10. Evidence Mapping
 
-9.1 Domain Controller Build & Automation
+10.1 Domain Controller Build & Automation
 
 DC promoted using DSC via Run_BuildMain.ps1	
 Evidence/Transcripts/20260225_000339_Run_BuildMain.txt
@@ -621,7 +806,7 @@ DSC/Outputs/StudentBaseline/localhost.mof
 Idempotent re-run confirmed	
 Evidence/Transcripts/20260225_000339_Run_BuildMain.txt
 
-9.2 Active Directory Health & Core Services
+10.2 Active Directory Health & Core Services
 
 Domain information validated 
 Evidence/HealthChecks/domain_info.txt
@@ -641,7 +826,7 @@ Evidence/HealthChecks/Windows_Time_Service_info.txt
 Password Reset Successful
 Evidence\AD\RBAC_Reset_Test.txt
 
-9.3 OU Structure & Governance Model
+10.3 OU Structure & Governance Model
 
 ControlPlane, ManagementPlane, UserAccessPlane exist
 Evidence/HealthChecks/ou_listing.txt
@@ -649,7 +834,7 @@ Evidence/HealthChecks/ou_listing.txt
 Sub-OUs (Users, Groups, Computers, AdminUsers) created
 Evidence/HealthChecks/ou_listing.txt
 
-9.4 Group Policy Design & Enforcement
+10.4 Group Policy Design & Enforcement
 
 User hardening GPO created and backed up 
 Evidence/GPOBackups/
@@ -663,7 +848,7 @@ Evidence/HealthChecks/gpresult_computer.txt
 User GPO applied successfully
 Evidence/HealthChecks/gpresult_user.txt
 
-9.5 DNS & Network Validation
+10.5 DNS & Network Validation
 
 DNS zone information verified
 Evidence/HealthChecks/DNS_Records_info.txt
@@ -674,7 +859,7 @@ Evidence/HealthChecks/DNS_Records_Global_info.txt
 Network configuration verified
 Evidence/Network/*_ipconfig.txt
 
-9.6 Validation & Testing (Pester)
+10.6 Validation & Testing (Pester)
 
 Tutor baseline tests pass
 Evidence/Pester/PesterResults_20260224_193234.xml
@@ -685,7 +870,7 @@ Evidence/Pester/Pester_RBAC_Groups.txt
 Student tests validate OU and RBAC 
 Evidence/Pester/Pester-Detailed-20260224-192037.txt
 
-9.7 Provenance & Academic Integrity
+10.7 Provenance & Academic Integrity
 
 AI usage declared 
 Evidence/AI_LOG/AI-Usage.md
@@ -706,3 +891,83 @@ No multi-site topology or WAN replication scenario is implemented.
 Secret management is handled via PSCredential objects; certificate-based MOF encryption is not configured.
 
 These constraints reflect the scope of the lab environment rather than a production deployment model. 
+
+11. Known Limitations and reflections
+
+11.1 WinRM Push Failure – Client DSC Application
+
+During the build process, DSC was attempting to push the compiled MOF file for the Windows 10 client to the client machine so that it could update automatically through remote execution. However, a transport issue occurred on the client side.
+
+The most likely cause was related to WinRM communication or firewall configuration preventing remote DSC push from completing successfully. This meant the Domain Controller could compile the client MOF, but could not remotely apply it over the network.
+
+As a workaround, once the orchestrator completed the build and generated the separate client MOF file, the file was manually copied to the Windows client using a shared folder. The configuration was then applied locally on the client using:
+
+Start-DscConfiguration -Path .\DSC\Outputs -Wait -Verbose -Force
+
+This allowed the Local Configuration Manager (LCM) on the client to read and enforce the desired state.
+
+Although remote push did not function, the core architecture remains valid. The build successfully demonstrates that:
+
+A separate MOF file is generated for the client
+
+Client configuration is modular and independent
+
+The client can enforce its own desired state using DSC
+
+In an enterprise environment, WinRM over HTTPS with proper certificate configuration and firewall rules would be implemented to enable secure and automated remote DSC push or pull-based configuration management.
+
+11.2 PowerShell 7 vs Windows PowerShell 5.1 Compatibility
+
+During development, it was identified that Windows PowerShell 5.1 runs on the .NET Framework and is the native shell for many Active Directory and DSC resources. This became clear when running Pester tests, where certain error messages indicated that some resources were expected to run under a specific PowerShell context.
+
+When executing AD-related commands such as:
+
+Get-ADUser
+
+inside PowerShell 7 (pwsh), the command was not recognised. However, running the same command inside Windows PowerShell 5.1 (powershell.exe) worked immediately.
+
+This behaviour occurs because:
+
+The ActiveDirectory module is built for Windows PowerShell 5.1
+
+Some DSC resources depend on .NET Framework-based modules
+
+PowerShell 7 runs on .NET (Core) and does not fully support all legacy AD modules natively
+
+As a result, certain Pester validations and DSC-related tasks needed to be executed in Windows PowerShell 5.1, while other tasks could run in PowerShell 7.
+
+This required awareness of shell context during testing and validation. It was concluded that both shells must be used appropriately depending on the resource or module being invoked.
+
+In an enterprise environment, shell standardisation and module compatibility testing would be implemented to avoid inconsistencies between PowerShell versions.
+
+11.3 DNS Misconfiguration
+
+DNS misconfigurations occurred when attempting to join hosts to the domain. The internal adapter of the host machines was correctly configured to point to the Domain Controller IPv4 address for DNS resolution. However, the NAT adapter was still being prioritised for DNS queries.
+
+As a result, SRV record lookups such as:
+
+_ldap._tcp.dc._msdcs.bolton.corp
+
+were being sent through the NAT interface instead of the internal network. Since the Domain Controller operates within the isolated host-only network, the NAT adapter could not resolve these queries.
+
+This caused failures in:
+
+Windows domain join
+
+realm discover bolton.corp on Ubuntu
+
+SRV record resolution
+
+The issue was identified after confirming that the internal adapter was correctly configured, but DNS queries were still failing. Network inspection revealed that adapter priority was incorrect.
+
+To resolve the issue:
+
+The internal NIC was configured with higher priority for DNS resolution
+
+The Domain Controller IPv4 address was set as the primary DNS server
+
+The NAT adapter was either deprioritised or prevented from registering in DNS
+
+This ensured that domain-related queries were resolved internally first. If a query was external, it would then be forwarded appropriately through the NAT DNS server.
+
+In a production environment, DNS resolution would typically be centrally managed via DHCP and controlled network segmentation to avoid interface-priority conflicts.
