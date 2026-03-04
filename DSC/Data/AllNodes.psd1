@@ -85,6 +85,7 @@
             # NodeName must match the Windows client hostname exactly
             NodeName = 'Windows10'
             Role     = 'Client'
+            ComputerName = 'Windows10'
 
             # Domain configuration for domain join
             DomainName   = 'bolton.corp'
