@@ -14,7 +14,11 @@ Configuration StudentBaseline {
 
         [Parameter(Mandatory = $true)]
         [PSCredential]
-        $DsrmCredential
+        $DsrmCredential,
+
+        [Parameter(Mandatory = $true)]
+        [PSCredential]
+        $ClientJoinCredential
     )
 
     Import-DscResource -ModuleName PSDesiredStateConfiguration

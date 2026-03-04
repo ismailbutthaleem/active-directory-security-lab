@@ -25,42 +25,29 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-# WHY StrictMode + Stop-On-Error?
-# - StrictMode catches beginner mistakes like using unset variables.
-# - Stop-On-Error prevents confusing cascades of failures.
-#   In industry, pipelines should fail fast with clear signals, not limp onward.
-
 # Repo root is where this script lives.
 $RootPath = $PSScriptRoot
 
-# INDUSTRY PRACTICE: Always use repo-relative paths
-# - $PSScriptRoot ensures this script runs correctly regardless of the current directory.
-# - Students must NOT hardcode absolute paths; portability and repeatability matter.
-
 # Paths
-$StudentConfigScript = Join-Path $RootPath "DSC\Configurations\StudentConfig.ps1"  # Your configuration (what to build)
-$StudentDataFile     = Join-Path $RootPath "DSC\Data\AllNodes.psd1"                 # Your data (values for the build)
-$OutputsRoot         = Join-Path $RootPath "DSC\Outputs"                             # Compiled MOFs (tracked in Git)
-$EvidenceRoot        = Join-Path $RootPath "Evidence"                                 # Logs & transcripts (tracked in Git)
-$ConfigName          = "StudentBaseline"                                              # REQUIRED configuration name
+$StudentConfigScript = Join-Path $RootPath "DSC\Configurations\StudentConfig.ps1"
+$StudentDataFile     = Join-Path $RootPath "DSC\Data\AllNodes.psd1"
+$OutputsRoot         = Join-Path $RootPath "DSC\Outputs"
+$EvidenceRoot        = Join-Path $RootPath "Evidence"
+$ConfigName          = "StudentBaseline"
 
 # OneShots (direct paths) and helper wrapper
-$PrereqLcmScript     = Join-Path $RootPath "Scripts\Prereqs\BarmBuzz_OneShot_LCM.ps1"      # Configures LCM, pins DSC modules
-$PrereqNetworkScript = Join-Path $RootPath "Scripts\Prereqs\BarmBuzz_OneShot_Network.ps1"  # Sets NICs Private, enables WinRM, installs RSAT
-$OneShotsHelperPath  = Join-Path $RootPath "Scripts\Helpers\Invoke-BarmBuzz-OneShots.ps1"  # Thin wrapper to run both in order
+$PrereqLcmScript     = Join-Path $RootPath "Scripts\Prereqs\BarmBuzz_OneShot_LCM.ps1"
+$PrereqNetworkScript = Join-Path $RootPath "Scripts\Prereqs\BarmBuzz_OneShot_Network.ps1"
+$OneShotsHelperPath  = Join-Path $RootPath "Scripts\Helpers\Invoke-BarmBuzz-OneShots.ps1"
 
 # Flag files for idempotency
-$LcmFlagFile     = Join-Path $EvidenceRoot "prereq_lcm_complete.flag"     # Idempotency: run-once marker
-$NetworkFlagFile = Join-Path $EvidenceRoot "prereq_network_complete.flag" # Idempotency: run-once marker
+$LcmFlagFile     = Join-Path $EvidenceRoot "prereq_lcm_complete.flag"
+$NetworkFlagFile = Join-Path $EvidenceRoot "prereq_network_complete.flag"
 
 function New-FolderIfMissing {
     param([Parameter(Mandatory)][string]$Path)
     if (-not (Test-Path $Path)) { New-Item -ItemType Directory -Path $Path -Force | Out-Null }
 }
-
-# WHY create folders up-front?
-# - Deterministic structure keeps evidence and outputs consistent across builds.
-# - Git-tracked evidence supports academic integrity and professional audit trails.
 
 function Assert-Admin {
     $principal = [Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -68,10 +55,6 @@ function Assert-Admin {
         throw "You must run PowerShell as Administrator."
     }
 }
-
-# WHY Admin?
-# - DSC application, WinRM configuration, and later AD-related tasks require elevation.
-# - Industry pipelines document prerequisites; this script enforces them early.
 
 function Assert-AllNodesData {
     param([Parameter(Mandatory)]$ConfigData)
@@ -81,9 +64,6 @@ function Assert-AllNodesData {
     $local = $ConfigData.AllNodes | Where-Object { $_.NodeName -eq "localhost" } | Select-Object -First 1
     if (-not $local) { throw "AllNodes must include NodeName = 'localhost' for this lab VM build." }
 }
-
-# CONTRACT: ConfigurationData must target 'localhost' initially
-# - Start local, prove the pipeline, then expand to remote nodes later.
 
 Write-Host "==========================================" -ForegroundColor Cyan
 Write-Host "        COM5411 BarmBuzz Build Runner      " -ForegroundColor Cyan
@@ -101,19 +81,11 @@ New-FolderIfMissing -Path (Join-Path $EvidenceRoot "Network")
 New-FolderIfMissing -Path (Join-Path $EvidenceRoot "AI_LOG")
 New-FolderIfMissing -Path (Join-Path $EvidenceRoot "Git\Reflog")
 
-# EVIDENCE POLICY
-# - These folders are tracked in Git to prove your work.
-# - Transcripts and logs are essential in both academia and industry for traceability.
-
 # Start transcript
 $RunStamp = Get-Date -Format "yyyyMMdd_HHmmss"
 $TranscriptPath = Join-Path $EvidenceRoot ("Transcripts\{0}_Run_BuildMain.txt" -f $RunStamp)
 Start-Transcript -Path $TranscriptPath -Force | Out-Null
 Write-Host "[+] Transcript started: Evidence\\Transcripts\\$(Split-Path -Leaf $TranscriptPath)" -ForegroundColor Green
-
-# Start-Transcript captures all console activity into Evidence\Transcripts.
-# - Read it to understand exactly what ran and when.
-# - If something fails, the transcript is your first diagnostic artefact.
 
 try {
     Assert-Admin
@@ -127,11 +99,6 @@ try {
 
     Write-Host "`n[Phase 1] Prerequisites..." -ForegroundColor Yellow
 
-    # Phase 1 is deliberately early: fix environment before compiling/applying.
-    # - LCM settings (reboot/resume, ApplyOnly) enable robust automation.
-    # - Network baseline (NICs Private, WinRM) prevents WS-Man failures.
-    # - RSAT installation ensures AD/GPO cmdlets exist where DSC modules expect them.
-
     # If helper exists, use it; else call scripts directly
     if (Test-Path $OneShotsHelperPath) {
         . $OneShotsHelperPath
@@ -143,7 +110,6 @@ try {
     }
 
     # Fallback direct calls with idempotent flags
-
     if (-not (Test-Path $LcmFlagFile)) {
         & $PrereqLcmScript
         New-Item -Path $LcmFlagFile -ItemType File -Force | Out-Null
@@ -163,68 +129,55 @@ try {
     Write-Host "[+] Phase 1 complete." -ForegroundColor Green
 
     # ═══════════════════════════════════════════════════════════════════════════
-    # CREDENTIAL PROMPT (Secure runtime injection)
+    # CREDENTIAL PROMPTS (Secure runtime injection)
     # ═══════════════════════════════════════════════════════════════════════════
-    #
-    # WHY PROMPT HERE?
-    # - Credentials are sensitive - they NEVER appear in source code, Git, or config files
-    # - We prompt at runtime and inject into the DSC configuration
-    # - This is the "orchestrator pattern" - credentials flow through the build, not the repo
-    #
-    # TWO CREDENTIALS REQUIRED FOR DC PROMOTION:
-    # 1. DomainAdminCredential - The account performing the promotion (local Administrator)
-    #    After promotion, this becomes the first Domain Administrator
-    # 2. DsrmCredential - Directory Services Restore Mode password (emergency recovery)
-    #
-    # PASSWORD REQUIREMENTS:
-    # - Minimum 8 characters
-    # - Meets Windows complexity requirements (uppercase, lowercase, number/symbol)
-    # - WRITE THEM DOWN AND STORE SECURELY
-    #
-    # ═══════════════════════════════════════════════════════════════════════════
-    
+
     Write-Host "`n[Credential] Domain Administrator Password Required..." -ForegroundColor Yellow
-    Write-Host "[*] This is the LOCAL Administrator account that will perform the promotion." -ForegroundColor Gray
-    Write-Host "[*] After promotion, this becomes BARMBUZZ\\Administrator (Domain Admin)." -ForegroundColor Gray
-    
-    # Prompt for local Administrator password
+    Write-Host "[*] This is the LOCAL Administrator account used for the initial promotion run." -ForegroundColor Gray
+    Write-Host "[*] After promotion, this becomes BOLTON\\Administrator (Domain Admin)." -ForegroundColor Gray
+
     $AdminPassword = Read-Host -Prompt "Enter local Administrator password" -AsSecureString
-    
-    # Create PSCredential for the promotion account
-    # Username is "Administrator" (local admin on standalone server)
+
     $DomainAdminCredential = New-Object System.Management.Automation.PSCredential(
         "Administrator",
         $AdminPassword
     )
-    
+
     Write-Host "[+] Domain Admin credential captured (not logged)." -ForegroundColor Green
-    
+
     Write-Host "`n[Credential] DSRM Password Required..." -ForegroundColor Yellow
     Write-Host "[*] This password is for Directory Services Restore Mode (DC recovery)." -ForegroundColor Gray
-    Write-Host "[*] Use this to boot into recovery mode if AD database is corrupted." -ForegroundColor Gray
-    Write-Host "[*] Can be same as Admin password, or different for extra security." -ForegroundColor Gray
-    
-    # Prompt for DSRM password securely (masked input)
+
     $DsrmPassword = Read-Host -Prompt "Enter DSRM password" -AsSecureString
-    
-    # Create PSCredential object for DSRM
+
     $DsrmCredential = New-Object System.Management.Automation.PSCredential(
         "Administrator",
         $DsrmPassword
     )
-    
+
     Write-Host "[+] DSRM credential captured (not logged)." -ForegroundColor Green
+
+    # NEW: Client Domain Join Credential (for Windows10.mof)
+    Write-Host "`n[Credential] Client Domain Join Credential Required..." -ForegroundColor Yellow
+    Write-Host "[*] This is used by the CLIENT MOF to join bolton.corp." -ForegroundColor Gray
+    Write-Host "[*] Enter the username in DOMAIN format, e.g. BOLTON\\Administrator or bolton.corp\\Administrator" -ForegroundColor Gray
+    Write-Host "[*] (Do NOT just type 'Administrator' here, it often fails for domain join in automation)" -ForegroundColor Gray
+
+    $ClientJoinUsername = Read-Host -Prompt "Enter domain join username (e.g. BOLTON\Administrator)"
+    $ClientJoinPassword = Read-Host -Prompt "Enter domain join password" -AsSecureString
+
+    $ClientJoinCredential = New-Object System.Management.Automation.PSCredential(
+        $ClientJoinUsername,
+        $ClientJoinPassword
+    )
+
+    Write-Host "[+] Client join credential captured (not logged)." -ForegroundColor Green
 
     Write-Host "`n[Phase 2] Compile + Apply DSC..." -ForegroundColor Yellow
 
-    # SEPARATION OF CONCERNS
-    # - Data (AllNodes.psd1) describes the environment.
-    # - Configuration (StudentConfig.ps1) implements resources using that data.
-    # - Credentials flow through the orchestrator, not config files.
-    # Dot-sourcing the configuration script makes the Configuration definition available.
-
     $ConfigData = Import-PowerShellDataFile -Path $StudentDataFile
     Assert-AllNodesData -ConfigData $ConfigData
+
     . $StudentConfigScript
     if (-not (Get-Command $ConfigName -ErrorAction SilentlyContinue)) {
         throw "StudentConfig.ps1 must define a Configuration named '$ConfigName'."
@@ -234,16 +187,16 @@ try {
     $CompileOut = Join-Path $OutputsRoot $ConfigName
     New-FolderIfMissing -Path $CompileOut
     Write-Host "[*] Compiling -> DSC\\Outputs\\$ConfigName" -ForegroundColor Gray
-    
-    # Pass BOTH credentials to the configuration
-    # DomainAdminCredential = Account performing the promotion
-    # DsrmCredential = DSRM recovery password
-    # This is how credentials "flow" through the build without being stored anywhere
-    & $ConfigName -ConfigurationData $ConfigData -DomainAdminCredential $DomainAdminCredential -DsrmCredential $DsrmCredential -OutputPath $CompileOut
-    Write-Host "[+] Compilation complete." -ForegroundColor Green
 
-    # RESULT: MOF files in DSC\Outputs\StudentBaseline (e.g., localhost.mof)
-    # Inspect MOFs to understand the resources and properties generated.
+    # Pass ALL credentials to the configuration
+    & $ConfigName `
+        -ConfigurationData $ConfigData `
+        -DomainAdminCredential $DomainAdminCredential `
+        -DsrmCredential $DsrmCredential `
+        -ClientJoinCredential $ClientJoinCredential `
+        -OutputPath $CompileOut
+
+    Write-Host "[+] Compilation complete." -ForegroundColor Green
 
     Get-ChildItem -Path $CompileOut -Recurse |
         Select-Object FullName, Length, LastWriteTime |
@@ -252,29 +205,19 @@ try {
     Write-Host "[*] Applying configuration (waits until complete)..." -ForegroundColor Gray
     Start-DscConfiguration -Path $CompileOut -Wait -Force -Verbose 4>&1 |
         Tee-Object -FilePath (Join-Path $EvidenceRoot ("DSC\{0}_apply_verbose.txt" -f $RunStamp))
-    Write-Host "[+] Apply complete." -ForegroundColor Green
 
-    # NOTE: '4>&1' redirects verbose stream to success stream so Tee-Object captures it.
-    # Read Evidence\DSC\*_apply_verbose.txt to learn what DSC did step-by-step.
+    Write-Host "[+] Apply complete." -ForegroundColor Green
 
     ipconfig /all | Out-File (Join-Path $EvidenceRoot ("Network\{0}_ipconfig.txt" -f $RunStamp)) -Encoding UTF8
     w32tm /query /status 2>&1 | Out-File (Join-Path $EvidenceRoot ("Network\{0}_w32tm_status.txt" -f $RunStamp)) -Encoding UTF8
 
-    # NETWORK/TIME EVIDENCE: Most lab issues are due to networking or clock skew.
-    # Keep these snapshots for troubleshooting and marking support.
-
     Write-Host "`n[Phase 3] Validation..." -ForegroundColor Yellow
     Write-Host "[*] Pester validation will be added later." -ForegroundColor Gray
-
-    # Once validation tests are provided, run them and tee outputs to Evidence\Pester.
 
     Write-Host "`n[+] BUILD SUCCESS" -ForegroundColor Green
     Write-Host "[*] Next steps (commit outputs + evidence):" -ForegroundColor Gray
     Write-Host "    git add DSC\Outputs Evidence" -ForegroundColor Gray
-    Write-Host "    git commit -m \"Build $RunStamp\"" -ForegroundColor Gray
-
-    # GIT DISCIPLINE: In professional settings, evidence and build artefacts are committed.
-    # This protects you against accusations and supports reproducibility.
+    Write-Host "    git commit -m ""Build $RunStamp""" -ForegroundColor Gray
 }
 catch {
     Write-Host "`n[-] BUILD FAILED" -ForegroundColor Red
