@@ -190,7 +190,7 @@ Configuration StudentBaseline {
             Computer DomainJoin {
                 Name       = $node.NodeName
                 DomainName = $Node.DomainName
-                Credential = $DomainAdminCredential
+                Credential = $ClientJoinCredential
                 # If you want OU placement and you trust the string in AllNodes:
                 # JoinOU     = $node.DomainJoinOU
             }
