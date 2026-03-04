@@ -29,20 +29,20 @@ $ErrorActionPreference = "Stop"
 $RootPath = $PSScriptRoot
 
 # Paths
-$StudentConfigScript = Join-Path $RootPath "DSC\Configurations\StudentConfig.ps1"
-$StudentDataFile     = Join-Path $RootPath "DSC\Data\AllNodes.psd1"
-$OutputsRoot         = Join-Path $RootPath "DSC\Outputs"
-$EvidenceRoot        = Join-Path $RootPath "Evidence"
-$ConfigName          = "StudentBaseline"
+$StudentConfigScript = Join-Path $RootPath "DSC\Configurations\StudentConfig.ps1"  # Your configuration (what to build)
+$StudentDataFile     = Join-Path $RootPath "DSC\Data\AllNodes.psd1"                 # Your data (values for the build)
+$OutputsRoot         = Join-Path $RootPath "DSC\Outputs"                             # Compiled MOFs (tracked in Git)
+$EvidenceRoot        = Join-Path $RootPath "Evidence"                                 # Logs & transcripts (tracked in Git)
+$ConfigName          = "StudentBaseline"                                              # REQUIRED configuration name
 
 # OneShots (direct paths) and helper wrapper
-$PrereqLcmScript     = Join-Path $RootPath "Scripts\Prereqs\BarmBuzz_OneShot_LCM.ps1"
-$PrereqNetworkScript = Join-Path $RootPath "Scripts\Prereqs\BarmBuzz_OneShot_Network.ps1"
-$OneShotsHelperPath  = Join-Path $RootPath "Scripts\Helpers\Invoke-BarmBuzz-OneShots.ps1"
+$PrereqLcmScript     = Join-Path $RootPath "Scripts\Prereqs\BarmBuzz_OneShot_LCM.ps1"      # Configures LCM, pins DSC modules
+$PrereqNetworkScript = Join-Path $RootPath "Scripts\Prereqs\BarmBuzz_OneShot_Network.ps1"  # Sets NICs Private, enables WinRM, installs RSAT
+$OneShotsHelperPath  = Join-Path $RootPath "Scripts\Helpers\Invoke-BarmBuzz-OneShots.ps1"  # Thin wrapper to run both in order
 
 # Flag files for idempotency
-$LcmFlagFile     = Join-Path $EvidenceRoot "prereq_lcm_complete.flag"
-$NetworkFlagFile = Join-Path $EvidenceRoot "prereq_network_complete.flag"
+$LcmFlagFile     = Join-Path $EvidenceRoot "prereq_lcm_complete.flag"     # Idempotency: run-once marker
+$NetworkFlagFile = Join-Path $EvidenceRoot "prereq_network_complete.flag" # Idempotency: run-once marker
 
 function New-FolderIfMissing {
     param([Parameter(Mandatory)][string]$Path)
@@ -133,11 +133,13 @@ try {
     # ═══════════════════════════════════════════════════════════════════════════
 
     Write-Host "`n[Credential] Domain Administrator Password Required..." -ForegroundColor Yellow
-    Write-Host "[*] This is the LOCAL Administrator account used for the initial promotion run." -ForegroundColor Gray
+    Write-Host "[*] This is the LOCAL Administrator account that will perform the promotion." -ForegroundColor Gray
     Write-Host "[*] After promotion, this becomes BOLTON\\Administrator (Domain Admin)." -ForegroundColor Gray
 
+    # Prompt for local Administrator password
     $AdminPassword = Read-Host -Prompt "Enter local Administrator password" -AsSecureString
 
+    # Create PSCredential for the promotion account
     $DomainAdminCredential = New-Object System.Management.Automation.PSCredential(
         "Administrator",
         $AdminPassword
@@ -157,17 +159,13 @@ try {
 
     Write-Host "[+] DSRM credential captured (not logged)." -ForegroundColor Green
 
-    # NEW: Client Domain Join Credential (for Windows10.mof)
-    Write-Host "`n[Credential] Client Domain Join Credential Required..." -ForegroundColor Yellow
-    Write-Host "[*] This is used by the CLIENT MOF to join bolton.corp." -ForegroundColor Gray
-    Write-Host "[*] Enter the username in DOMAIN format, e.g. BOLTON\\Administrator or bolton.corp\\Administrator" -ForegroundColor Gray
-    Write-Host "[*] (Do NOT just type 'Administrator' here, it often fails for domain join in automation)" -ForegroundColor Gray
-
-    $ClientJoinUsername = Read-Host -Prompt "Enter domain join username (e.g. BOLTON\Administrator)"
-    $ClientJoinPassword = Read-Host -Prompt "Enter domain join password" -AsSecureString
+    # IMPORTANT: Client join credential (FORCES domain-qualified username into MOF)
+    Write-Host "`n[Credential] Windows Client Domain Join Credential Required..." -ForegroundColor Yellow
+    Write-Host "[*] This will be embedded into the Windows10.mof as BOLTON\\Administrator." -ForegroundColor Gray
+    $ClientJoinPassword = Read-Host -Prompt "Enter password for BOLTON\Administrator" -AsSecureString
 
     $ClientJoinCredential = New-Object System.Management.Automation.PSCredential(
-        $ClientJoinUsername,
+        "BOLTON\Administrator",
         $ClientJoinPassword
     )
 
@@ -188,7 +186,10 @@ try {
     New-FolderIfMissing -Path $CompileOut
     Write-Host "[*] Compiling -> DSC\\Outputs\\$ConfigName" -ForegroundColor Gray
 
-    # Pass ALL credentials to the configuration
+    # PASS ALL REQUIRED CREDS TO CONFIGURATION
+    # -DomainAdminCredential : local admin used for DC promotion
+    # -DsrmCredential        : DSRM restore password
+    # -ClientJoinCredential  : forces BOLTON\Administrator into Windows10 MOF for domain join
     & $ConfigName `
         -ConfigurationData $ConfigData `
         -DomainAdminCredential $DomainAdminCredential `
@@ -198,9 +199,21 @@ try {
 
     Write-Host "[+] Compilation complete." -ForegroundColor Green
 
+    # Evidence: compiled files list
     Get-ChildItem -Path $CompileOut -Recurse |
         Select-Object FullName, Length, LastWriteTime |
         Out-File (Join-Path $EvidenceRoot ("DSC\{0}_compiled_files.txt" -f $RunStamp)) -Encoding UTF8
+
+    # Quick sanity check: show the MOF username for Windows10 if it exists
+    $Win10Mof = Join-Path $CompileOut "Windows10.mof"
+    if (Test-Path $Win10Mof) {
+        Write-Host "[*] Sanity check: Windows10.mof credential line:" -ForegroundColor Gray
+        Select-String -Path $Win10Mof -Pattern 'UserName\s*=' -ErrorAction SilentlyContinue | ForEach-Object {
+            Write-Host "    $($_.Line.Trim())" -ForegroundColor Gray
+        }
+    } else {
+        Write-Host "[*] Windows10.mof not found (this is ok if you are not compiling the client node yet)." -ForegroundColor Gray
+    }
 
     Write-Host "[*] Applying configuration (waits until complete)..." -ForegroundColor Gray
     Start-DscConfiguration -Path $CompileOut -Wait -Force -Verbose 4>&1 |
@@ -208,11 +221,12 @@ try {
 
     Write-Host "[+] Apply complete." -ForegroundColor Green
 
+    # Network/time evidence
     ipconfig /all | Out-File (Join-Path $EvidenceRoot ("Network\{0}_ipconfig.txt" -f $RunStamp)) -Encoding UTF8
     w32tm /query /status 2>&1 | Out-File (Join-Path $EvidenceRoot ("Network\{0}_w32tm_status.txt" -f $RunStamp)) -Encoding UTF8
 
     Write-Host "`n[Phase 3] Validation..." -ForegroundColor Yellow
-    Write-Host "[*] Pester validation will be added later." -ForegroundColor Gray
+    Write-Host "[*] Pester validation will be run separately (Invoke-Validation / Invoke-Pester) and saved under Evidence\\Pester." -ForegroundColor Gray
 
     Write-Host "`n[+] BUILD SUCCESS" -ForegroundColor Green
     Write-Host "[*] Next steps (commit outputs + evidence):" -ForegroundColor Gray
