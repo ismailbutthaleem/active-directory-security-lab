@@ -18,6 +18,9 @@ Configuration StudentBaseline {
     )
 
     Import-DscResource -ModuleName PSDesiredStateConfiguration
+    # Force-resolve built-in Computer + File resources (so client join does NOT bind to ComputerManagementDsc)
+    Import-DscResource -ModuleName PSDesiredStateConfiguration -Name Computer, File
+
     Import-DscResource -ModuleName NetworkingDsc
     Import-DscResource -ModuleName ActiveDirectoryDsc
     Import-DscResource -ModuleName ComputerManagementDsc
@@ -178,16 +181,18 @@ Configuration StudentBaseline {
         }
 
         # ================= CLIENT CONFIGURATION =================
-        # Domain join is performed manually (per brief: join + prove GPO + separate MOF).
-        # Client MOF is still required and applied to demonstrate node separation + DSC application.
+        # Client MOF is required and applied to demonstrate node separation + DSC application.
 
         if ($node.Role -eq 'Client') {
-        PSDesiredStateConfiguration\Computer DomainJoin {
-        
-            Name       = $node.NodeName
-            DomainName = $Node.DomainName
-            Credential = $DomainAdminCredential
-        }
+
+            # Domain Join (Client)
+            Computer DomainJoin {
+                Name       = $node.NodeName
+                DomainName = $Node.DomainName
+                Credential = $DomainAdminCredential
+                # If you want OU placement and you trust the string in AllNodes:
+                # JoinOU     = $node.DomainJoinOU
+            }
 
             # ---------- Proof-of-life (Client Only) ----------
             File ClientEvidenceFolder {
