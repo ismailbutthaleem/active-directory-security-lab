@@ -182,6 +182,12 @@ Configuration StudentBaseline {
         # Client MOF is still required and applied to demonstrate node separation + DSC application.
 
         if ($node.Role -eq 'Client') {
+        Computer DomainJoin
+        {
+            Name       = $node.ComputerName
+            DomainName = $Node.DomainName
+            Credential = $DomainAdminCredential
+        }
 
             # ---------- Proof-of-life (Client Only) ----------
             File ClientEvidenceFolder {
