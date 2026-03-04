@@ -18,9 +18,6 @@ Configuration StudentBaseline {
     )
 
     Import-DscResource -ModuleName PSDesiredStateConfiguration
-    # Force-resolve built-in Computer + File resources (so client join does NOT bind to ComputerManagementDsc)
-    Import-DscResource -ModuleName PSDesiredStateConfiguration -Name Computer, File
-
     Import-DscResource -ModuleName NetworkingDsc
     Import-DscResource -ModuleName ActiveDirectoryDsc
     Import-DscResource -ModuleName ComputerManagementDsc
