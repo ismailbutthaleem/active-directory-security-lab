@@ -1,0 +1,43 @@
+
+Windows IP Configuration
+
+   Host Name . . . . . . . . . . . . : SERVER25-DC-01
+   Primary Dns Suffix  . . . . . . . : bolton.corp
+   Node Type . . . . . . . . . . . . : Hybrid
+   IP Routing Enabled. . . . . . . . : No
+   WINS Proxy Enabled. . . . . . . . : No
+   DNS Suffix Search List. . . . . . : bolton.corp
+                                       nat
+
+Ethernet adapter Ethernet:
+
+   Connection-specific DNS Suffix  . : nat
+   Description . . . . . . . . . . . : Intel(R) PRO/1000 MT Desktop Adapter
+   Physical Address. . . . . . . . . : 08-00-27-63-56-54
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+   IPv4 Address. . . . . . . . . . . : 10.0.2.15(Preferred) 
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Lease Obtained. . . . . . . . . . : Monday, March 2, 2026 10:01:59 PM
+   Lease Expires . . . . . . . . . . : Thursday, March 5, 2026 11:42:33 AM
+   Default Gateway . . . . . . . . . : 10.0.2.2
+   DHCP Server . . . . . . . . . . . : 10.0.2.2
+   DNS Servers . . . . . . . . . . . : 127.0.0.1
+   NetBIOS over Tcpip. . . . . . . . : Enabled
+
+Ethernet adapter Ethernet 2:
+
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Intel(R) PRO/1000 MT Desktop Adapter #2
+   Physical Address. . . . . . . . . : 08-00-27-40-19-EF
+   DHCP Enabled. . . . . . . . . . . : No
+   Autoconfiguration Enabled . . . . : Yes
+   Link-local IPv6 Address . . . . . : fe80::6b48:25f2:b773:fc40%6(Preferred) 
+   IPv4 Address. . . . . . . . . . . : 192.168.56.107(Preferred) 
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Default Gateway . . . . . . . . . : 
+   DHCPv6 IAID . . . . . . . . . . . : 319291431
+   DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-31-20-5E-8D-08-00-27-63-56-54
+   DNS Servers . . . . . . . . . . . : ::1
+                                       127.0.0.1
+   NetBIOS over Tcpip. . . . . . . . : Enabled
