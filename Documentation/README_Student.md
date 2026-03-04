@@ -8,7 +8,7 @@ Forest Root Domain: bolton.corp
 
 Domain: bolton.corp
 
-The Domain Controller is built entirely through DSC v3. No manual configuration of Active Directory objects is required after initial VM preparation.
+The Domain Controller is built entirely through DSC v3. Core Active Directory objects such as OUs, users, groups and GPO links are provisioned automatically by the configuration after the baseline infrastructure has been prepared.
 
 Operating systems involved in the solution:
 
@@ -16,9 +16,9 @@ Windows Server 2025 (Domain Controller)
 
 Windows 11 (Dev Machine)
 
-Windows 11 (client)
+Windows 11 (Client)
 
-Ubuntu (client)
+Ubuntu (Client)
 
 The build is designed to be:
 
@@ -73,7 +73,7 @@ The OUs are divided into logical tiers:
 
 Control Plane – Contains high-privilege administrative groups and accounts. These are isolated from the lower tier levels and should never login with their credentials in such tiers.
 
-Management Plane – Contains delegated administrative groups and infrastructure-related objects. Includes Admins and role based personnel
+Management Plane – Contains delegated administrative groups and infrastructure-related objects. Includes administrators and role-based personnel.
 
 User Access Plane – Contains standard user accounts, role-based security groups, and client computers.
 
@@ -87,13 +87,13 @@ bolton.corp
 
 The purpose of this structure is to:
 
-Implement a Least Priviledge approach with the structured tiers and OU's separation.
+Implement a least privilege approach with the structured tiers and OU separation.
 
-Separate high-risk administrative accounts from standard users
+Separate high-risk administrative accounts from standard users.
 
-Support targeted Group Policy application
+Support targeted Group Policy application.
 
-Enable controlled delegation
+Enable controlled delegation.
 
 OUs are used for management structure and policy targeting, not as security boundaries.
 
@@ -103,7 +103,9 @@ Delegation is implemented using role-based security groups rather than assigning
 
 For example:
 
-An IT-Helpdesk security group exists within the Management Plane. Members of this group are delegated limited administrative control over the User Access Plane OU. This delegation allows:
+An IT-Helpdesk security group exists within the Management Plane. Members of this group are delegated limited administrative control over the User Access Plane OU.
+
+This delegation allows:
 
 Resetting user passwords
 
@@ -111,7 +113,7 @@ Unlocking user accounts
 
 Reading user object properties
 
-The IT-Helpdesk group does not receive Domain Admin privileges. (RBAC)
+The IT-Helpdesk group does not receive Domain Admin privileges.
 
 Delegation is applied at the OU scope rather than at the domain root. This prevents excessive privilege inheritance and ensures administrative permissions remain restricted to their intended boundary.
 
@@ -121,7 +123,7 @@ This model supports operational efficiency while maintaining least privilege enf
 
 Role-Based Access Control (RBAC) is implemented through:
 
-Security groups representing job roles or functions.
+Security groups representing job roles or functions
 
 Group-based permission assignment
 
@@ -129,7 +131,7 @@ Separation between administrative and standard accounts
 
 No direct permissions are assigned to user accounts outside of role-based groups.
 
-This structure allows a more flexible and controlled policy application and policy enforcement by tracking down and narrowing these attributes to a group membership instead of single users.
+This structure allows a more flexible and controlled policy application and enforcement by tracking these attributes through group membership instead of individual users.
 
 2.6 Default Container Hygiene
 
@@ -138,7 +140,8 @@ The default Active Directory containers:
 CN=Users
 CN=Computers
 
-are not used for governance as these do not really count as OU more as containers, best practice is to move objects from these containers into a specific OU or move the container to a OU.
+are not used for governance. These are containers rather than organisational units. Best practice is to move objects from these containers into specific OUs.
+
 This ensures:
 
 Predictable Group Policy application
@@ -159,60 +162,108 @@ An OU is not a security boundary.
 
 A domain is a security boundary.
 
-Although OUs allow administrative delegation and policy scoping, authentication and trust enforcement occur at the domain level, therefore domain level attributes bypass any policies or separations made in OU's
+Although OUs allow administrative delegation and policy scoping, authentication and trust enforcement occur at the domain level.
 
-Cross Domain Acess:
+Cross-domain access:
 
-Users from one domain are authorized to another domain by default because of the existing trust relationship within a forest, however they cannot access resources unlesss explicitily configured to do so by the domain admins.
-This proves forest relationship of trust without breaking the principle that each domain has its security boundaries regardless.
+Users from one domain are authorised to another domain by default because of the existing trust relationship within a forest. However, they cannot access resources unless explicitly configured to do so by the domain administrators.
+
+This demonstrates the forest trust relationship without breaking the principle that each domain maintains its own security boundary.
 
 3. Automation Strategy
-
 3.1 Overview
 
-This solution imposes an idempotent and reproducible environment that can be replicated via automation. The use of manual configurations would increase the risk of settings being overwritten or altered by external changes. DSC reduces this risk because it enforces the desired configuration state defined for the system.
+This solution implements an idempotent and reproducible environment that can be replicated through automation.
 
-The environment can be easily replicated, as it depends on declared resources and a configuration that defines the required state. The system continuously ensures compliance with the requirements specified in the desired configuration.
+Manual configuration increases the risk of configuration drift and inconsistent environments. DSC reduces this risk by enforcing the desired configuration state defined for the system.
 
-The orchestrator runs the configuration in a layered and logical order for it to work correctly. It first establishes the infrastructure (server state, networking, DNS, Domain Controller role). It checks that the baseline is in the correct desired state. If everything within the baseline is compliant, it would normally proceed to configure the system to promote to DC.
+The orchestrator executes the configuration in a logical layered order.
 
-If this step has already been completed, DSC will detect that the state of the machine being a DC is already true. Therefore, it will not run the DC promotion again, but instead move on to the next layered step, which is applying AD objects.
+First, the infrastructure baseline is configured:
 
-It will then check that the OUs, users, security groups, GPOs and links are in the desired state. If not, it will enforce them so that the values from the configuration match the machine state.
+Server state
 
-A MOF artifact is a set of instructions produced for the system to read and enforce after the DSC configuration has been compiled. When the orchestrator runs and matches values from the data file with the configuration file, it produces a MOF file. This MOF file is then read by the Local Configuration Manager (LCM), which enforces the defined state of the machine.
+Networking configuration
+
+DNS settings
+
+Domain Controller role installation
+
+Once the baseline state is confirmed, the system proceeds with domain promotion.
+
+If the machine has already been promoted to a Domain Controller, DSC detects that the state already matches the desired configuration and skips that step.
+
+After promotion, the configuration continues with Active Directory objects:
+
+OUs
+
+Users
+
+Security groups
+
+Group Policy objects and links
+
+DSC compares the desired configuration with the current system state and only applies changes when differences are detected.
+
+When the configuration is compiled, a MOF artifact is generated. This file contains the instructions required for the system.
+
+The Local Configuration Manager (LCM) reads the MOF file and enforces the defined state on the system.
 
 3.2 Data Driven Configuration Model
 
-The data file is used when objects are repetitive, likely to expand, or expected to change properties over time. Instead of hardcoding these objects directly inside the configuration logic, they are defined inside AllNodes.psd1. This keeps the structure clean and avoids rewriting the configuration each time something small changes.
+The data file is used when objects are repetitive, likely to expand, or expected to change properties over time.
 
-The data file should act as a controlled definition layer. It does not contain execution logic; it only defines values such as OUs, users, groups, and their attributes. Credentials are not stored here in plain text. This separation improves scalability and reduces the risk of configuration drift caused by manual edits inside the main script.
+Instead of hardcoding these objects directly inside the configuration logic, they are defined inside:
 
-Objects are stored inside structured lists (arrays). The configuration file then uses loops to iterate through these lists one by one. For example:
+DSC\Data\AllNodes.psd1
+
+This keeps the configuration structure clean and avoids rewriting logic when objects change.
+
+The data file acts as a definition layer.
+
+It contains values such as:
+
+OUs
+
+Users
+
+Security groups
+
+Attributes and relationships
+
+Credentials are not stored in plain text.
+
+Objects are defined inside arrays.
+
+For example:
 
 OUList defines all required OUs.
 
-Users defines account objects and their properties.
+Users defines user account objects.
 
 Groups defines security groups.
 
 MemberOf inside Users defines RBAC relationships.
 
-The configuration processes each entry in the list and enforces it using DSC resources. This means the same logic applies regardless of how many objects exist. If ten more users are added to the data file, the configuration does not change — the loop simply processes more entries.
+The configuration file iterates through these lists and applies the required DSC resources.
 
-In this model:
+This means the same logic works regardless of scale.
 
-The data file defines what must exist.
+If additional users or groups are added to the data file, the configuration does not need to change.
 
-The configuration file defines how it should exist.
+This design improves:
 
-This approach keeps the environment scalable, modular, reduces duplication, and allows future expansion without modifying the core logic of the deployment.
+Scalability
+
+Maintainability
+
+Configuration consistency
 
 4. Repository Structure
 
-4. Repository Structure
+The repository is structured to clearly separate configuration logic, validation tests and generated evidence artifacts.
 
-The repository is structured to clearly separate configuration logic, validation tests, and generated evidence artifacts. The layout is designed to allow a tutor to extract the ZIP file and understand the execution flow from the root directory.
+The layout allows another engineer to extract the ZIP file and understand how the environment is deployed from the root directory.
 
 4.1 Entry Point
 
@@ -235,7 +286,7 @@ DSC configuration files are located under:
 
 .\DSC\
 
-Subdirectories:
+Subdirectories include:
 
 .\DSC\Configurations\StudentConfig.ps1
 .\DSC\Data\AllNodes.psd1
@@ -243,11 +294,11 @@ Subdirectories:
 
 StudentConfig.ps1 contains the DSC configuration logic.
 
-AllNodes.psd1 contains environment-specific data values.
+AllNodes.psd1 contains environment specific data values.
 
 Outputs contains compiled MOF files generated during build.
 
-This separation ensures configuration logic and data definitions remain distinct.
+This separation ensures configuration logic and data definitions remain independent.
 
 4.3 Pester Test Location
 
@@ -257,425 +308,283 @@ All Pester tests are located under:
 
 This includes:
 
-Tutor-provided validation tests
+Tutor provided validation tests
 
-Custom student validation tests
+Student validation tests
 
-Tests are structured to validate domain state, OU structure, group placement, GPO linking, DNS configuration and service health.
+These tests validate domain state, OU structure, RBAC group membership and policy linking.
 
 4.4 Evidence and Transcripts
 
-Execution evidence and transcripts are stored under:
+Execution evidence is stored under:
 
 .\Evidence\
 
-Subdirectories include:
+Subfolders include:
 
-Pester – validation output files
+Pester
 
-Transcripts – PowerShell transcripts
+Transcripts
 
-Screenshots – supporting visual evidence
+Screenshots
 
-GPOBackups – exported policy backups (if applicable)
+GPOBackups
 
-This ensures all generated artifacts are separate from configuration logic.
-
-4.5 Relative Path Usage
-
-All scripts use relative paths within the repository. No absolute file system paths are hardcoded. This ensures portability when the repository is extracted from a ZIP archive onto a different system.
+This keeps generated artifacts separate from configuration logic.
 
 5. Execution Order (Runbook)
+5.1 Pre-Conditions
 
-5.1 Pre Conditions
+Before running the build the configuration data file must contain correct environment values such as:
 
-Before running the buld certain characteristics have to be met for it to work and applied the desired configuration:
+Computer name
+Internal NIC alias
+IPv4 address
+DNS server
+Domain name
+Node role
 
-- Confirm correct values exist in the data file .\DSC\Data\AllNodes.psd1 values set should match the machine internal settings (computer name, internal NIC alias, IPV4 address, DNS address, domain name and role)
+Required DSC modules must also be installed.
 
-- Ensure DSC required modules by the orchestrator are installed with the correct version. eg; ActiveDirectoryDsc, NetworkingDsc, ComputerManagmentsDsc
+Credentials are provided during execution and are not stored in configuration files.
 
-- Ensure credentials are passed at runtime and not harcoded into configuration or data files.
+The only files to edit are:
 
-5.2 Compile the DSC Configuration
+AllNodes.psd1 (Logic File)
+StudentConfig.ps1 (Configuration Logic)
 
-Compilation is triggered from the repository root:
+This build is data-driven. All values stored in AllNodes.psd1 must match the environment values used in the StudentConfig.ps1 to ensure correct compilation.
+
+VMs should ideally be started from a clean snapshot before running the build to avoid configuration drift or conflicts from previous runs.
+
+NIC layout assumptions:
+
+The Domain Controller has two adapters:
+
+Host-only / internal adapter used for the Active Directory network.
+
+NAT adapter used only for internet connectivity and module downloads.
+
+The internal adapter must have a static IPv4 configured and use the Domain Controller as the DNS server. NAT registration from DNS should be disabled.
+
+Time must also be synchronised between machines as Kerberos authentication requires clocks to be within the allowed time drift.
+
+The build must be executed from an Administrator PowerShell shell.
+
+5.2 Compile the Configuration
+
+Compilation is triggered using:
 
 .\BuildMain.ps1
 
 This step:
 
-Loads configuration data (AllNodes.psd1)
-
-Compiles the StudentBaseline configuration (from StudentConfig.ps1)
-
-Generates MOF output under:
+Loads configuration data
+Compiles StudentBaseline
+Generates MOF files inside:
 
 .\DSC\Outputs\
 
+What should change:
+
+A compiled MOF file should appear inside the Outputs directory.
+
+How to prove it:
+
+Check the directory:
+
+dir .\DSC\Outputs\
+
+Expected result:
+
+A localhost.mof file should be present for the Domain Controller.
+
 5.3 Apply the Configuration
 
-The compiled configuration is applied using:
+The configuration is applied automatically for the Domain Controller. The build generates a MOF file which the Local Configuration Manager (LCM) reads and applies to enforce the desired state.
+
+During this stage the system will perform the following actions:
+
+Operating system configuration
+Network configuration
+DNS configuration
+AD DS role installation
+Domain Controller promotion
+
+The Domain Controller promotion stage will trigger a reboot as part of the forest creation process. In the case it does not, restart the machine manually
+
+After reboot, the configuration can be executed again to continue convergence if needed.
+
+For clients the configuration might be automatically pushed during the build run. If the push transport fails, the MOF file generated for the client on the Domain Controller can be copied manually to the client machine.
+
+Once copied, run on the client:
 
 Start-DscConfiguration -Path .\DSC\Outputs -Wait -Verbose -Force
 
-Execution order (high level) is:
+This allows the LCM on the client to read and apply the configuration locally.
 
-Base OS configuration (computer name / time zone / services)
+5.4 Validate the Baseline
 
-Network configuration (static IP + internal DNS settings, NAT DNS registration disabled)
+Validation is performed using Pester tests.
 
-AD DS feature installation
-
-Forest creation and DC promotion (requires credentials)
-
-Post-promotion AD configuration (OUs, groups, users)
-
-GPO creation/linking to scoped OUs (where applicable)
-
-This ordering ensures AD objects and policy links are only applied after the domain exists.
-
-5.4 Reboot and Promotion Behaviour
-
-Domain promotion triggers an automatic reboot as part of AD DS forest creation. If promotion does not complete within the orchestrator run, a manual reboot is performed to finalise the promotion stage. After reboot, the system is validated before any further changes are made.
-
-5.5 Validate the Baseline
-
-Validation is executed in two layers:
-
-Tutor validation suite (full baseline compliance):
+Run the tutor validation suite:
 
 Invoke-Validation
 
-Student validation suite (governance structure + security policy targeting):
+This runs all Pester tests that assess both pre-promotion and post-promotion configuration states.
 
-Invoke-Pester -Path .\Tests\Pester\Student-Pester_ProofOfLife.ps1 -Output Detailed
+Alternatively run Pester directly:
 
-Expected outcome is all tests passing. Failed tests indicate configuration drift, missing objects, incorrect OU paths, incorrect policy links, or misconfigured DNS.
+Invoke-Pester
 
-5.6 Evidence Capture Locations
+or run a specific Pester test file.
 
-Evidence is stored under the repository Evidence folder to keep build artifacts separate from source code:
+Tests confirm:
 
-MOF output: .\DSC\Outputs\
-
-Pester transcripts/results: .\Evidence\Pester\
-
-PowerShell transcripts: .\Evidence\Transcripts\
-
-Screenshots (if required): .\Evidence\Screenshots\
-
-5.7 Windows Client Integration
-
-The Windows 10 client was joined using the System Properties interface (sysdm.cpl). This was done once the Domain Controller build was carried out successfully after editing and applying the DSC configuration.
-
-5.7.1 Join Procedure
-
-On the Windows client:
-
-Run:
-
-sysdm.cpl
-
-Navigate to Computer Name → Change
-
-Select Domain
-
-Enter:
-
-bolton.corp
-
-Provide domain administrative credentials when prompted.
-
-Restart the machine.
-
-Post-Join Validation
-
-After reboot, the following verification steps were executed.
-
-5.7.2 Confirm Domain Authentication Context
-
-On the Windows client:
-
-whoami
-
-Expected result:
-Output reflects domain authentication, for example:
-
-bolton\username
-
-5.7.3 Verify Secure Channel Integrity
-Test-ComputerSecureChannel -Verbose
-
-Expected result:
-
-True
-
-This confirms the trust relationship between the client and the Domain Controller is valid.
-
-5.7.4 Test GPO Applied for the Signed-In User
-
-Run:
-
-gpresult /r
+OU structure
+Group membership
+RBAC relationships
+Policy linking
+Domain state
 
 Expected outcome:
 
-The OU-linked GPO for the signed-in user appears under “Applied Group Policy Objects”.
+All tests should pass. A failing test indicates either a configuration drift, missing object, incorrect OU path, or module dependency issue.
 
-5.8 Ubuntu Join Procedure
+6. Idempotence and Re-Run Behaviour
 
-5.8.1 Check DNS Resolution
-cat /etc/resolv.conf
+Idempotence means the build can be executed multiple times without creating duplicate objects or breaking the environment.
 
-Expected result:
+DSC compares the desired configuration against the actual machine state.
 
-The nameserver points to the DC static IPv4 address.
+If the object already exists and matches the configuration, DSC skips it.
 
-If not:
+If the object does not exist, DSC creates it.
 
-Check that the host-only adapter is being used for DNS queries, ensure both machines are on the same network, and confirm that the DNS setting for the NIC is the DC IPv4 address.
+If configuration drift occurs, DSC enforces the desired state.
 
-5.8.2 Discover the Domain Using realmd
-realm discover bolton.corp
-
-Expected result:
-
-The domain name and Kerberos realm match the Domain Controller settings.
-
-If not:
-
-Check DNS configuration and confirm that Kerberos is installed on the machine.
-
-5.8.3 Join the Domain
-
-Using realmd, run:
-
-sudo realm join bolton.corp -U Administrator
-
-Expected result:
-
-Join completes successfully (the command typically returns silently to the prompt without displaying a success message).
-
-Verify:
-
-realm list
-
-Expected result:
-
-bolton.corp
-
-If not:
-
-The join was not successful. Check DNS status, name resolution, and that Kerberos is installed and configured correctly.
-
-5.8.4 Verify User Authentication
-
-Run:
-
-su - adam.khan@bolton.corp
-
-Expected:
-
-The AD password prompt appears for the selected user. Successful login confirms users can authenticate in Ubuntu and that Kerberos integration is functioning correctly.
-
-Evidence Locations
-
-Ubuntu Evidence:
-Evidence\AD\ubuntu_join.txt
-
-Windows Evidence:
-Evidence\AD\01-Windows_DomainJoin.txt
-
-6. Idempotence and Re-Run Behaviour 
-
-- Idempotence
-
-This means that the system is safe to be run multiple times. The build can be executed as many times as needed, and if the actual state of the machine already matches the DSC configuration, the orchestrator will not generate duplicates or throw errors.
-
-- Convergence
-
-This allows an easy rebuild. If something was deleted by accident, such as an OU for example, and the orchestrator detects that it is not present, it will recreate it and link the correct properties to that object. If the object is already there, the system acknowledges it and skips it, meaning no error and no duplicate is created. Avoiding drifts in the environment.
-
-DSC gets the data file and uses it together with the configuration file. The data file represents what has to be there (the exact values), and the configuration file defines how it should be there.
-
-DSC then compares this with the current system state, for example the system’s own IPv4 address.
-
-After compilation, a MOF file is generated which defines the execution order and what must be implemented. This MOF file is then read by the Local Configuration Manager (LCM), which enforces the desired state on the system rather than just describing it.
-
-DSC follows an execution order described before if any of the dependencies mentioned before was to fail the orchestrator will stop the build, signal where is the error and why it was caused.
-
-Evidence of the second run of execution:
-
-.\Evidence\Transcripts\20260225_000339_Run_BuildMain.txt
-
-6.1 Idempotence and re-run behaviour
-
-It was observed and verified that dependencies are critical for the correct compilation of the program. DSC follows a logical and structured order when compiling and executing the configuration. However, there are parts where the orchestrator does not automatically understand which resource must execute first unless explicit dependencies are defined. Without those dependencies, DSC builds the configuration based on its resource graph rather than strict top-to-bottom script order.
-
-At first this may not seem like an issue, but when engineering larger structures, drift or ordering problems can occur. For example, if the security group loop is placed before the users loop, this creates a logical misconfiguration and can break the compilation process.
-
-An issue encountered during deployment was that a user did not yet exist in the Active Directory environment, but DSC attempted to create a security group that included that user as a member. Because the user resource had not yet been defined, the build failed and stopped execution.
-
-Solution
-
-A dynamic DependsOn resource was implemented to explicitly force DSC to create the user (if it did not yet exist) before attempting to add that user to a security group.
-
-This reinforces that in declarative code, dependencies should be explicitly defined rather than relying on implicit execution behaviour. It is considered best practice to control resource sequencing using dependency declarations instead of assuming DSC will infer the correct order.
-
-6.2 Password Enforcement Policy
-
-DSC enforces a desired state to be applied to the system. This process includes, for instance, creating new users. However, it is important to note that DSC does not overwrite Active Directory domain policies or security boundaries.
-
-When creating new users, their enabled state must first be set to:
-
-Enabled = $false
-
-This is because if the parameter is set to:
-
-Enabled = $true
-
-the orchestrator will show an error complaining that the password complexity requirements have not been met.
-
-This happens because passwords are not hardcoded in any file within the configuration, which follows best security practice. Since no password is defined in the ADUser resource, DSC attempts to create and enable the account without a compliant password already set. Active Directory enforces its domain password policy and does not allow an account to be enabled unless a valid password meeting complexity requirements exists. Therefore, the account creation is rejected.
-
-Solution
-
-All new accounts that are yet to be created must initially be set to:
-
-Enabled = $false
-
-Once the account object has been created in Active Directory, a compliant password must be set directly on the Domain Controller using AD administrative tools or PowerShell.
-
-After a compliant password has been configured in Active Directory, the DSC configuration file can be edited and updated to:
-
-Enabled = $true
-
-The configuration can then be re-run, and DSC will enable the account successfully while remaining compliant with the domain security policy.
+This behaviour ensures the environment remains consistent even if changes occur outside the configuration.
 
 7. Validation and Testing Model
 
-After the system is built by DSC, it is considered best practice to validate whether the desired state has been fully applied or if something is missing. Pester tests are declarative scripts that check whether a given condition is true or not.
+After the system is built, validation is performed using Pester tests.
 
-They are highly useful because they indicate both the input received and the expected input. They also have the capability to be specific when highlighting where something is wrong, although this depends on how the Pester test is written and structured.
+Pester tests verify that the desired configuration state has been applied correctly.
 
-A system cannot be considered reliable if it has not been validated. Validating through declarative tests is one of the easiest and most effective ways to assess the state of a machine or environment.
+Examples of validation checks include:
 
-As mentioned previously, Pester tests can validate multiple aspects of the configuration, such as:
+OU structure
 
-Whether a GPO is linked to the correct OU
+User and group existence
 
-Whether the correct objects exist in the directory
+RBAC relationships
 
-Whether policies are applied as intended
+GPO linking
 
-Pester output is relatively easy to follow, as it produces a human-readable result. When a test fails, the output highlights the error location and shows the expected versus actual values.
+DNS configuration
 
-As seen in the evidence:
+The validation suite provides clear pass or fail outputs.
 
-.\Evidence\Pester\Pester-Detailed-20260224-185115.txt
+Failed tests highlight the expected value and the actual value, making troubleshooting easier.
 
-The Pester framework evaluates whether the defined condition has been met. If the condition is satisfied, the result is marked as Passed. If it is not satisfied, it is marked as Failed, and the output highlights where the error occurred or what external issue caused it (for example, a missing DSC resource).
-
-Add this near the end:
-
-The validation suite is structured to test multiple categories of the environment, including domain state, OU structure, security group placement, user provisioning, GPO linking and DNS configuration. This ensures that the baseline is assessed as a complete system rather than in isolation.
-
-Validation can be executed repeatedly after configuration runs to confirm that no drift has occurred and that the environment remains compliant with the defined state.
-
-8. Health-Checks
-
+8. Health Checks
 8.1 ControlPlane OU
 
 Risk:
 
-Most valuable OU in the infrastructure as it holds the domain control overall, if compromised an attacker can modify, delete configurations and access sensible data.
+Most valuable OU in the infrastructure as it holds domain control operations.
 
 Control:
 
-Accounts in this OU are only priviledged no other accounts reside here, accounts in the ControlPlane OU cannot sign in in any other OU directly but only manage from the ControlPlane.
+Only privileged administrative accounts reside in this OU.
 
 Justification:
 
-This practice reduces lateral movement and avoids radius blast if a lower tier was to get compromised.
+Separating privileged accounts reduces lateral movement and limits attack surface.
 
 Verification:
-OU structure evidence: Evidence\HealthChecks\ou_listing.txt
+
+Evidence\HealthChecks\ou_listing.txt
 
 8.2 ManagementPlane OU
 
 Risk:
 
-IT staff needs priviledged access to some resources or configurations which increases exposure to other risks inside and outside the OU as users here perform duties on the lower level tiers as well thru delegation.
+Administrative accounts require elevated privileges which increases potential exposure.
 
 Control:
 
-Role-Based Security groups, specifically GG-IT-Admins are only assigned least proiviledged permissions such as password reset on lower OU tiers.
+Delegated permissions are assigned to role based security groups.
 
 Justification:
 
-Permissions are not granted blidly at domain root they are targeted to security groups which only have a specific set of permissions over a specific targeted lower OU.
+Permissions are scoped to specific OUs rather than domain root.
 
 Verification:
-Delegation test evidence: Evidence\AD\RBAC_Reset_Test.txt
+
+Evidence\AD\RBAC_Reset_Test.txt
 
 8.3 UserAccessPlane OU
 
 Risk:
 
-Standard users and endpoints suppose a high threat actor, represent the primary source of surface attacks ( pishing, malware)
+User endpoints represent the largest attack surface.
 
 Control:
 
-All User and client computers are located inside this OU whch has hardening GPO.
+Hardening policies are applied to user accounts and computers inside this OU.
 
 Justification:
 
-User-targeted policies are only applied inside the UserAccessPlane as these do not need as much permissions to carry out their tasks, relying on a least priviledged model approach, users and accounts outside this OU do not get the same GPO to avoid conflicts between normal and priviledged accounts which need to perform priviledged operations.
+Separating standard users prevents policy conflicts with privileged accounts.
 
 Evidence:
+
 Evidence\AD\01-Windows_DomainJoin.txt
+
 Evidence\AD\ubuntu_join.txt
 
 8.4 BBZ-User-Hardening-Reduce-AttackSurface
 
 Risk:
 
-Standard users can misuse system tools such as Command Prompt and Control Panel to modify configuration, bypass restrictions, or execute malicious scripts.
+Users may misuse system tools such as Command Prompt or Control Panel.
 
 Control:
 
-The GPO BBZ-User-Hardening-Reduce-AttackSurface disables access to Control Panel and Command Prompt for users in the UserAccessPlane OU.
+Access to these tools is restricted through Group Policy.
 
 Justification:
 
-This GPO is linked specifically to the UserAccessPlane OU and not applied at domain root. This ensures administrative accounts and IT personnel retain necessary system access while reducing risk for standard users.
+This reduces attack surface while preserving administrative functionality.
 
 Verification:
 
-gpresult /r confirms policy application for standard users.
-Evidence: Evidence\AD\01-Windows_DomainJoin.txt
+gpresult /r
+
+Evidence:
+
+Evidence\AD\01-Windows_DomainJoin.txt
 
 8.5 BBZ-Computer-Baseline-Firewall-SMB
 
 Risk:
 
-Weak Firewall Configuration can lead to lateral movements increasing exposure compromising the system, Unrestricted SMBv1 can increase the chance of legacy explotation
+Weak firewall configuration and legacy protocols increase attack surface.
 
 Control:
 
-Enabling firewall rules and disabling SMBv1 to reduce attack vectors
+Firewall rules are enforced and SMBv1 is disabled.
 
 Justification:
 
-This GPO is not applied to ControlPanel OU or management tiers unless needed.
+Policies target client systems without affecting administrative infrastructure.
 
 Verification:
-Computer-side gpresult output confirms application.
-Evidence: Evidence\HealthChecks\gpresult_computer.txt
+
+Evidence\HealthChecks\gpresult_computer.txt
 
 9. Security Considerations
-
 9.1 Credentials Hardening
 
 Credential management is not handled directly by DSC in the deployment of this environment. This decision aligns with best security practices, as sensitive data such as passwords should never be stored in plain text within configuration files. Instead, PSCredential objects are used to pass password values during Active Directory setup, but these credentials are not hardcoded anywhere.
@@ -684,7 +593,8 @@ MOF files are generated artifacts that should not contain or expose any credenti
 
 The Local Configuration Manager (LCM) reads the MOF files and enforces the defined configuration locally. No external sources or credential management systems are used to read or deploy the desired configuration in this lab environment.
 
-Considerations for Production-level Security:
+Considerations for production-level security:
+
 In a production environment, certificate-based MOF encryption and integration with a secure vault (e.g., Azure Key Vault) would be implemented for enhanced security, ensuring credentials are protected at all times.
 
 9.2 DNS Security and Network Exposure
@@ -697,7 +607,7 @@ The Host-Only adapter is used specifically for DNS resolution. The DC uses the l
 
 NAT is disabled for DNS registration to enhance security by isolating the DC from the external network. This prevents potential threats like DNS spoofing, caching poisoning, or other man-in-the-middle attacks.
 
-This setup ensures that only authorized and trusted machines can join the domain and query DNS, significantly reducing the risk of unauthorized access.
+This setup ensures that only authorised and trusted machines can join the domain and query DNS, significantly reducing the risk of unauthorised access.
 
 9.3 OU and Delegation Design Intent
 
@@ -713,39 +623,41 @@ The purpose of this structure is to apply GPOs and delegation logically, ensurin
 
 9.4 RBAC Design
 
-RBAC is implemented based on the least privilege principle. The security groups reflect necessary roles within the organization, and permissions are assigned to these groups, not individual users.
+RBAC is implemented based on the least privilege principle. The security groups reflect necessary roles within the organisation, and permissions are assigned to these groups, not individual users.
 
 Key security groups:
 
-GG-IT-Admins: Full administrative access to the IT infrastructure.
+GG-IT-Admins: Administrative access scoped through delegation and group membership.
 
-GG-HR-Staff: Access to HR-related resources with no admin rights.
+GG-HR-Staff: Role-based access with no admin rights.
 
-GG-Server-Admins: Admin access to server resources.
+GG-Server-Admins: Admin access to server-related objects (as defined in the build).
 
-Security Group Usage
+Security group usage:
 
-To give users outside an OU the ability to perform privileged tasks, a security group is created and added to the OU's permissions.
+To give users outside an OU the ability to perform privileged tasks, a security group is created and permissions are applied to the group rather than the user.
 
-For example, if a user from the User Access Plane needs access to resources in the Computers OU:
+For example, if a user from the User Access Plane needs controlled access to administer an OU:
 
-A security group like GG-Computer-Admins is created.
+A security group is created.
 
-The user is added to this group.
+The user is added to the group.
 
-The group is granted the necessary permissions.
+The group is granted the required permissions at the OU scope.
 
-This ensures that access is specific and controlled, keeping the environment secure while enabling required actions without over-privileging users.
+This ensures access is specific and controlled, keeping the environment secure while enabling required duties without over-privileging users.
 
 9.5 Delegation and Least Privilege Enforcement
 
-Delegation in an Active Directory infrastructure must always respect the least privilege principle. Users should be granted privileges only to the minimum level required to carry out a specific task.
+Delegation in an Active Directory infrastructure has to respect least privilege. Users must be granted privileges only to the minimum level required to carry out a specific task.
 
-A security group must be defined where users inside that group receive delegated privileges. Delegation means that a user from one OU, for example, can perform specific actions within another OU that they are not a direct member of. This is possible because permissions are assigned to the security group at the OU level, not to the individual user. Each security group is designed to specialise in a particular operational area that other parts of the hierarchy may require at some point.
+A security group is defined where users inside that group receive delegated privileges. Delegation means a user from one OU can perform specific actions within another OU scope. This works because permissions are assigned to the security group at the OU level, not to the individual user.
 
-In this infrastructure, GG-IT-Admins includes the user ismail.admin, which is delegated control over the UserAccessPlane OU to reset passwords. This allows ismail.admin to reset the password of adam.khan, who resides within that OU. The only permission granted is the ability to reset passwords within that specific scope. No additional administrative rights are provided outside that boundary.
+In this infrastructure, GG-IT-Admins includes the user ismail.admin, which is delegated control over the UserAccessPlane OU to reset passwords. This allows ismail.admin to reset the password of adam.khan, who resides within that OU.
 
-Delegation must be carefully designed and applied. Granting excessive privileges, or allowing a lower-tier OU to modify objects within a higher-tier OU, would break governance structure and violate least privilege principles. This would weaken the environment and potentially expose it to security risks. Proper OU scoping and group-based delegation ensure administrative control remains controlled and predictable.
+The only permission granted is the ability to reset passwords within that specific scope. No additional administrative rights are provided outside that boundary.
+
+Delegation must be carefully designed and applied. Granting excessive privileges, or allowing a lower-tier OU to modify objects within a higher-tier OU, would break the governance model and violate least privilege principles. This would weaken the environment and expose it to security risks.
 
 9.6 Delegation Validation (Allow / Deny Outcome)
 
@@ -760,6 +672,7 @@ This behaviour proves that least privilege has been enforced correctly. The Powe
 .\Evidence\AD\RBAC_Reset_Test.txt
 
 9.7 Explicit Trade-Offs Made for Lab Realism vs Enterprise Practice
+
 Trade-Off 1: Use of a Single Domain Controller
 
 Only one Domain Controller (DC) is deployed because higher-level complexity is not required for the scope of this project demonstration. This increases simplicity, reduces configuration overhead, and allows controlled testing of the automation workflow.
@@ -768,7 +681,7 @@ In an enterprise environment, multiple Domain Controllers would be deployed to e
 
 Trade-Off 2: Limited GPO Depth
 
-The GPO configuration implemented in this lab is security-relevant and functions as intended, however it does not reflect the depth expected in a production enterprise environment.
+The GPO configuration implemented in this lab is security relevant and functions as intended, however it does not reflect the depth expected in a production enterprise environment.
 
 In a real-world infrastructure, GPO design would be significantly more layered and structured. Additional policies would typically include:
 
@@ -782,7 +695,7 @@ WMI filtering for precise targeting
 
 Layered inheritance strategies
 
-In this lab, GPOs are intentionally scoped only to the relevant OUs to demonstrate policy targeting and avoid over-complication. The objective is to prove correct linkage and enforcement, not to implement a full enterprise governance framework.
+In this lab, GPOs are intentionally scoped only to the relevant OUs to demonstrate correct targeting and enforcement. The objective is to prove correct linkage and enforcement, not to implement a full enterprise governance framework.
 
 Trade-Off 3: DNS Architecture
 
@@ -791,37 +704,36 @@ In this lab environment, DNS is hosted on the single Domain Controller. This is 
 In an enterprise infrastructure, DNS redundancy is required to avoid a single point of failure and to support load balancing. Multiple DNS servers would be deployed, often across different sites, with replication and potentially conditional forwarders or split-DNS configurations. The lab environment simplifies DNS to focus on functional correctness rather than infrastructure resilience.
 
 10. Evidence Mapping
-
 10.1 Domain Controller Build & Automation
 
-DC promoted using DSC via Run_BuildMain.ps1	
-Evidence/Transcripts/20260225_000339_Run_BuildMain.txt
+DC promoted using DSC via Run_BuildMain.ps1
+Evidence\Transcripts\20260225_000339_Run_BuildMain.txt
 
-DSC configuration compiled successfully	
-Evidence/DSC/BuildMain-Compile.txt
+DSC configuration compiled successfully
+Evidence\DSC\BuildMain-Compile.txt
 
-MOF generated for StudentBaseline	
-DSC/Outputs/StudentBaseline/localhost.mof
+MOF generated for StudentBaseline
+DSC\Outputs\StudentBaseline\localhost.mof
 
-Idempotent re-run confirmed	
-Evidence/Transcripts/20260225_000339_Run_BuildMain.txt
+Idempotent re-run confirmed
+Evidence\Transcripts\20260225_000339_Run_BuildMain.txt
 
 10.2 Active Directory Health & Core Services
 
-Domain information validated 
-Evidence/HealthChecks/domain_info.txt
+Domain information validated
+Evidence\HealthChecks\domain_info.txt
 
 Forest information validated
-Evidence/HealthChecks/forest_info.txt
+Evidence\HealthChecks\forest_info.txt
 
 DC health verified (dcdiag)
-Evidence/AD/dcdiag_output.txt
+Evidence\AD\dcdiag_output.txt
 
 Kerberos functioning
-Evidence/HealthChecks/Kerberos_info.txt
+Evidence\HealthChecks\Kerberos_info.txt
 
 Windows Time service verified
-Evidence/HealthChecks/Windows_Time_Service_info.txt
+Evidence\HealthChecks\Windows_Time_Service_info.txt
 
 Password Reset Successful
 Evidence\AD\RBAC_Reset_Test.txt
@@ -829,54 +741,54 @@ Evidence\AD\RBAC_Reset_Test.txt
 10.3 OU Structure & Governance Model
 
 ControlPlane, ManagementPlane, UserAccessPlane exist
-Evidence/HealthChecks/ou_listing.txt
+Evidence\HealthChecks\ou_listing.txt
 
 Sub-OUs (Users, Groups, Computers, AdminUsers) created
-Evidence/HealthChecks/ou_listing.txt
+Evidence\HealthChecks\ou_listing.txt
 
 10.4 Group Policy Design & Enforcement
 
-User hardening GPO created and backed up 
-Evidence/GPOBackups/
+User hardening GPO created and backed up
+Evidence\GPOBackups\
 
 Computer baseline GPO created and backed up
-Evidence/GPOBackups/
+Evidence\GPOBackups\
 
 Computer GPO applied successfully
-Evidence/HealthChecks/gpresult_computer.txt
+Evidence\HealthChecks\gpresult_computer.txt
 
 User GPO applied successfully
-Evidence/HealthChecks/gpresult_user.txt
+Evidence\HealthChecks\gpresult_user.txt
 
 10.5 DNS & Network Validation
 
 DNS zone information verified
-Evidence/HealthChecks/DNS_Records_info.txt
+Evidence\HealthChecks\DNS_Records_info.txt
 
-Global DNS records verified	
-Evidence/HealthChecks/DNS_Records_Global_info.txt
+Global DNS records verified
+Evidence\HealthChecks\DNS_Records_Global_info.txt
 
 Network configuration verified
-Evidence/Network/*_ipconfig.txt
+Evidence\Network*_ipconfig.txt
 
 10.6 Validation & Testing (Pester)
 
 Tutor baseline tests pass
-Evidence/Pester/PesterResults_20260224_193234.xml
+Evidence\Pester\PesterResults_20260224_193234.xml
 
 Student tests validate OU and RBAC
-Evidence/Pester/Pester_RBAC_Groups.txt
+Evidence\Pester\Pester_RBAC_Groups.txt
 
-Student tests validate OU and RBAC 
-Evidence/Pester/Pester-Detailed-20260224-192037.txt
+Student tests validate OU and RBAC
+Evidence\Pester\Pester-Detailed-20260224-192037.txt
 
 10.7 Provenance & Academic Integrity
 
-AI usage declared 
-Evidence/AI_LOG/AI-Usage.md
+AI usage declared
+Evidence\AI_LOG\AI-Usage.md
 
-Git reflog captured	
-Evidence/Git/Reflog/
+Git reflog captured
+Evidence\Git\Reflog\
 
 This implementation prioritises automation clarity and reproducibility over enterprise-scale resilience.
 
@@ -890,10 +802,9 @@ No multi-site topology or WAN replication scenario is implemented.
 
 Secret management is handled via PSCredential objects; certificate-based MOF encryption is not configured.
 
-These constraints reflect the scope of the lab environment rather than a production deployment model. 
+These constraints reflect the scope of the lab environment rather than a production deployment model.
 
 11. Known Limitations and reflections
-
 11.1 WinRM Push Failure – Client DSC Application
 
 During the build process, DSC was attempting to push the compiled MOF file for the Windows 10 client to the client machine so that it could update automatically through remote execution. However, a transport issue occurred on the client side.
@@ -920,11 +831,7 @@ In an enterprise environment, WinRM over HTTPS with proper certificate configura
 
 During development, it was identified that Windows PowerShell 5.1 runs on the .NET Framework and is the native shell for many Active Directory and DSC resources. This became clear when running Pester tests, where certain error messages indicated that some resources were expected to run under a specific PowerShell context.
 
-When executing AD-related commands such as:
-
-Get-ADUser
-
-inside PowerShell 7 (pwsh), the command was not recognised. However, running the same command inside Windows PowerShell 5.1 (powershell.exe) worked immediately.
+When executing AD-related commands such as Get-ADUser inside PowerShell 7 (pwsh), the command was not recognised. However, running the same command inside Windows PowerShell 5.1 (powershell.exe) worked immediately.
 
 This behaviour occurs because:
 
@@ -971,3 +878,43 @@ The NAT adapter was either deprioritised or prevented from registering in DNS
 This ensured that domain-related queries were resolved internally first. If a query was external, it would then be forwarded appropriately through the NAT DNS server.
 
 In a production environment, DNS resolution would typically be centrally managed via DHCP and controlled network segmentation to avoid interface-priority conflicts.
+
+11.4 Kerberos Authentication
+
+Kerberos is the authentication mechanism used within Active Directory environments to validate user identities. It relies heavily on time-based tickets and therefore is very sensitive to clock drift between the client and the Domain Controller. By default, Kerberos allows a maximum time difference of approximately five minutes between systems. If the client clock is more than five minutes ahead or behind the Domain Controller, authentication will fail.
+
+During the Ubuntu client integration stage of this deployment, authentication attempts initially failed when trying to join the domain. The error message displayed was not very descriptive and suggested that the domain password was incorrect.
+
+Initial troubleshooting focused on verifying common causes such as:
+
+Incorrect domain credentials
+
+Incorrect domain name during the join process
+
+However, further analysis suggested that the issue could be related either to DNS resolution or Kerberos authentication.
+
+DNS functionality was verified first. The command:
+
+nslookup bolton.corp
+
+successfully resolved the domain, confirming that DNS was functioning correctly.
+
+The command:
+
+sudo realm discover bolton.corp
+
+also returned the correct domain and Kerberos realm information, further confirming that DNS and domain discovery were working.
+
+Since DNS was functioning, time synchronisation between the Ubuntu client and the Domain Controller was then checked. Time checks confirmed that the clocks were synchronised and within the Kerberos tolerance window.
+
+This narrowed the issue down to Kerberos not being installed or configured correctly on the Ubuntu client. The Kerberos utilities were not present on the system.
+
+After installing the required Kerberos packages, authentication tools became available. The command:
+
+klist
+
+was used to verify Kerberos ticket functionality and confirm that the authentication infrastructure was operational.
+
+Once Kerberos was installed correctly, the Ubuntu client was able to authenticate successfully against the Active Directory domain.
+
+In a production environment, Kerberos dependencies and required authentication packages would typically be included in a baseline system configuration to avoid this issue during domain integration
