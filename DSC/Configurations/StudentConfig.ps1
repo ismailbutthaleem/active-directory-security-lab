@@ -184,7 +184,7 @@ Configuration StudentBaseline {
         if ($node.Role -eq 'Client') {
         Computer DomainJoin
         {
-            Name       = $node.ComputerName
+            Name       = $node.NodeName
             DomainName = $Node.DomainName
             Credential = $DomainAdminCredential
         }
