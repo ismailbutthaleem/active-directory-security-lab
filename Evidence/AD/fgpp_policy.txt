@@ -1,0 +1,61 @@
+**********************
+PowerShell transcript start
+Start time: 20260305031130
+Username: BOLTON\Administrator
+RunAs User: BOLTON\Administrator
+Configuration Name: 
+Machine: SERVER25-DC-01 (Microsoft Windows NT 10.0.26100.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -WorkingDirectory ~
+Process ID: 6192
+PSVersion: 7.5.4
+PSEdition: Core
+GitCommitId: 7.5.4
+OS: Microsoft Windows 10.0.26100
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Transcript started, output file is .\Evidence\AD\fgpp_policy.txt
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> Get-ADFineGrainedPasswordPolicy -Filter *
+
+AppliesTo                   : {CN=GG-Domain-Admins,OU=Groups,OU=ControlPlane,DC=bolton,DC=corp}
+ComplexityEnabled           : True
+DistinguishedName           : CN=BB-DomainAdmins-PasswordPolicy,CN=Password Settings Container,CN=System,DC=bolton,DC=corp
+LockoutDuration             : 00:30:00
+LockoutObservationWindow    : 00:30:00
+LockoutThreshold            : 5
+MaxPasswordAge              : 30.00:00:00
+MinPasswordAge              : 1.00:00:00
+MinPasswordLength           : 15
+Name                        : BB-DomainAdmins-PasswordPolicy
+ObjectClass                 : msDS-PasswordSettings
+ObjectGUID                  : 7a325195-5b1a-4a29-aed8-83b89d7c4951
+PasswordHistoryCount        : 24
+Precedence                  : 1
+ReversibleEncryptionEnabled : True
+
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> Get-ADUserResultantPasswordPolicy raul.alejandro
+
+AppliesTo                   : {CN=GG-Domain-Admins,OU=Groups,OU=ControlPlane,DC=bolton,DC=corp}
+ComplexityEnabled           : True
+DistinguishedName           : CN=BB-DomainAdmins-PasswordPolicy,CN=Password Settings Container,CN=System,DC=bolton,DC=corp
+LockoutDuration             : 00:30:00
+LockoutObservationWindow    : 00:30:00
+LockoutThreshold            : 5
+MaxPasswordAge              : 30.00:00:00
+MinPasswordAge              : 1.00:00:00
+MinPasswordLength           : 15
+Name                        : BB-DomainAdmins-PasswordPolicy
+ObjectClass                 : msDS-PasswordSettings
+ObjectGUID                  : 7a325195-5b1a-4a29-aed8-83b89d7c4951
+PasswordHistoryCount        : 24
+Precedence                  : 1
+ReversibleEncryptionEnabled : True
+
+PS C:\Users\Administrator\repo\COM5411-BarmBuzz> stop-transcript
+**********************
+PowerShell transcript end
+End time: 20260305031139
+**********************
