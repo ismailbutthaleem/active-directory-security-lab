@@ -191,8 +191,7 @@ Configuration StudentBaseline {
                 Name       = $node.NodeName
                 DomainName = $Node.DomainName
                 Credential = $ClientJoinCredential
-                # If you want OU placement and you trust the string in AllNodes:
-                # JoinOU     = $node.DomainJoinOU
+                JoinOU     = $node.DomainJoinOU
             }
 
             # ---------- Proof-of-life (Client Only) ----------

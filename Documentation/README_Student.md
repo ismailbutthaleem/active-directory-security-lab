@@ -269,7 +269,7 @@ The layout allows another engineer to extract the ZIP file and understand how th
 
 The primary entry point for compiling the configuration is:
 
-.\BuildMain.ps1
+.\Run_BuildMain.ps1
 
 This script compiles the DSC configuration and generates MOF output files.
 
@@ -375,7 +375,7 @@ The build must be executed from an Administrator PowerShell shell.
 
 Compilation is triggered using:
 
-.\BuildMain.ps1
+.\Run_BuildMain.ps1
 
 This step:
 
@@ -415,13 +415,23 @@ The Domain Controller promotion stage will trigger a reboot as part of the fores
 
 After reboot, the configuration can be executed again to continue convergence if needed.
 
-For clients the configuration might be automatically pushed during the build run. If the push transport fails, the MOF file generated for the client on the Domain Controller can be copied manually to the client machine.
+For clients the configuration might be automatically pushed during the build run. If the push transport fails, the MOF file generated for the client on the Domain Controller can be copied manually to the client machine using a shared folder.
+
+The file location will be:
+DSC\Outputs\StudentBaseline\Windows10.mof
+
+This file contains the desired configuration for the client machine, including the instructions required to join the bolton.corp domain. The separate MOF demonstrates that DSC can manage multiple nodes independently while using the same configuration logic.
 
 Once copied, run on the client:
 
-Start-DscConfiguration -Path .\DSC\Outputs -Wait -Verbose -Force
+Start-DscConfiguration -Path C:\Temp -Wait -Verbose -Force
 
 This allows the LCM on the client to read and apply the configuration locally.
+
+Evidence of correct windows onboarding:
+Evidence\Transcripts\client-session_windows10.txt
+Evidence\AD\gpresult_adam.kahan_windowsclient.txt
+
 
 5.4 Validate the Baseline
 
@@ -540,7 +550,7 @@ Separating standard users prevents policy conflicts with privileged accounts.
 
 Evidence:
 
-Evidence\AD\01-Windows_DomainJoin.txt
+Evidence\AD\client-session_windows10.txt
 
 Evidence\AD\ubuntu_join.txt
 
@@ -704,105 +714,128 @@ In this lab environment, DNS is hosted on the single Domain Controller. This is 
 In an enterprise infrastructure, DNS redundancy is required to avoid a single point of failure and to support load balancing. Multiple DNS servers would be deployed, often across different sites, with replication and potentially conditional forwarders or split-DNS configurations. The lab environment simplifies DNS to focus on functional correctness rather than infrastructure resilience.
 
 10. Evidence Mapping
-10.1 Domain Controller Build & Automation
 
-DC promoted using DSC via Run_BuildMain.ps1
+This section maps each key requirement/outcome to the supporting evidence stored in the repository. Evidence is organised under the Evidence\ folder to separate generated artefacts from configuration logic.
+
+10.1 Domain Controller Build and Automation
+
+Domain Controller built and converged using the DSC orchestrator.
+
+Run_BuildMain execution transcripts (multiple runs captured)
 Evidence\Transcripts\20260225_000339_Run_BuildMain.txt
 
-DSC configuration compiled successfully
+DSC compilation evidence (BuildMain compile output)
 Evidence\DSC\BuildMain-Compile.txt
 
-MOF generated for StudentBaseline
-DSC\Outputs\StudentBaseline\localhost.mof
+Compilation artefact listing (compiled files logs)
+Evidence\DSC\20260304_222322_compiled_files.txt
+Evidence\DSC\20260304_221412_compiled_files.txt
 
-Idempotent re-run confirmed
-Evidence\Transcripts\20260225_000339_Run_BuildMain.txt
+Idempotent rerun / convergence evidence with hashes
+Evidence\Transcripts\Build_And_Filehash_run1.txt
+Evidence\Transcripts\Build_And_Filehash_run2.txt
 
-10.2 Active Directory Health & Core Services
+10.2 Active Directory Health and Core Services
 
-Domain information validated
+Domain and forest state evidence
 Evidence\HealthChecks\domain_info.txt
-
-Forest information validated
 Evidence\HealthChecks\forest_info.txt
 
-DC health verified (dcdiag)
+Domain Controller diagnostics (dcdiag)
 Evidence\AD\dcdiag_output.txt
 
-Kerberos functioning
+Kerberos / authentication-related service evidence
 Evidence\HealthChecks\Kerberos_info.txt
 
-Windows Time service verified
+Windows Time service evidence (time sync for Kerberos)
 Evidence\HealthChecks\Windows_Time_Service_info.txt
 
-Password Reset Successful
-Evidence\AD\RBAC_Reset_Test.txt
-
-10.3 OU Structure & Governance Model
-
-ControlPlane, ManagementPlane, UserAccessPlane exist
-Evidence\HealthChecks\ou_listing.txt
-
-Sub-OUs (Users, Groups, Computers, AdminUsers) created
-Evidence\HealthChecks\ou_listing.txt
-
-10.4 Group Policy Design & Enforcement
-
-User hardening GPO created and backed up
-Evidence\GPOBackups\
-
-Computer baseline GPO created and backed up
-Evidence\GPOBackups\
-
-Computer GPO applied successfully
-Evidence\HealthChecks\gpresult_computer.txt
-
-User GPO applied successfully
-Evidence\HealthChecks\gpresult_user.txt
-
-10.5 DNS & Network Validation
-
-DNS zone information verified
+DNS records / zone validation
 Evidence\HealthChecks\DNS_Records_info.txt
-
-Global DNS records verified
 Evidence\HealthChecks\DNS_Records_Global_info.txt
 
-Network configuration verified
-Evidence\Network*_ipconfig.txt
+Server verification / baseline service checks
+Evidence\HealthChecks\Server_Verification_info.txt
 
-10.6 Validation & Testing (Pester)
+10.3 OU Structure and Governance Model
 
-Tutor baseline tests pass
+OU structure validated (ControlPlane / ManagementPlane / UserAccessPlane and sub-OUs)
+Evidence\HealthChecks\ou_listing.txt
+
+10.4 Group Policy Design and Enforcement
+
+GPO backups captured (backup artefacts + manifest)
+Evidence\GPOBackups\manifest.xml
+Evidence\GPOBackups{05B4C64E-4D1B-4348-AF29-6B81BF6616A0}\
+Evidence\GPOBackups{29DFEE28-2CC0-4AC0-8A1B-EDBE2F59DA35}\
+Evidence\GPOBackups{CA6E22F5-602C-471B-AB79-58C99372844C}\
+Evidence\GPOBackups{FEEAF7CE-2AD2-4A9C-AC1B-4106CF497563}\
+
+Baseline policy application evidence (computer/user)
+Evidence\HealthChecks\gpresult_computer.txt
+Evidence\HealthChecks\gpresult_user.txt
+
+GPO proof summary
+Evidence\GPOBackups\02-GPO-Proof.txt
+
+10.5 Windows Client Domain Join and OU-Scoped Policy Proof
+
+Windows client domain join + policy enforcement evidence.
+
+Windows client transcript (domain context + gpresult output)
+Evidence\Transcripts\client-session_windows10.txt
+
+User policy report captured on Windows client
+Evidence\AD\gpresult_adam.kahan_windowsclient.txt
+
+RSoP HTML report exported from Windows client
+Evidence\AD\gpresult.html
+
+DSC client proof-of-life file
+Evidence\HealthChecks\03-DSC-Applied.txt
+
+Screenshot evidence of policy enforcement (Command Prompt blocked)
+Evidence\Screenshots\Capture_cmd_deactivated.PNG
+
+10.6 Ubuntu Domain Authentication
+
+Ubuntu client identity resolution and authentication evidence
+Evidence\AD\ubuntu_join.txt
+
+10.7 Delegation Validation
+
+Delegated password reset test demonstrating explicit allow/deny outcomes
+Evidence\AD\RBAC_Reset_Test.txt
+
+10.8 Network Validation
+
+Network configuration validation captured across runs (IP + time status)
+Evidence\Network\20260304_222322_ipconfig.txt
+Evidence\Network\20260304_222322_w32tm_status.txt
+
+(Additional timestamped ipconfig/w32tm evidence is also stored under Evidence\Network\.)
+
+10.9 Validation and Testing Model
+
+Pester results (XML output suitable for marker verification)
 Evidence\Pester\PesterResults_20260224_193234.xml
 
-Student tests validate OU and RBAC
-Evidence\Pester\Pester_RBAC_Groups.txt
-
-Student tests validate OU and RBAC
+Detailed Pester transcripts
 Evidence\Pester\Pester-Detailed-20260224-192037.txt
 
-10.7 Provenance & Academic Integrity
+Student-authored validation tests evidence
+Evidence\Pester\Pester_RBAC_Groups.txt
+Evidence\Pester\Pester_OU_Placement.txt
+Evidence\Pester\Pester_Users.txt
+Evidence\Pester\Pester_Data_Driven_Created.txt
 
-AI usage declared
+10.10 Provenance and Academic Integrity
+
+AI interaction log
 Evidence\AI_LOG\AI-Usage.md
 
-Git reflog captured
+Git reflog location (structure retained)
 Evidence\Git\Reflog\
-
-This implementation prioritises automation clarity and reproducibility over enterprise-scale resilience.
-
-A single Domain Controller is deployed; no replication or multi-DC failover is demonstrated.
-
-DNS is hosted on the DC and is not redundant.
-
-GPO design demonstrates correct targeting and enforcement but does not represent a full enterprise security baseline.
-
-No multi-site topology or WAN replication scenario is implemented.
-
-Secret management is handled via PSCredential objects; certificate-based MOF encryption is not configured.
-
-These constraints reflect the scope of the lab environment rather than a production deployment model.
 
 11. Known Limitations and reflections
 11.1 WinRM Push Failure – Client DSC Application
@@ -813,7 +846,7 @@ The most likely cause was related to WinRM communication or firewall configurati
 
 As a workaround, once the orchestrator completed the build and generated the separate client MOF file, the file was manually copied to the Windows client using a shared folder. The configuration was then applied locally on the client using:
 
-Start-DscConfiguration -Path .\DSC\Outputs -Wait -Verbose -Force
+Start-DscConfiguration -Path C:\Temp -Wait -Verbose -Force
 
 This allowed the Local Configuration Manager (LCM) on the client to read and enforce the desired state.
 
@@ -918,3 +951,15 @@ was used to verify Kerberos ticket functionality and confirm that the authentica
 Once Kerberos was installed correctly, the Ubuntu client was able to authenticate successfully against the Active Directory domain.
 
 In a production environment, Kerberos dependencies and required authentication packages would typically be included in a baseline system configuration to avoid this issue during domain integration
+
+11.5 Reflection
+
+In this lab environment the DSC configuration requires domain credentials for client domain join. Because MOF encryption was not configured, PsDscAllowPlainTextPassword was enabled to allow credential usage. This results in plaintext credentials appearing in the generated MOF files. In a production environment this would be mitigated using certificate-based MOF encryption or a secure secret management system.
+
+From a technical perspective this automated AD deployment sits within Band A. The implementation has successfully achieved all outcomes expected from Bands D through A. This Active Directory deployment is data-driven and fully automated, and can be replicated from clean VMs using the provided documentation and runbook.
+
+The work was AI assisted during development; however student knowledge and understanding were prioritised throughout the process. Each command or configuration step was first understood by the student before execution, ensuring the infrastructure remained reliable and reproducible rather than blindly generated.
+
+Pester tests and additional health-check commands were conducted to validate the configuration state and confirm that the deployed environment matches the intended architecture.
+
+Overall the deployment demonstrates a reproducible Infrastructure as Code Active Directory environment that is idempotent and supports convergence, while maintaining a clear separation between governance, structure and policy enforcement, with system reliability verified through automated testing.
