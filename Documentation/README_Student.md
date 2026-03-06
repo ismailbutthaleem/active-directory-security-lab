@@ -1,6 +1,7 @@
 1. Solution Overview
 
-This solution implements an automated Active Directory forest deployment using Infrastructure as Code (IaC) principles. The environment uses Windows Server 2025 as the Domain Controller and Windows 11 as the development machine. Deployment is fully declarative and driven by DSC v3.
+This solution implements an automated Active Directory forest deployment using Infrastructure as Code (IaC) principles. The environment uses Windows Server 2025 as the Domain Controller and Windows 11 as the development machine.
+Deployment is fully declarative and driven by DSC v3. According to Microsoft, (2025) DSC is a declarative framework engine which allows the user to describe the desired state for the target system for this to enforce it to automatically apply the desired state described.
 
 The current implementation is based on a single-domain forest model, aligned with the business requirements described in the BarmBuzz scenario.
 
@@ -31,6 +32,7 @@ Validated using Pester tests
 Extendable to support a future Derby child domain
 
 2. Architectural Scope and Boundaries
+
 Domain Model
 
 The current architecture implements:
@@ -43,7 +45,7 @@ Single Domain Controller
 
 Single domain security boundary
 
-The solution follows a modular design. Although the baseline is single-domain, the structure allows for extension to a multi-domain forest (for example, adding derby.bolton.corp as a child domain).
+This is intentionally a single-domain baseline. The OU and group design is modular so it can be extended later to a multi-domain forest if needed (for example, adding derby.bolton.corp as a child domain), without rewriting the whole governance model.
 
 Boundary Justification
 
@@ -57,21 +59,21 @@ Focus on identity, policy enforcement, and automation quality
 
 Within this architecture:
 
-The domain acts as the primary security boundary.
+The domain is the primary security boundary.
 
 Organisational Units (OUs) are used for delegation and Group Policy scoping.
 
-Subnets represent network segmentation but do not define security boundaries.
+Subnets represent network segmentation but do not define Active Directory security boundaries.
 
-This separation is intentional and will later be demonstrated through testing and access control validation.
+This matters because the governance model is implemented through OU placement, RBAC groups and scoped delegation, not by treating OUs as security borders.
 
 2.3 OU Scope and Structure
 
-The OU structure follows a role-based governance model aligned with least privilege principles.
+The OU structure follows a role-based governance model aligned with least privilege.
 
 The OUs are divided into logical tiers:
 
-Control Plane – Contains high-privilege administrative groups and accounts. These are isolated from the lower tier levels and should never login with their credentials in such tiers.
+Control Plane – Contains high-privilege administrative groups and accounts. These are isolated from lower tiers and should not be used to log into lower-tier systems.
 
 Management Plane – Contains delegated administrative groups and infrastructure-related objects. Includes administrators and role-based personnel.
 
@@ -87,23 +89,23 @@ bolton.corp
 
 The purpose of this structure is to:
 
-Implement a least privilege approach with the structured tiers and OU separation.
+Implement least privilege through tiering and OU separation
 
-Separate high-risk administrative accounts from standard users.
+Separate high-risk administrative accounts from standard users
 
-Support targeted Group Policy application.
+Support targeted Group Policy application
 
-Enable controlled delegation.
+Enable controlled delegation at the OU scope
 
 OUs are used for management structure and policy targeting, not as security boundaries.
 
 2.4 Delegation Model
 
-Delegation is implemented using role-based security groups rather than assigning permissions directly to individual users.
+Delegation is implemented using role-based security groups rather than assigning permissions directly to individual users as suggested per (Microsoft, 2025)
 
 For example:
 
-An IT-Helpdesk security group exists within the Management Plane. Members of this group are delegated limited administrative control over the User Access Plane OU.
+The GG-IT-Admins security group exists within the Management Plane. Members of this group are delegated limited administrative control over the UserAccessPlane OU.
 
 This delegation allows:
 
@@ -113,7 +115,7 @@ Unlocking user accounts
 
 Reading user object properties
 
-The IT-Helpdesk group does not receive Domain Admin privileges.
+GG-IT-Admins does not receive Domain Admin privileges.
 
 Delegation is applied at the OU scope rather than at the domain root. This prevents excessive privilege inheritance and ensures administrative permissions remain restricted to their intended boundary.
 
@@ -129,9 +131,9 @@ Group-based permission assignment
 
 Separation between administrative and standard accounts
 
-No direct permissions are assigned to user accounts outside of role-based groups.
+According to Microsoft, (2025) AD Role-Based access control is when permissions are granted to security groups rather than individual users, this allows tasks that require administrative privileges to be delegated in a structured and controlled approach instead of granting single users specific permissions.
 
-This structure allows a more flexible and controlled policy application and enforcement by tracking these attributes through group membership instead of individual users.
+This structure supports controlled policy enforcement by tracking access through group membership rather than individual user permissions.
 
 2.6 Default Container Hygiene
 
@@ -140,7 +142,7 @@ The default Active Directory containers:
 CN=Users
 CN=Computers
 
-are not used for governance. These are containers rather than organisational units. Best practice is to move objects from these containers into specific OUs.
+are not used for governance. These are containers rather than organisational units. Objects are expected to be moved into the correct OUs to keep policy and delegation predictable.
 
 This ensures:
 
@@ -156,13 +158,13 @@ Leaving objects in default containers would bypass the governance model and weak
 
 2.7 Security Boundary Clarification
 
-It is important to explicitly state:
+Microsoft, (2025) argues that it is important to explicitly state:
 
 An OU is not a security boundary.
 
 A domain is a security boundary.
 
-Although OUs allow administrative delegation and policy scoping, authentication and trust enforcement occur at the domain level.
+AD allows administrative delegation and policy scoping through OU, however the main security boundary is the domain or forest itself, where authentication and trust occur.
 
 Cross-domain access:
 
@@ -175,43 +177,38 @@ This demonstrates the forest trust relationship without breaking the principle t
 
 This solution implements an idempotent and reproducible environment that can be replicated through automation.
 
+The infrastructure design approach is Infrastructure as Code, this allows the system to be configured declaratively through DSC, version controlled through Git improving scalability and consistency (Berkouwer, 2022).
+The deployment is idempotent, meaning that applying the configuration multiple times would produce the same result without causing unwanted changes, DSC resources would not duplicate. (Microsoft, 2025)
+
 Manual configuration increases the risk of configuration drift and inconsistent environments. DSC reduces this risk by enforcing the desired configuration state defined for the system.
 
-The orchestrator executes the configuration in a logical layered order.
+The orchestrator executes the configuration in a layered order so dependencies are respected:
 
-First, the infrastructure baseline is configured:
+Baseline infrastructure state (server + prerequisites)
 
-Server state
+Networking and DNS configuration
 
-Networking configuration
+AD DS role installation
 
-DNS settings
+Domain Controller promotion
 
-Domain Controller role installation
+Post-promotion directory objects (OUs, users, groups)
 
-Once the baseline state is confirmed, the system proceeds with domain promotion.
+GPO creation, linking and enforcement
 
-If the machine has already been promoted to a Domain Controller, DSC detects that the state already matches the desired configuration and skips that step.
+Client onboarding (Windows + Ubuntu evidence)
 
-After promotion, the configuration continues with Active Directory objects:
+If the machine has already been promoted to a Domain Controller, DSC detects that the state already matches the desired configuration and skips that step. This supports safe reruns and convergence.
 
-OUs
-
-Users
-
-Security groups
-
-Group Policy objects and links
-
-DSC compares the desired configuration with the current system state and only applies changes when differences are detected.
-
-When the configuration is compiled, a MOF artifact is generated. This file contains the instructions required for the system.
+When the configuration is compiled, MOF artefacts are generated. These MOF files describe the target state for each node.
 
 The Local Configuration Manager (LCM) reads the MOF file and enforces the defined state on the system.
 
+MOF files are treated as generated artifacts that can be checked after a compile.
+
 3.2 Data Driven Configuration Model
 
-The data file is used when objects are repetitive, likely to expand, or expected to change properties over time.
+The data file is also used when objects are repetitive, likely to expand, or expected to change properties over time as it is easy to manipulate with a data-driven approach, allowing easier scalability.
 
 Instead of hardcoding these objects directly inside the configuration logic, they are defined inside:
 
@@ -280,6 +277,7 @@ Invoke-Validation
 or directly:
 
 Invoke-Pester -Path .\Tests\Pester\
+
 4.2 DSC Configuration Location
 
 DSC configuration files are located under:
@@ -411,13 +409,14 @@ DNS configuration
 AD DS role installation
 Domain Controller promotion
 
-The Domain Controller promotion stage will trigger a reboot as part of the forest creation process. In the case it does not, restart the machine manually
+The Domain Controller promotion stage will trigger a reboot as part of the forest creation process. In the case it does not, restart the machine manually.
 
 After reboot, the configuration can be executed again to continue convergence if needed.
 
 For clients the configuration might be automatically pushed during the build run. If the push transport fails, the MOF file generated for the client on the Domain Controller can be copied manually to the client machine using a shared folder.
 
 The file location will be:
+
 DSC\Outputs\StudentBaseline\Windows10.mof
 
 This file contains the desired configuration for the client machine, including the instructions required to join the bolton.corp domain. The separate MOF demonstrates that DSC can manage multiple nodes independently while using the same configuration logic.
@@ -431,7 +430,6 @@ This allows the LCM on the client to read and apply the configuration locally.
 Evidence of correct windows onboarding:
 Evidence\Transcripts\client-session_windows10.txt
 Evidence\AD\gpresult_adam.kahan_windowsclient.txt
-
 
 5.4 Validate the Baseline
 
@@ -484,13 +482,9 @@ Pester tests verify that the desired configuration state has been applied correc
 Examples of validation checks include:
 
 OU structure
-
 User and group existence
-
 RBAC relationships
-
 GPO linking
-
 DNS configuration
 
 The validation suite provides clear pass or fail outputs.
@@ -550,8 +544,7 @@ Separating standard users prevents policy conflicts with privileged accounts.
 
 Evidence:
 
-Evidence\AD\client-session_windows10.txt
-
+Evidence\Transcripts\client-session_windows10.txt
 Evidence\AD\ubuntu_join.txt
 
 8.4 BBZ-User-Hardening-Reduce-AttackSurface
@@ -574,7 +567,8 @@ gpresult /r
 
 Evidence:
 
-Evidence\AD\01-Windows_DomainJoin.txt
+Evidence\HealthChecks\gpresult_user.txt
+Evidence\Screenshots\Capture_cmd_deactivated.PNG
 
 8.5 BBZ-Computer-Baseline-Firewall-SMB
 
@@ -594,18 +588,39 @@ Verification:
 
 Evidence\HealthChecks\gpresult_computer.txt
 
+8.6 Fine Grained Password Policy
+
+A fine-grained password policy was implemented targeting the security group GG-Domain-Admins, which resides inside the ControlPlane OU.
+
+Risk:
+
+Non-complex or easy to crack passwords suppose a potential threat inside the ControlPlane, as users inside it have privileged rights that can modify or change the domain. If a password was to be retrieved by a threat actor, they could potentially modify or break the system.
+
+Control:
+
+A stronger password policy must be enforced for domain admin users. This includes increased password complexity and length requirements, as well as forcing administrator accounts to update their passwords after a shorter period of time.
+
+Justification:
+
+Passwords that are longer and more complex are harder to crack or guess. Forcing a password update after a certain period of time acts as a delaying method that, when implemented continuously, ensures credentials remain up to date and reduces the chances of attackers successfully planning a strategy to compromise them.
+
+FGPP should be applied to groups whose compromise would represent a major security risk, such as loss of domain control. These passwords are intentionally more complex and therefore harder to remember, and they also require periodic updates. Applying the same strict policy to normal users, such as a finance user inside the UserAccessPlane, would negatively affect usability and operational efficiency for everyday tasks.
+
+Verification:
+Evidence\AD\fgpp_policy.txt
+
 9. Security Considerations
 9.1 Credentials Hardening
 
-Credential management is not handled directly by DSC in the deployment of this environment. This decision aligns with best security practices, as sensitive data such as passwords should never be stored in plain text within configuration files. Instead, PSCredential objects are used to pass password values during Active Directory setup, but these credentials are not hardcoded anywhere.
+Credential management should not be handled directly by DSC in the deployment of any production environment. This decision aligns with best security practices, as sensitive data such as passwords should never be stored in plain text within configuration files. Instead, PSCredential objects are used to pass password values during Active Directory setup, but these credentials are not hardcoded anywhere, however due to the requirements for this lab no MOF encryption has not been used which caused the client MOF files to include the username and password for domain join in plain text
 
-MOF files are generated artifacts that should not contain or expose any credentials. If exposed, these could allow a threat actor to modify, disrupt, or compromise the system.
+MOF files are generated artifacts that should not contain or expose any credentials in a production environment. If exposed, these could allow a threat actor to modify, disrupt, or compromise the system.
+
+In a production environment, certificate-based MOF encryption and integration with a secure vault (e.g., Azure Key Vault) would be implemented for enhanced security, ensuring credentials are protected at all times.
 
 The Local Configuration Manager (LCM) reads the MOF files and enforces the defined configuration locally. No external sources or credential management systems are used to read or deploy the desired configuration in this lab environment.
 
 Considerations for production-level security:
-
-In a production environment, certificate-based MOF encryption and integration with a secure vault (e.g., Azure Key Vault) would be implemented for enhanced security, ensuring credentials are protected at all times.
 
 9.2 DNS Security and Network Exposure
 
@@ -661,6 +676,10 @@ This ensures access is specific and controlled, keeping the environment secure w
 
 Delegation in an Active Directory infrastructure has to respect least privilege. Users must be granted privileges only to the minimum level required to carry out a specific task.
 
+According to Microsoft, (2025) the Least Privilege principle consists of users only receiving the minimum amount of permissions required for them to perform their role, this helps mitigate attack surface in the AD environment.
+
+Additionally Stallings, (2018) argues that the least privileged model is a fundamental rather than optional security practice in an enterprise environment.
+
 A security group is defined where users inside that group receive delegated privileges. Delegation means a user from one OU can perform specific actions within another OU scope. This works because permissions are assigned to the security group at the OU level, not to the individual user.
 
 In this infrastructure, GG-IT-Admins includes the user ismail.admin, which is delegated control over the UserAccessPlane OU to reset passwords. This allows ismail.admin to reset the password of adam.khan, who resides within that OU.
@@ -705,7 +724,7 @@ WMI filtering for precise targeting
 
 Layered inheritance strategies
 
-In this lab, GPOs are intentionally scoped only to the relevant OUs to demonstrate correct targeting and enforcement. The objective is to prove correct linkage and enforcement, not to implement a full enterprise governance framework.
+In this lab, GPOs are intentionally scoped only to the relevant OUs to demonstrate correct linkage and enforcement. The objective is to prove correct linkage and enforcement, not to implement a full enterprise governance framework.
 
 Trade-Off 3: DNS Architecture
 
@@ -813,7 +832,7 @@ Network configuration validation captured across runs (IP + time status)
 Evidence\Network\20260304_222322_ipconfig.txt
 Evidence\Network\20260304_222322_w32tm_status.txt
 
-(Additional timestamped ipconfig/w32tm evidence is also stored under Evidence\Network\.)
+(Additional timestamped ipconfig/w32tm evidence is also stored under Evidence\Network.)
 
 10.9 Validation and Testing Model
 
@@ -950,11 +969,13 @@ was used to verify Kerberos ticket functionality and confirm that the authentica
 
 Once Kerberos was installed correctly, the Ubuntu client was able to authenticate successfully against the Active Directory domain.
 
-In a production environment, Kerberos dependencies and required authentication packages would typically be included in a baseline system configuration to avoid this issue during domain integration
+In a production environment, Kerberos dependencies and required authentication packages would typically be included in a baseline system configuration to avoid this issue during domain integration.
 
-11.5 Reflection
+11.5 MOF Encryption
 
-In this lab environment the DSC configuration requires domain credentials for client domain join. Because MOF encryption was not configured, PsDscAllowPlainTextPassword was enabled to allow credential usage. This results in plaintext credentials appearing in the generated MOF files. In a production environment this would be mitigated using certificate-based MOF encryption or a secure secret management system.
+For simplicity and demostration purposes this lab deployement does not include MOF encryption which leaves credentials exposed to threat actors, this is not a good security practice and shoud be pointed out. In a production environment encryption would have been enabled to avoid potential threats, however the AD environment does not include harcoded passwords for the users belonging to the environment, as these are passed directly in the AD environment rather than hardcoded in configuration files.
+
+11.6 Reflection
 
 From a technical perspective this automated AD deployment sits within Band A. The implementation has successfully achieved all outcomes expected from Bands D through A. This Active Directory deployment is data-driven and fully automated, and can be replicated from clean VMs using the provided documentation and runbook.
 
@@ -963,3 +984,24 @@ The work was AI assisted during development; however student knowledge and under
 Pester tests and additional health-check commands were conducted to validate the configuration state and confirm that the deployed environment matches the intended architecture.
 
 Overall the deployment demonstrates a reproducible Infrastructure as Code Active Directory environment that is idempotent and supports convergence, while maintaining a clear separation between governance, structure and policy enforcement, with system reliability verified through automated testing.
+
+12. References
+
+Microsoft (2025) Desired State Configuration overview. Available at: https://learn.microsoft.com/en-us/powershell/dsc/overview
+ (Accessed: 6 March 2026).
+
+Microsoft (2025) Desired State Configuration resources and idempotent operations. Available at: https://learn.microsoft.com/en-us/powershell/dsc/concepts/resources/overview
+ (Accessed: 6 March 2026).
+
+Microsoft (2025) Implementing least-privilege administrative models in Active Directory. Available at: https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/implementing-least-privilege-administrative-models
+ (Accessed: 6 March 2026).
+
+Microsoft (2025) Reducing the Active Directory attack surface. Available at: https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/reducing-the-active-directory-attack-surface
+ (Accessed: 6 March 2026).
+
+Sander Berkouwer (2022) Active Directory Administration Cookbook. Birmingham: Packt Publishing.
+
+Stallings, W. (2018) Effective Cybersecurity: A Guide to Using Best Practices and Standards. Boston: Pearson.
+
+National Cyber Security Centre (2023) Practitioner guidance for securing Microsoft Active Directory services. Available at: https://www.cyber.gc.ca/en/guidance/practitioner-guidance-securing-microsoft-active-directory-services-your-organization-itsp60100
+ (Accessed: 23rd February 2026).
