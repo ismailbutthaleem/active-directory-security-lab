@@ -459,6 +459,30 @@ Expected outcome:
 
 All tests should pass. A failing test indicates either a configuration drift, missing object, incorrect OU path, or module dependency issue.
 
+Summary (Simple Runbook After all conditions above have been met)
+
+1. Clone the repository
+
+git clone <repo-url>
+
+2. Open an Administrator PowerShell session on the Domain Controller VM.
+
+3. Navigate to the repository root.
+
+cd COM5411-BarmBuzz
+
+4. Run the orchestrator.
+
+.\Run_BuildMain.ps1
+
+5. Validate the environment.
+
+Invoke-Validation
+
+Expected outcome:
+The Domain Controller is promoted, OUs and RBAC objects are created, policies are applied and validation tests pass.
+
+
 6. Idempotence and Re-Run Behaviour
 
 Idempotence means the build can be executed multiple times without creating duplicate objects or breaking the environment.
