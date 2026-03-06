@@ -762,6 +762,7 @@ Evidence\HealthChecks\forest_info.txt
 
 Domain Controller diagnostics (dcdiag)
 Evidence\AD\dcdiag_output.txt
+Evidence\AD\dcdiag_dns_health.txt
 
 Kerberos / authentication-related service evidence
 Evidence\HealthChecks\Kerberos_info.txt
@@ -796,6 +797,10 @@ Evidence\HealthChecks\gpresult_user.txt
 
 GPO proof summary
 Evidence\GPOBackups\02-GPO-Proof.txt
+
+FGPP Application
+Evidence\AD\fgpp_policy.txt
+
 
 10.5 Windows Client Domain Join and OU-Scoped Policy Proof
 
