@@ -1,0 +1,157 @@
+244c975 HEAD@{0}: commit: fine grained password policy verification that is working
+9229b67 HEAD@{1}: commit: dcdiag for dns
+c52fd84 HEAD@{2}: commit: proof of windows client integration
+abcc319 HEAD@{3}: pull --rebase origin main (finish): returning to refs/heads/main
+abcc319 HEAD@{4}: pull --rebase origin main (pick): mof file fixed to be ran on clients and autojoin themm to the domain
+9489228 HEAD@{5}: pull --rebase origin main (start): checkout 948922809ad835c3f490b403152508d09b72ac77
+e637f79 HEAD@{6}: commit: mof file fixed to be ran on clients and autojoin themm to the domain
+db87689 HEAD@{7}: pull: Fast-forward
+b53d490 HEAD@{8}: pull: Fast-forward
+d23e9ce HEAD@{9}: pull: Fast-forward
+4da3ebd HEAD@{10}: pull: Fast-forward
+e80a50a HEAD@{11}: pull: Fast-forward
+ffec827 HEAD@{12}: pull: Fast-forward
+e160892 HEAD@{13}: pull: Fast-forward
+b2536a5 HEAD@{14}: pull: Fast-forward
+1cf82fe HEAD@{15}: commit: evidence filehash stays same after second run and second run does not break Evidence/Transcripts/Build_And_Filehash_run2.txt
+27c3d0a HEAD@{16}: reset: moving to HEAD
+27c3d0a HEAD@{17}: commit: pester tests specific for powershell 7 failed as invoke-validation was ran from powershell 5 but the rest passed
+731989f HEAD@{18}: pull: Fast-forward
+493aa2f HEAD@{19}: commit: Windows MOF file was eexecuted loocally successfully from the Windows10 machine as server was having remote update conflict with the Windows 10 host
+cb0387e HEAD@{20}: commit: joined a ubuntu client to the AD environment
+39ef8e2 HEAD@{21}: commit: joined a client and generated a mof file for it, created different files to prove GPO governance and mof file working on client
+1c82925 HEAD@{22}: commit: joined a client and generated a mof file for it
+a4dcbef HEAD@{23}: pull: Fast-forward
+4049b50 HEAD@{24}: pull: Fast-forward
+07c13e7 HEAD@{25}: pull: Fast-forward
+48cf98e HEAD@{26}: pull: Fast-forward
+6dbcde7 HEAD@{27}: pull: Fast-forward
+56c3b65 HEAD@{28}: pull: Fast-forward
+ee5ce7e HEAD@{29}: pull: Fast-forward
+40d0c17 HEAD@{30}: pull: Fast-forward
+81fc3dd HEAD@{31}: commit: created a new user and security group from a data driven approach, linked the user with the appropiate security group
+b7be656 HEAD@{32}: pull: Fast-forward
+395de07 HEAD@{33}: commit: a new account has been set for the controlpanel ou
+468ac45 HEAD@{34}: pull: Fast-forward
+2ffb8a3 HEAD@{35}: pull: Fast-forward
+486581e HEAD@{36}: pull: Fast-forward
+4bdec55 HEAD@{37}: pull: Fast-forward
+7daed0a HEAD@{38}: commit: idempotence proof, build was ran twice no changes made as build passes the first time, pester extended to validate correct membership linked to the correct OU
+9788462 HEAD@{39}: commit: idempotence proof, build was ran twice no changes made as build passes the first time, pester extended to validate correct membership linked to the correct OU
+356a578 HEAD@{40}: pull: Fast-forward
+db09891 HEAD@{41}: pull: Fast-forward
+6344717 HEAD@{42}: pull: Fast-forward
+aa3348b HEAD@{43}: pull: Fast-forward
+8a0890d HEAD@{44}: commit: Orchestrator, no changes transcript
+b4b918a HEAD@{45}: commit: all test pass after correct GPO linking
+1a57dea HEAD@{46}: commit: all test pass after correct GPO linking
+0d24638 HEAD@{47}: commit: build run successful after adding OU's, Users, Security Groups and GPO linkeed to the correct OU's
+58efb48 HEAD@{48}: commit: m
+6205a2b HEAD@{49}: commit: baseline
+7a6dabe HEAD@{50}: pull: Fast-forward
+ae13f53 HEAD@{51}: commit: detailed pester output validating Band D state requieremnts
+ce10897 HEAD@{52}: pull: Fast-forward
+8690a7f HEAD@{53}: pull: Fast-forward
+8989843 HEAD@{54}: pull: Fast-forward
+3fe0cdb HEAD@{55}: pull: Fast-forward
+7938746 HEAD@{56}: pull: Fast-forward
+ed86431 HEAD@{57}: pull: Fast-forward
+61bb1ec HEAD@{58}: commit: GPO-BACKUP
+4dbec61 HEAD@{59}: pull --rebase origin main (finish): returning to refs/heads/main
+4dbec61 HEAD@{60}: pull --rebase origin main (pick): users have been successfully enabled into the system
+1b01da8 HEAD@{61}: pull --rebase origin main (start): checkout 1b01da8b30f7197f14aba9f631908e74b5f34984
+8e2785a HEAD@{62}: commit: users have been successfully enabled into the system
+5a48320 HEAD@{63}: pull: Fast-forward
+36b30f6 HEAD@{64}: commit: AD health check status
+3aa3e4e HEAD@{65}: commit: pester validated existance of OU,Groups aND Users
+bd894be HEAD@{66}: pull: Fast-forward
+6ed6a08 HEAD@{67}: pull: Fast-forward
+972d4bb HEAD@{68}: pull: Fast-forward
+64df173 HEAD@{69}: pull: Fast-forward
+fd20cf5 HEAD@{70}: pull: Fast-forward
+1983a0e HEAD@{71}: pull: Fast-forward
+3bc8e68 HEAD@{72}: pull: Fast-forward
+5f6661a HEAD@{73}: commit: fixing the issue
+f3077f2 HEAD@{74}: pull: Fast-forward
+357fba3 HEAD@{75}: pull: Fast-forward
+0f52dbe HEAD@{76}: pull --rebase origin main (finish): returning to refs/heads/main
+0f52dbe HEAD@{77}: pull --rebase origin main (pick): pester validating existence of OU's and security groups declared in the configuration so far
+18f2974 HEAD@{78}: pull --rebase origin main (start): checkout 18f2974324478a2ab59a45aadfbd9b95e3ecca7e
+d07cb0a HEAD@{79}: commit: pester validating existence of OU's and security groups declared in the configuration so far
+5920c07 HEAD@{80}: commit: pester validating existence of OU's and security groups declared in the configuration so far
+ab29068 HEAD@{81}: pull: Fast-forward
+ab982d3 HEAD@{82}: pull: Fast-forward
+bcc2336 HEAD@{83}: commit: forgot to add the OU Groups under the configuration so the pester could not see the object therefore said that its null, thsi proves pester works as intended as well. After adding the enfrcement pester passed
+ddf3201 HEAD@{84}: pull: Fast-forward
+fa334cf HEAD@{85}: pull: Fast-forward
+0f06d2f HEAD@{86}: pull: Fast-forward
+22bbd66 HEAD@{87}: commit: Added child OU inside parents OU for logical separation and policy scoping. Groups was added into tier 2 UserAccessPlane and AdminUsers was added to tier 1 ManagmentPlane
+74652db HEAD@{88}: pull: Fast-forward
+c23cf8c HEAD@{89}: commit: Added child OU inside parents OU for logical separation and policy scoping. Groups was added into tier 3 UserAccessPlane and AdminUsers was added to ManagmentPlane
+509ac17 HEAD@{90}: pull: Fast-forward
+badba88 HEAD@{91}: pull: Fast-forward
+c60416d HEAD@{92}: commit: first OU creation evidence with pester validation
+37b5053 HEAD@{93}: pull: Fast-forward
+d26db69 HEAD@{94}: pull: Fast-forward
+9381cdc HEAD@{95}: pull: Fast-forward
+ff2c19f HEAD@{96}: pull: Fast-forward
+1b0472c HEAD@{97}: pull: Fast-forward
+043b0e9 HEAD@{98}: commit: first OU creation evidence
+48b2c81 HEAD@{99}: commit: first organizational units added to the infrastructure, had a minor setback as allnodes value 'Role' did not match the enforcement made in the configuration file, that was also corrected
+8f9740b HEAD@{100}: pull: Fast-forward
+cca52dd HEAD@{101}: pull: Fast-forward
+d00e463 HEAD@{102}: commit: Baseline run after DC Promotion with up to date orchestrator
+00d71ce HEAD@{103}: pull: Fast-forward
+2b0c38e HEAD@{104}: commit: Health checks for DC conducted, SRV Records, DNS Records, Kerberos ticket, Domain verification, Forest Verification, Windows Time Service,
+4595a49 HEAD@{105}: commit: Installed and pinned ActiveDirectoryDsc 6.6.0, Installed NetworkingDsc 9.1.0 in canonical module path, Configured static internal IP and DNS, Disabled NAT DNS registration, Implemented ADDomain CreateForest resource, Achieved successful DC promotion and reboot and Pester baseline passing (87 passed, 0 failed)
+92f08c4 HEAD@{106}: pull: Fast-forward
+ad3ebd6 HEAD@{107}: pull: Fast-forward
+b4b076c HEAD@{108}: pull: Fast-forward
+5794d97 HEAD@{109}: pull: Fast-forward
+f1684ff HEAD@{110}: commit: configuration files contained a duplicate NIC. This could have caused issues, it was removed
+aeef9e5 HEAD@{111}: pull: Fast-forward
+02a12b2 HEAD@{112}: pull: Fast-forward
+0808576 HEAD@{113}: commit: baseline health run
+54040be HEAD@{114}: commit: pre-dc promotion health checks, only issue remaining is ADDS_Promotion
+78fb0fa HEAD@{115}: commit: baseline enforced no environment errors
+1f2faf0 HEAD@{116}: commit: activedirectorydsc now installed in powershell 5
+c19b165 HEAD@{117}: commit: activedirectorydsc now installed in powershell 5
+20a2084 HEAD@{118}: commit: troubleshooting various compiling errors with the networkingdsc module
+af19e4f HEAD@{119}: pull: Fast-forward
+6bd8725 HEAD@{120}: pull: Fast-forward
+8f622e3 HEAD@{121}: commit: DomainNetBIOSName is missing, cause of the error
+8802ef6 HEAD@{122}: pull: Fast-forward
+164c33a HEAD@{123}: commit: DomainNetBIOSName is missing, cause of the error
+3068ca5 HEAD@{124}: commit: baseline run to enforce and test AD DS
+f6c89f1 HEAD@{125}: pull: Fast-forward
+24ed356 HEAD@{126}: commit: still having AD DS issues
+e50b61c HEAD@{127}: commit: harness test and baseline run commit
+693adc6 HEAD@{128}: pull: Fast-forward
+cd158ea HEAD@{129}: commit: reading the problem in question AD DS promotion
+a710f09 HEAD@{130}: commit: validation test part 2, still need to implement AD DS services, pre-dc readiness issue (dual nic) was resolved
+d9683a3 HEAD@{131}: commit: changes to enforce dual nic and computername
+4975279 HEAD@{132}: pull: Fast-forward
+6f3b1c2 HEAD@{133}: pull: Fast-forward
+5d296c8 HEAD@{134}: pull: Fast-forward
+461d487 HEAD@{135}: commit: Build 20260220_162407 - idempotence verified
+df89137 HEAD@{136}: pull: Fast-forward
+569cee1 HEAD@{137}: pull: Fast-forward
+0bc2471 HEAD@{138}: pull: Fast-forward
+da3403b HEAD@{139}: pull: Fast-forward
+049451d HEAD@{140}: pull: Fast-forward
+4aa2f7d HEAD@{141}: commit: baseline run 2: idempotence proof
+2a32338 HEAD@{142}: commit: baseline run 1: initial convergence
+233b3a4 HEAD@{143}: pull: Fast-forward
+5426f1c HEAD@{144}: commit: Wk2S1 evidence baseline run compiled outputs and transcript run 2
+d81ed69 HEAD@{145}: commit: Wk2S1 evidence baseline run compiled outputs and transcript
+705f964 HEAD@{146}: pull: Fast-forward
+75b6434 HEAD@{147}: pull: Fast-forward
+fc454f3 HEAD@{148}: pull: Fast-forward
+11ffb2b HEAD@{149}: pull: Fast-forward
+1e7049e HEAD@{150}: pull: Fast-forward
+a6a88fe HEAD@{151}: pull: Fast-forward
+3ea79a7 HEAD@{152}: pull: Fast-forward
+2c7e56a HEAD@{153}: checkout: moving from main to main
+2c7e56a HEAD@{154}: pull: Fast-forward
+b9078b0 HEAD@{155}: commit: baseline executed on server
+d65e4a6 HEAD@{156}: clone: from https://github.com/ismailbutthaleem/COM5411-BarmBuzz.git
