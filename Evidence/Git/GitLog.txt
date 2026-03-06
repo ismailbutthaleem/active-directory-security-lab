@@ -1,0 +1,170 @@
+* 2a87d4c (HEAD -> main, origin/main, origin/HEAD)  added gitlog for server
+* 5cb5eb6 updated documentation
+* 5ea11bf updated documentation
+* b90181b updated documentation
+* 1808ae9 updated AI Log, and documentation
+* 244c975 fine grained password policy verification that is working
+* 9229b67 dcdiag for dns
+* c52fd84 proof of windows client integration
+* abcc319  mof file fixed to be ran on clients and autojoin themm to the domain
+* 9489228 deleted old manual dsc windows 10 join
+* db87689 updated studentconfig and had to modify the orchestrator to force buildmain to ask for a username and password for clients in order to tun the of ON CLIENTS SUCCCESSFULLY
+* b53d490 updated studentconfig and had to modify the orchestrator to force buildmain to ask for a username and password for clients in order to tun the of ON CLIENTS SUCCCESSFULLY
+* 73a89d8 updated studentconfig and had to modify the orchestrator to force buildmain to ask for a username and password for clients in order to tun the of ON CLIENTS SUCCCESSFULLY
+* d23e9ce updated studentconfig and had to modify the orchestrator to force buildmain to ask for a username and password for clients in order to tun the of ON CLIENTS SUCCCESSFULLY
+* 4da3ebd updated windows10 configuration for automated join
+* e80a50a updated windows10 configuration for automated join
+* ffec827 updated windows10 configuration for automated join
+* e160892 updated windows10 configuration for automated join
+* b2536a5 updated windows10 configuration for automated join
+* f41d86b updated documentation
+* 0afbe8c updated documentation
+* 1cf82fe  evidence filehash stays same after second run and second run does not break  Evidence/Transcripts/Build_And_Filehash_run2.txt
+* 27c3d0a  pester tests specific for powershell 7 failed as invoke-validation was ran from powershell 5 but the rest passed
+* 731989f moved evidences into correct folders
+* 493aa2f  Windows MOF file was eexecuted loocally successfully from the Windows10 machine as server was having remote update conflict with the Windows 10 host
+* cb0387e  joined a ubuntu client to the AD environment
+* 39ef8e2 joined a client and generated a mof file for it, created different files to prove GPO governance and mof file working on client
+* 1c82925 joined a client and generated a mof file for it
+* a4dcbef aupdated documentation, added client domainjoin lines in the dsc
+* 4049b50 aupdated documentation, added client domainjoin lines in the dsc
+* 07c13e7 aupdated documentation, added client domainjoin lines in the dsc
+* 48cf98e aupdated documentation, added client domainjoin lines in the dsc
+* 6dbcde7 aupdated documentation, added client domainjoin lines in the dsc
+* 56c3b65 aupdated documentation, added client domainjoin lines in the dsc
+* ee5ce7e aupdated documentation, added client domainjoin lines in the dsc
+* 40d0c17 proof: password resets work as intended GG-IT-Admins can reset passwords inside AccessPlane OU but are not allowed to reset on any other OU
+* 81fc3dd created a new user and security group from a data driven approach, linked the user with the appropiate security group
+* b7be656 pester extended to include controlpanelOU, sub OU and a new user
+* 395de07  a new account has been set for the controlpanel ou
+* 468ac45 enabled rauw.alejandro in the dsc, it had to be disabled before to allow the creation of the account without AD restrictions, it has been re-enabled now to match the state of the DC which is enabled
+* 2ffb8a3 fixed the configuration file: added a dependency on the users for groups creation this allows LCM to create users first then add them into groups
+* 486581e added a domain admin user, linked it to the correct OU and Security Group
+* 4bdec55 added a domain admin user, linked it to the correct OU and Security Group
+* 7daed0a idempotence proof, build was ran twice no changes made as build passes the first time, pester extended to validate correct membership linked to the correct OU
+* 9788462 idempotence proof, build was ran twice no changes made as build passes the first time, pester extended to validate correct membership linked to the correct OU
+* 356a578  fixed config file so memberships are applied as compiler complained that the dsc parameter could not be found so another resource has been used instead
+* db09891  fixed config file so memberships are applied
+* 6344717 pester extended to verify correct memberships of users with security groups
+* aa3348b configuration and data file have been updated so OU, Users and Security groups are data driven and not hardcoded into tthe configuration file, a loop has been used inside the configuration file, this allows easier scalability
+* 4531fbd  runbook has been updated from week 1 to 3, documentation has been updated after DC promotion and building a solid AD starter baseline
+* 46f8e18  runbook has been updated from week 1 to 3, documentation has been updated after DC promotion and building a solid AD starter baseline
+* 8a0890d  Orchestrator, no changes transcript
+* b4b918a  all test pass after correct GPO linking
+* 1a57dea  all test pass after correct GPO linking
+* 0d24638  build run successful after adding OU's, Users, Security Groups and GPO linkeed to the correct OU's
+* 58efb48 m
+* 6205a2b  baseline
+* 7a6dabe used loopback address on internal nic
+* ae13f53 detailed pester output validating Band D state requieremnts
+* ce10897 updated pester to detect gpo links
+* 8690a7f updated pester to detect gpo links
+* 8989843 updated pester to detect gpo links
+* 3fe0cdb updated pester to detect gpo links
+* 7938746 updated pester to detect gpo links
+* ed86431 updated pester to prove gpo existance
+* e82e6ab proved successful GPO application in the Users OU by enabling the user adam.khan into the domain and then running gpresult
+* 61bb1ec GPO-BACKUP
+* 4dbec61  users have been successfully enabled into the system
+* 1b01da8 edited the config file on an attempt to enable users login and proved successful GPO application in the Computers OU by adding the Dev machine and then running gpresult
+* 5a48320 fixed dns issues on DC by changing the DNS address from loopback to the server own static address, this allows resolution, stability and correct port forwarding, also added Computers OU missing from the studentconfig
+* 36b30f6  AD health check status
+* 3aa3e4e pester validated existance of OU,Groups aND Users
+* bd894be add users diabled password so compiler does not crash
+* 6ed6a08 pester extension
+* 972d4bb pester extension
+* 64df173 disabled passwords enforcement to debug, complier will keep complaining about password complexity
+* fd20cf5 disabled passwords enforcement to debug, complier will keep complaining about password complexity
+* 1983a0e updated configfile to fix buildmain compiling issues
+* df7818a updated configfile to fix buildmain compiling issues
+* 3bc8e68 updated configfile to fix buildmain compiling issues
+* 5f6661a fixing the issue
+* f3077f2 updated configfile
+* 357fba3 Add tiered AD users and RBAC membership
+* 1b85376 ignore this pesters as content is empty out-file was used did not print any content so started using tee-object instead
+* 0f52dbe  pester validating existence of OU's and security groups declared in the configuration so far
+* 18f2974 moved pester evidence into correct folder
+* d292497 ignore this pesters as content is empty out-file was used did not print any content so started using tee-object instead
+* 5920c07  pester validating existence of OU's and security groups declared in the configuration so far
+* ab29068 added the correct name that matches student config for it_admins
+* ab982d3 Add Tier 1 and Tier 2 RBAC security groups with Pester tests
+* bcc2336 forgot to add the OU Groups under the configuration so the pester could not see the object therefore said that its null, thsi proves pester works as intended as well. After adding the enfrcement pester passed
+* ddf3201 realised did not add the OU in the configuration file so that is the reason behind the pester fails
+* fa334cf added a group ou under magamentplane missed a '
+* 0f06d2f added a group ou under magamentplane
+* 22bbd66 Added child OU inside parents OU for logical separation and policy scoping. Groups was added into tier 2 UserAccessPlane and AdminUsers was added to tier 1 ManagmentPlane
+* 74652db extended proof of life pester to validate child OU's existence under parent OU
+* c23cf8c Added child OU inside parents OU for logical separation and policy scoping. Groups was added into tier 3 UserAccessPlane and AdminUsers was added to ManagmentPlane
+* 509ac17 added the AdminUsers OU inside managmentplane tier
+* badba88 added groups ou inside useraccessplane tier
+* 7e518a3 updated ou intent, sketch
+* c60416d first OU creation evidence with pester validation
+* 37b5053 changed the pester so it is queries the dc instead of hard cored values
+* d26db69 changed the pester so it is queries the dc instead of hard cored values
+* 9381cdc comma trailing issue that was making the pesters fail fixed and syntax issue fixed
+* ff2c19f comma trailing issue that was making the pesters fail fixed
+* 1b0472c first student pester: this pester is designed to verify the proof of existence of the OU created, if it scans for the OU existence first within the domain and then the desired name of such OU to be correct
+* 043b0e9 first OU creation evidence
+* 48b2c81 first organizational units added to the infrastructure, had a minor setback as allnodes value 'Role' did not match the enforcement made in the configuration file, that was also corrected
+* 8f9740b RootDC was implemented in the declarative code when the real value in all nodes is Role=DC, this was changed so compiler applies changes
+* cca52dd added first general OU's that divde the rest of the OU's these three OU's added break the hierarchy down intro three levels as documented in the README.md
+* db023b4 updated the documentation for the solution build: overview and architectural structure
+* d00e463 Baseline run after DC Promotion with up to date orchestrator
+* 00d71ce updated the orchestrator with the version up to date
+* 2b0c38e Health checks for DC conducted, SRV Records, DNS Records, Kerberos ticket, Domain verification, Forest Verification, Windows Time Service,
+* 4595a49 Installed and pinned ActiveDirectoryDsc 6.6.0, Installed NetworkingDsc 9.1.0 in canonical module path, Configured static internal IP and DNS, Disabled NAT DNS registration, Implemented ADDomain CreateForest resource, Achieved successful DC promotion and reboot and Pester baseline passing (87 passed, 0 failed)
+* 92f08c4 changed Dns no registration for NAT with another declarative piece of code as compiler was complaining
+* ad3ebd6 changed Dns no registration for NAT with another declarative piece of code as compiler was complaining
+* b4b076c changed Dns no registration for NAT with another declarative piece of code as compiler was complaining
+* 5794d97 baseline readiness for dc implemented
+* f1684ff  configuration files contained a duplicate NIC. This could have caused issues, it was removed
+* aeef9e5 updated student config to match all nodes values
+* 02a12b2 had a duplicate nic inside allnodes, removed the unecessary one
+* 0808576 baseline health run
+* 54040be pre-dc promotion health checks, only issue remaining is ADDS_Promotion
+* 78fb0fa baseline enforced no environment errors
+* 1f2faf0 activedirectorydsc now installed in powershell 5
+* c19b165 activedirectorydsc now installed in powershell 5
+* 20a2084 troubleshooting various compiling errors with the networkingdsc module
+* af19e4f fixed dns module not found with a declarative script
+* 6bd8725 Fix: align AllNodes + networking config with validation model (ADDS promotion readiness + dual-NIC DNS compliance)
+* 8f622e3 DomainNetBIOSName is missing, cause of the error
+* 8802ef6 issue found and resolved missing domainnetbioname
+* 164c33a DomainNetBIOSName is missing, cause of the error
+* 3068ca5 baseline run to enforce and test AD DS
+* f6c89f1 trying to solve AD DS issue
+* 24ed356 still having AD DS issues
+* e50b61c harness test and baseline run commit
+* 693adc6  enforced windows time service, added AD-Domain and RSAT feautures in the configuration file
+* cd158ea  reading the problem in question AD DS promotion
+* a710f09  validation test part 2, still need to implement AD DS services, pre-dc readiness issue (dual nic) was resolved
+* d9683a3 changes to enforce dual nic and computername
+* 4975279 fixed all nodes after running pester which indicated that the host must have a dual nic
+* 6f3b1c2 first pester results
+* 5d296c8 fixed pester, accidentally added stuff to it
+* 461d487 Build 20260220_162407 - idempotence verified
+* df89137 Fixed ipv4 schema to cidr to resolve compiler issues.
+* 569cee1 Fix all nodes and studentconfig for compiler
+* 0bc2471 Fix: changed PrefixLength field to SubnetMask in AllNodes
+* da3403b changed the parameter prefixlength to subnetmask as orchestrator would not recognize it as a valid member therefore would not compile
+* 049451d network baseline enforcement
+* 4aa2f7d baseline run 2: idempotence proof
+* 2a32338 baseline run 1: initial convergence
+* 233b3a4 baseline readiness feauture declaration
+* 5426f1c Wk2S1 evidence baseline run compiled outputs and transcript run 2
+* d81ed69 Wk2S1 evidence baseline run compiled outputs and transcript
+* 705f964 fix: remove param to avoid dsc compile collision
+* 75b6434 before promotion orchestrator
+* fc454f3 WK2S1 baseline enforce computer name and timezone
+* 95aabbd Wk2S1 baseline data AllNodes naming time network features
+* 11ffb2b OUIntentSketch Baseline
+* 1e7049e OUIntentSketch Baseline
+* b6747f0 naming standards baseline
+* 5af11a7 designdecisionmatrix.md
+* a6a88fe allnodes commit
+* 3ea79a7 all commit
+* 2c7e56a first pester test
+* 07e5484 test15
+* b9078b0 baseline executed on server
+* d65e4a6 baseline run
+* 526f485 initial proof of commit

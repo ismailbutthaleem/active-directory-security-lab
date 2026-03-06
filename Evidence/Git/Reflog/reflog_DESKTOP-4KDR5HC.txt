@@ -1,0 +1,194 @@
+5cb5eb6 HEAD@{0}: commit: updated documentation
+5ea11bf HEAD@{1}: commit: updated documentation
+b90181b HEAD@{2}: commit: updated documentation
+1808ae9 HEAD@{3}: commit: updated AI Log, and documentation
+244c975 HEAD@{4}: pull: Fast-forward
+9229b67 HEAD@{5}: pull: Fast-forward
+c52fd84 HEAD@{6}: pull: Fast-forward
+abcc319 HEAD@{7}: pull: Fast-forward
+9489228 HEAD@{8}: commit: deleted old manual dsc windows 10 join
+db87689 HEAD@{9}: commit: updated studentconfig and had to modify the orchestrator to force buildmain to ask for a username and password for clients in order to tun the of ON CLIENTS SUCCCESSFULLY
+b53d490 HEAD@{10}: commit: updated studentconfig and had to modify the orchestrator to force buildmain to ask for a username and password for clients in order to tun the of ON CLIENTS SUCCCESSFULLY
+73a89d8 HEAD@{11}: commit: updated studentconfig and had to modify the orchestrator to force buildmain to ask for a username and password for clients in order to tun the of ON CLIENTS SUCCCESSFULLY
+d23e9ce HEAD@{12}: commit: updated studentconfig and had to modify the orchestrator to force buildmain to ask for a username and password for clients in order to tun the of ON CLIENTS SUCCCESSFULLY
+4da3ebd HEAD@{13}: commit: updated windows10 configuration for automated join
+e80a50a HEAD@{14}: commit: updated windows10 configuration for automated join
+ffec827 HEAD@{15}: commit: updated windows10 configuration for automated join
+e160892 HEAD@{16}: commit: updated windows10 configuration for automated join
+b2536a5 HEAD@{17}: commit: updated windows10 configuration for automated join
+f41d86b HEAD@{18}: commit: updated documentation
+0afbe8c HEAD@{19}: commit: updated documentation
+1cf82fe HEAD@{20}: pull: Fast-forward
+731989f HEAD@{21}: commit: moved evidences into correct folders
+493aa2f HEAD@{22}: pull: Fast-forward
+cb0387e HEAD@{23}: pull: Fast-forward
+39ef8e2 HEAD@{24}: pull: Fast-forward
+a4dcbef HEAD@{25}: commit: aupdated documentation, added client domainjoin lines in the dsc
+4049b50 HEAD@{26}: commit: aupdated documentation, added client domainjoin lines in the dsc
+07c13e7 HEAD@{27}: commit: aupdated documentation, added client domainjoin lines in the dsc
+48cf98e HEAD@{28}: commit: aupdated documentation, added client domainjoin lines in the dsc
+6dbcde7 HEAD@{29}: commit: aupdated documentation, added client domainjoin lines in the dsc
+56c3b65 HEAD@{30}: commit: aupdated documentation, added client domainjoin lines in the dsc
+ee5ce7e HEAD@{31}: commit: aupdated documentation, added client domainjoin lines in the dsc
+40d0c17 HEAD@{32}: commit: proof: password resets work as intended GG-IT-Admins can reset passwords inside AccessPlane OU but are not allowed to reset on any other OU
+81fc3dd HEAD@{33}: pull: Fast-forward
+b7be656 HEAD@{34}: pull --rebase origin main (finish): returning to refs/heads/main
+b7be656 HEAD@{35}: pull --rebase origin main (pick): pester extended to include controlpanelOU, sub OU and a new user
+395de07 HEAD@{36}: pull --rebase origin main (start): checkout 395de077e6c43f64846877cb918e9de54864cfcc
+fc9bd20 HEAD@{37}: commit: pester extended to include controlpanelOU, sub OU and a new user
+468ac45 HEAD@{38}: commit: enabled rauw.alejandro in the dsc, it had to be disabled before to allow the creation of the account without AD restrictions, it has been re-enabled now to match the state of the DC which is enabled
+2ffb8a3 HEAD@{39}: commit: fixed the configuration file: added a dependency on the users for groups creation this allows LCM to create users first then add them into groups
+486581e HEAD@{40}: commit: added a domain admin user, linked it to the correct OU and Security Group
+4bdec55 HEAD@{41}: commit: added a domain admin user, linked it to the correct OU and Security Group
+7daed0a HEAD@{42}: pull: Fast-forward
+9788462 HEAD@{43}: pull: Fast-forward
+356a578 HEAD@{44}: commit: fixed config file so memberships are applied as compiler complained that the dsc parameter could not be found so another resource has been used instead
+db09891 HEAD@{45}: commit: fixed config file so memberships are applied
+6344717 HEAD@{46}: commit: pester extended to verify correct memberships of users with security groups
+aa3348b HEAD@{47}: commit: configuration and data file have been updated so OU, Users and Security groups are data driven and not hardcoded into tthe configuration file, a loop has been used inside the configuration file, this allows easier scalability
+4531fbd HEAD@{48}: commit: runbook has been updated from week 1 to 3, documentation has been updated after DC promotion and building a solid AD starter baseline
+46f8e18 HEAD@{49}: commit: runbook has been updated from week 1 to 3, documentation has been updated after DC promotion and building a solid AD starter baseline
+8a0890d HEAD@{50}: pull: Fast-forward
+b4b918a HEAD@{51}: pull: Fast-forward
+1a57dea HEAD@{52}: reset: moving to origin/main
+b04af02 HEAD@{53}: rebase (abort): returning to refs/heads/main
+1a57dea HEAD@{54}: pull --rebase origin main (start): checkout 1a57dea2f628c42ba0ea12ae2980526ab45af7f0
+b04af02 HEAD@{55}: rebase (abort): returning to refs/heads/main
+1a57dea HEAD@{56}: pull --rebase origin main (start): checkout 1a57dea2f628c42ba0ea12ae2980526ab45af7f0
+b04af02 HEAD@{57}: commit: m
+58efb48 HEAD@{58}: pull --rebase origin main: Fast-forward
+7a6dabe HEAD@{59}: commit: used loopback address on internal nic
+ae13f53 HEAD@{60}: pull --rebase origin main: Fast-forward
+ce10897 HEAD@{61}: commit: updated pester to detect gpo links
+8690a7f HEAD@{62}: commit: updated pester to detect gpo links
+8989843 HEAD@{63}: commit: updated pester to detect gpo links
+3fe0cdb HEAD@{64}: commit: updated pester to detect gpo links
+7938746 HEAD@{65}: commit: updated pester to detect gpo links
+ed86431 HEAD@{66}: pull --rebase origin main (finish): returning to refs/heads/main
+ed86431 HEAD@{67}: pull --rebase origin main (pick): updated pester to prove gpo existance
+e82e6ab HEAD@{68}: pull --rebase origin main (pick): proved successful GPO application in the Users OU by enabling the user adam.khan into the domain and then running gpresult
+61bb1ec HEAD@{69}: pull --rebase origin main (start): checkout 61bb1ece315bc7e4e549522f617ab0b7c00a9370
+7d673ff HEAD@{70}: commit: updated pester to prove gpo existance
+cb34cbb HEAD@{71}: commit: proved successful GPO application in the Users OU by enabling the user adam.khan into the domain and then running gpresult
+1b01da8 HEAD@{72}: commit: edited the config file on an attempt to enable users login and proved successful GPO application in the Computers OU by adding the Dev machine and then running gpresult
+5a48320 HEAD@{73}: commit: fixed dns issues on DC by changing the DNS address from loopback to the server own static address, this allows resolution, stability and correct port forwarding, also added Computers OU missing from the studentconfig
+36b30f6 HEAD@{74}: pull --rebase origin main: Fast-forward
+3aa3e4e HEAD@{75}: pull --rebase origin main: Fast-forward
+bd894be HEAD@{76}: commit: add users diabled password so compiler does not crash
+6ed6a08 HEAD@{77}: commit: pester extension
+972d4bb HEAD@{78}: commit: pester extension
+64df173 HEAD@{79}: commit: disabled passwords enforcement to debug, complier will keep complaining about password complexity
+fd20cf5 HEAD@{80}: commit: disabled passwords enforcement to debug, complier will keep complaining about password complexity
+1983a0e HEAD@{81}: commit: updated configfile to fix buildmain compiling issues
+df7818a HEAD@{82}: commit: updated configfile to fix buildmain compiling issues
+3bc8e68 HEAD@{83}: commit: updated configfile to fix buildmain compiling issues
+5f6661a HEAD@{84}: pull --rebase origin main: Fast-forward
+f3077f2 HEAD@{85}: commit: updated configfile
+357fba3 HEAD@{86}: commit: Add tiered AD users and RBAC membership
+1b85376 HEAD@{87}: pull --rebase origin main (finish): returning to refs/heads/main
+1b85376 HEAD@{88}: pull --rebase origin main (pick): ignore this pesters as content is empty out-file was used did not print any content so started using tee-object instead
+0f52dbe HEAD@{89}: pull --rebase origin main (start): checkout 0f52dbed3798f2830d6bbb344301c7e3863d7ec4
+6d729d1 HEAD@{90}: commit: ignore this pesters as content is empty out-file was used did not print any content so started using tee-object instead
+18f2974 HEAD@{91}: commit: moved pester evidence into correct folder
+d292497 HEAD@{92}: pull --rebase origin main (finish): returning to refs/heads/main
+d292497 HEAD@{93}: pull --rebase origin main (pick): ignore this pesters as content is empty out-file was used did not print any content so started using tee-object instead
+5920c07 HEAD@{94}: pull --rebase origin main (start): checkout 5920c078595ae2fee3665e96896adb5dce480314
+5d7210f HEAD@{95}: commit: ignore this pesters as content is empty out-file was used did not print any content so started using tee-object instead
+ab29068 HEAD@{96}: commit: added the correct name that matches student config for it_admins
+ab982d3 HEAD@{97}: pull --rebase origin main (finish): returning to refs/heads/main
+ab982d3 HEAD@{98}: pull --rebase origin main (pick): Add Tier 1 and Tier 2 RBAC security groups with Pester tests
+bcc2336 HEAD@{99}: pull --rebase origin main (start): checkout bcc2336e609d9c3ebfc94d9026a7d7327fd21e59
+e995943 HEAD@{100}: commit: Add Tier 1 and Tier 2 RBAC security groups with Pester tests
+ddf3201 HEAD@{101}: commit: realised did not add the OU in the configuration file so that is the reason behind the pester fails
+fa334cf HEAD@{102}: commit: added a group ou under magamentplane missed a '
+0f06d2f HEAD@{103}: pull --rebase origin main (finish): returning to refs/heads/main
+0f06d2f HEAD@{104}: pull --rebase origin main (pick): added a group ou under magamentplane
+22bbd66 HEAD@{105}: pull --rebase origin main (start): checkout 22bbd66c14c03236c1922014842e2bb1960ab216
+38d8b90 HEAD@{106}: commit: added a group ou under magamentplane
+74652db HEAD@{107}: pull --rebase origin main (finish): returning to refs/heads/main
+74652db HEAD@{108}: pull --rebase origin main (pick): extended proof of life pester to validate child OU's existence under parent OU
+c23cf8c HEAD@{109}: pull --rebase origin main (start): checkout c23cf8c5f6d04d41b2b1de649f8353d4934af808
+e01aa81 HEAD@{110}: commit: extended proof of life pester to validate child OU's existence under parent OU
+509ac17 HEAD@{111}: commit: added the AdminUsers OU inside managmentplane tier
+badba88 HEAD@{112}: commit: added groups ou inside useraccessplane tier
+7e518a3 HEAD@{113}: pull --rebase origin main (finish): returning to refs/heads/main
+7e518a3 HEAD@{114}: pull --rebase origin main (pick): updated ou intent, sketch
+c60416d HEAD@{115}: pull --rebase origin main (start): checkout c60416d3ae080b86bf7612244074f3bfcc8247dc
+9245334 HEAD@{116}: commit: updated ou intent, sketch
+37b5053 HEAD@{117}: commit: changed the pester so it is queries the dc instead of hard cored values
+d26db69 HEAD@{118}: commit: changed the pester so it is queries the dc instead of hard cored values
+9381cdc HEAD@{119}: commit: comma trailing issue that was making the pesters fail fixed and syntax issue fixed
+ff2c19f HEAD@{120}: commit: comma trailing issue that was making the pesters fail fixed
+1b0472c HEAD@{121}: commit: first student pester: this pester is designed to verify the proof of existence of the OU created, if it scans for the OU existence first within the domain and then the desired name of such OU to be correct
+043b0e9 HEAD@{122}: pull --rebase origin main: Fast-forward
+8f9740b HEAD@{123}: commit: RootDC was implemented in the declarative code when the real value in all nodes is Role=DC, this was changed so compiler applies changes
+cca52dd HEAD@{124}: commit: added first general OU's that divde the rest of the OU's these three OU's added break the hierarchy down intro three levels as documented in the README.md
+db023b4 HEAD@{125}: pull --rebase origin main (finish): returning to refs/heads/main
+db023b4 HEAD@{126}: pull --rebase origin main (pick): updated the documentation for the solution build: overview and architectural structure
+d00e463 HEAD@{127}: pull --rebase origin main (start): checkout d00e463a76edc4a33e8e0d8d3442386873695dc8
+7789201 HEAD@{128}: commit: updated the documentation for the solution build: overview and architectural structure
+00d71ce HEAD@{129}: commit: updated the orchestrator with the version up to date
+2b0c38e HEAD@{130}: pull --rebase origin main: Fast-forward
+92f08c4 HEAD@{131}: commit: changed Dns no registration for NAT with another declarative piece of code as compiler was complaining
+ad3ebd6 HEAD@{132}: commit: changed Dns no registration for NAT with another declarative piece of code as compiler was complaining
+b4b076c HEAD@{133}: commit: changed Dns no registration for NAT with another declarative piece of code as compiler was complaining
+5794d97 HEAD@{134}: pull --rebase origin main (finish): returning to refs/heads/main
+5794d97 HEAD@{135}: pull --rebase origin main (pick): baseline readiness for dc implemented
+f1684ff HEAD@{136}: pull --rebase origin main (start): checkout f1684ffd5440f46dd83890d0e68c9ef8f64d52c4
+9b19118 HEAD@{137}: commit: baseline readiness for dc implemented
+aeef9e5 HEAD@{138}: commit: updated student config to match all nodes values
+02a12b2 HEAD@{139}: pull --rebase origin main (finish): returning to refs/heads/main
+02a12b2 HEAD@{140}: pull --rebase origin main (pick): had a duplicate nic inside allnodes, removed the unecessary one
+0808576 HEAD@{141}: pull --rebase origin main (start): checkout 080857657a0c9fc4e2ec9f5d3c367d4f0ab01cf7
+abf0ab5 HEAD@{142}: commit: had a duplicate nic inside allnodes, removed the unecessary one
+af19e4f HEAD@{143}: commit: fixed dns module not found with a declarative script
+6bd8725 HEAD@{144}: pull --rebase origin main (finish): returning to refs/heads/main
+6bd8725 HEAD@{145}: pull --rebase origin main (pick): Fix: align AllNodes + networking config with validation model (ADDS promotion readiness + dual-NIC DNS compliance)
+8f622e3 HEAD@{146}: pull --rebase origin main (start): checkout 8f622e3d4a2b265d5edb1217e5f88440a8feaca3
+95b45f4 HEAD@{147}: commit: Fix: align AllNodes + networking config with validation model (ADDS promotion readiness + dual-NIC DNS compliance)
+8802ef6 HEAD@{148}: pull --rebase origin main (finish): returning to refs/heads/main
+8802ef6 HEAD@{149}: pull --rebase origin main (pick): issue found and resolved missing domainnetbioname
+164c33a HEAD@{150}: pull --rebase origin main (start): checkout 164c33aabfd0268566dc33d73ab309fccde7302f
+c816167 HEAD@{151}: commit: issue found and resolved missing domainnetbioname
+f6c89f1 HEAD@{152}: pull --rebase origin main (finish): returning to refs/heads/main
+f6c89f1 HEAD@{153}: pull --rebase origin main (pick): trying to solve AD DS issue
+24ed356 HEAD@{154}: pull --rebase origin main (start): checkout 24ed35662854ff0d70ec17ebe3e6e145d6681596
+b028d70 HEAD@{155}: commit: trying to solve AD DS issue
+693adc6 HEAD@{156}: pull --rebase origin main (finish): returning to refs/heads/main
+693adc6 HEAD@{157}: pull --rebase origin main (pick): enforced windows time service, added AD-Domain and RSAT feautures in the configuration file
+cd158ea HEAD@{158}: pull --rebase origin main (start): checkout cd158eac0c7938ebe591c85bf7177ee75bbc680f
+3dfb926 HEAD@{159}: commit: enforced windows time service, added AD-Domain and RSAT feautures in the configuration file
+4975279 HEAD@{160}: commit: fixed all nodes after running pester which indicated that the host must have a dual nic
+6f3b1c2 HEAD@{161}: commit: first pester results
+5d296c8 HEAD@{162}: pull --rebase origin main (finish): returning to refs/heads/main
+5d296c8 HEAD@{163}: pull --rebase origin main (pick): fixed pester, accidentally added stuff to it
+461d487 HEAD@{164}: pull --rebase origin main (start): checkout 461d487078674d54daa381333792b5d99f99a012
+4fbf7bd HEAD@{165}: commit: fixed pester, accidentally added stuff to it
+df89137 HEAD@{166}: commit: Fixed ipv4 schema to cidr to resolve compiler issues.
+569cee1 HEAD@{167}: commit: Fix all nodes and studentconfig for compiler
+0bc2471 HEAD@{168}: commit: Fix: changed PrefixLength field to SubnetMask in AllNodes
+da3403b HEAD@{169}: commit: changed the parameter prefixlength to subnetmask as orchestrator would not recognize it as a valid member therefore would not compile
+049451d HEAD@{170}: pull --rebase origin main (finish): returning to refs/heads/main
+049451d HEAD@{171}: pull --rebase origin main (pick): network baseline enforcement
+4aa2f7d HEAD@{172}: pull --rebase origin main (start): checkout 4aa2f7deccddfa14e6aa87f40da287f05e1dcd9f
+df74ae8 HEAD@{173}: commit: network baseline enforcement
+233b3a4 HEAD@{174}: pull --rebase origin main (finish): returning to refs/heads/main
+233b3a4 HEAD@{175}: pull --rebase origin main (pick): baseline readiness feauture declaration
+5426f1c HEAD@{176}: pull --rebase origin main (start): checkout 5426f1c8632502877457d2e7b50a02f10d143174
+8b7293b HEAD@{177}: commit: baseline readiness feauture declaration
+705f964 HEAD@{178}: commit: fix: remove param to avoid dsc compile collision
+75b6434 HEAD@{179}: commit: before promotion orchestrator
+fc454f3 HEAD@{180}: commit: WK2S1 baseline enforce computer name and timezone
+95aabbd HEAD@{181}: commit: Wk2S1 baseline data AllNodes naming time network features
+11ffb2b HEAD@{182}: commit: OUIntentSketch Baseline
+1e7049e HEAD@{183}: commit: OUIntentSketch Baseline
+b6747f0 HEAD@{184}: commit: naming standards baseline
+5af11a7 HEAD@{185}: commit: designdecisionmatrix.md
+a6a88fe HEAD@{186}: commit: allnodes commit
+3ea79a7 HEAD@{187}: commit: all commit
+2c7e56a HEAD@{188}: commit: first pester test
+07e5484 HEAD@{189}: commit: test15
+b9078b0 HEAD@{190}: pull --tags origin main: Fast-forward
+d65e4a6 HEAD@{191}: commit: baseline run
+526f485 HEAD@{192}: Branch: renamed refs/heads/main to refs/heads/main
+526f485 HEAD@{194}: commit (initial): initial proof of commit
