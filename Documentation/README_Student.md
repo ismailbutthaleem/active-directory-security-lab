@@ -785,10 +785,10 @@ Evidence\HealthChecks\ou_listing.txt
 
 GPO backups captured (backup artefacts + manifest)
 Evidence\GPOBackups\manifest.xml
-Evidence\GPOBackups{05B4C64E-4D1B-4348-AF29-6B81BF6616A0}\
-Evidence\GPOBackups{29DFEE28-2CC0-4AC0-8A1B-EDBE2F59DA35}\
-Evidence\GPOBackups{CA6E22F5-602C-471B-AB79-58C99372844C}\
-Evidence\GPOBackups{FEEAF7CE-2AD2-4A9C-AC1B-4106CF497563}\
+Evidence\GPOBackups\{05B4C64E-4D1B-4348-AF29-6B81BF6616A0}\
+Evidence\GPOBackups\{29DFEE28-2CC0-4AC0-8A1B-EDBE2F59DA35}\
+Evidence\GPOBackups\{CA6E22F5-602C-471B-AB79-58C99372844C}\
+Evidence\GPOBackups\{FEEAF7CE-2AD2-4A9C-AC1B-4106CF497563}\
 
 Baseline policy application evidence (computer/user)
 Evidence\HealthChecks\gpresult_computer.txt
