@@ -9,7 +9,7 @@ Forest Root Domain: bolton.corp
 
 Domain: bolton.corp
 
-The Domain Controller is built entirely through DSC v3. Core Active Directory objects such as OUs, users, groups and GPO links are provisioned automatically by the configuration after the baseline infrastructure has been prepared.
+The Domain Controller is built entirely through DSC v3. Core Active Directory objects such as OUs, users and groups are provisioned automatically by the configuration after the baseline infrastructure has been prepared.
 
 Operating systems involved in the solution:
 
@@ -65,7 +65,7 @@ Organisational Units (OUs) are used for delegation and Group Policy scoping.
 
 Subnets represent network segmentation but do not define Active Directory security boundaries.
 
-This matters because the governance model is implemented through OU placement, RBAC groups and scoped delegation, not by treating OUs as security borders.
+This is important because the governance model is implemented through OU placement, RBAC groups and scoped delegation, not by treating OUs as security borders.
 
 2.3 OU Scope and Structure
 
@@ -633,6 +633,41 @@ FGPP should be applied to groups whose compromise would represent a major securi
 Verification:
 Evidence\AD\fgpp_policy.txt
 
+8.7 GPO Implementation Approach
+
+GPO were not applied via DSC intentionally, this is because According to Morris, (2016) Normally in production environments policy governance is usually handled separately through different operational layers. GPOs are enforced in the AD environment itself using an imperative approach; however DSC is still the primary control plane for the infrastructure layer of the environment, including:
+
+DC Deployment
+
+Networking Configurations
+
+Users, Security Groups and OU Implementation
+
+Windows Client Domain Join
+
+This logical separation allows administrators to easily implement policies throughout the environment using the AD GUI or PowerShell cmdlets, or scripts that run on the Domain Controller. This therefore increases operational manageability and troubleshooting capability Morris, (2016) argues.
+
+Although the GPOs of this environment are not declarative and automated via DSC, they can be reused and implemented easily on a clean Domain Controller with the following scripts:
+
+Scripts\Configure-GPOs.ps1
+Scripts\Configure-FGPP.ps1
+
+Then run:
+
+gpupdate /force
+
+Validate with:
+
+Invoke-Pester Tests\Pester\Student-Pester_ProofOfLife.Tests.ps1
+
+Outcome:
+
+The GPOs should exist and be linked correctly
+
+This mantains DSC as the declarative infrastructure allowing at the same time for policies to be managed by the native Group Policy subsytem inside the DC.
+
+
+
 9. Security Considerations
 9.1 Credentials Hardening
 
@@ -1027,6 +1062,8 @@ Microsoft (2025) Implementing least-privilege administrative models in Active Di
 
 Microsoft (2025) Reducing the Active Directory attack surface. Available at: https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/reducing-the-active-directory-attack-surface
  (Accessed: 6 March 2026).
+
+ Morris, K. (2016) Infrastructure as Code: Managing Servers in the Cloud. 2nd edn. Sebastopol: O’Reilly Media.
 
 Sander Berkouwer (2022) Active Directory Administration Cookbook. Birmingham: Packt Publishing.
 
