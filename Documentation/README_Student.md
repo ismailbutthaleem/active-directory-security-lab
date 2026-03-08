@@ -409,7 +409,19 @@ DNS configuration
 AD DS role installation
 Domain Controller promotion
 
-The Domain Controller promotion stage will trigger a reboot as part of the forest creation process. In the case it does not, restart the machine manually.
+The Domain Controller promotion stage will trigger a reboot as part of the forest creation process. In the case it does not, restart the machine manually, this might be needed twice for AD DS update on the machine.
+
+If an error saying the domain is not available apppears, do:
+
+1- Login with the local admin account
+2- Start-Service Netlogon
+3- Get-Service Netlogon
+
+Expected outcome:
+
+Running
+
+Then restart the system again.
 
 After reboot, the configuration can be executed again to continue convergence if needed.
 
