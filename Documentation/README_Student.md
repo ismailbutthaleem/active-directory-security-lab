@@ -692,21 +692,29 @@ The Local Configuration Manager (LCM) reads the MOF files and enforces the defin
 
 User passwords are configured directly in the Active Directory environment after promotion.
 
-In the AllNodes.psd1 file the user objects are created by DSC with:
+In the AllNodes.psd1 file the user objects are created by DSC with the value:
 
 Enabled = $false
 
-This ensures that the accounts exist in the directory but remain disabled until a valid password is configured. Passwords are intentionally not embedded in the DSC configuration.
+This means the accounts are created in Active Directory but remain disabled until a valid password is configured. Passwords are intentionally not stored inside the DSC configuration.
 
-After the orchestrator has completed and the Domain Controller has been promoted, run the following script on the Domain Controller to set the user passwords and enable the accounts.
+After the orchestrator has completed and the Domain Controller has been promoted, run the following script on the Domain Controller to configure the user passwords and enable the accounts.
 
 Script location:
 
 Scripts\Set-ADPasswords.ps1
 
-This script resets the password for each user account and enables the account once the password has been applied.
+This script sets the passwords for each user and then enables the account after the password has been applied.
 
-This approach ensures that user credentials are not stored inside the DSC configuration while still allowing the accounts created by DSC to be activated in a controlled post-deployment step.
+To avoid conflicts with DSC after the script has been run, set the AllNodes.ps1 users value:
+
+enabled=$false
+
+to:
+
+enabled=$true
+
+This approach allows DSC to provision the user objects while keeping credential configuration outside of the DSC configuration logic.
 
 Considerations for production-level security:
 
