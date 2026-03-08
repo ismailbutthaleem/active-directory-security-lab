@@ -688,9 +688,29 @@ In a production environment, certificate-based MOF encryption and integration wi
 
 The Local Configuration Manager (LCM) reads the MOF files and enforces the defined configuration locally. No external sources or credential management systems are used to read or deploy the desired configuration in this lab environment.
 
+9.2 Users Activation
+
+User passwords are configured directly in the Active Directory environment after promotion.
+
+In the AllNodes.psd1 file the user objects are created by DSC with:
+
+Enabled = $false
+
+This ensures that the accounts exist in the directory but remain disabled until a valid password is configured. Passwords are intentionally not embedded in the DSC configuration.
+
+After the orchestrator has completed and the Domain Controller has been promoted, run the following script on the Domain Controller to set the user passwords and enable the accounts.
+
+Script location:
+
+Scripts\Set-ADPasswords.ps1
+
+This script resets the password for each user account and enables the account once the password has been applied.
+
+This approach ensures that user credentials are not stored inside the DSC configuration while still allowing the accounts created by DSC to be activated in a controlled post-deployment step.
+
 Considerations for production-level security:
 
-9.2 DNS Security and Network Exposure
+9.3 DNS Security and Network Exposure
 
 For the deployment of this environment, two NICs have been configured: NAT and Host-Only.
 
@@ -702,7 +722,7 @@ NAT is disabled for DNS registration to enhance security by isolating the DC fro
 
 This setup ensures that only authorised and trusted machines can join the domain and query DNS, significantly reducing the risk of unauthorised access.
 
-9.3 OU and Delegation Design Intent
+9.4 OU and Delegation Design Intent
 
 The OU structure is split into three sections:
 
@@ -714,7 +734,7 @@ User Access Plane: Covers user endpoints, clients, and service accounts with res
 
 The purpose of this structure is to apply GPOs and delegation logically, ensuring that policies only impact the intended objects. This setup follows the least privilege model, granting only the necessary permissions for each group or OU, preventing unnecessary access or conflicts across different objects.
 
-9.4 RBAC Design
+9.5 RBAC Design
 
 RBAC is implemented based on the least privilege principle. The security groups reflect necessary roles within the organisation, and permissions are assigned to these groups, not individual users.
 
@@ -740,7 +760,7 @@ The group is granted the required permissions at the OU scope.
 
 This ensures access is specific and controlled, keeping the environment secure while enabling required duties without over-privileging users.
 
-9.5 Delegation and Least Privilege Enforcement
+9.6 Delegation and Least Privilege Enforcement
 
 Delegation in an Active Directory infrastructure has to respect least privilege. Users must be granted privileges only to the minimum level required to carry out a specific task.
 
@@ -756,7 +776,7 @@ The only permission granted is the ability to reset passwords within that specif
 
 Delegation must be carefully designed and applied. Granting excessive privileges, or allowing a lower-tier OU to modify objects within a higher-tier OU, would break the governance model and violate least privilege principles. This would weaken the environment and expose it to security risks.
 
-9.6 Delegation Validation (Allow / Deny Outcome)
+9.7 Delegation Validation (Allow / Deny Outcome)
 
 Delegation was tested to confirm that permissions were applied correctly and scoped only to the intended OU.
 
@@ -768,7 +788,7 @@ This behaviour proves that least privilege has been enforced correctly. The Powe
 
 .\Evidence\AD\RBAC_Reset_Test.txt
 
-9.7 Explicit Trade-Offs Made for Lab Realism vs Enterprise Practice
+9.8 Explicit Trade-Offs Made for Lab Realism vs Enterprise Practice
 
 Trade-Off 1: Use of a Single Domain Controller
 
