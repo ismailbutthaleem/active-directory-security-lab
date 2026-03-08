@@ -189,6 +189,7 @@ Switching to Windows PowerShell resolved the issue.
 Module availability was confirmed using:
 
 Get-Module -ListAvailable ActiveDirectory
+
 9. User Account Enablement and Password Complexity Issue
 
 During domain promotion and early validation, an issue occurred where DSC reported that the password did not meet complexity requirements.
@@ -367,3 +368,184 @@ DNS stabilised
 Custom and tutor Pester suites passing
 
 Configuration re-run safe
+
+14. Windows Client Integration
+
+Got it — I’ll continue exactly in your tone: technical, development-log style, not polished like an essay, and not AI sounding. I’ll only finish section 14 and close the runbook, keeping the same structure you used.
+
+14. Windows Client Integration
+
+After the Domain Controller was stable, a Windows client was integrated into the domain through DSC.
+
+The Windows 10 client DNS was redirected so that the primary DNS server pointed to the Domain Controller. This is required because domain join relies on SRV record discovery, which only exists on the internal AD DNS server.
+
+The client node was already defined in the configuration data file under:
+
+DSC\Data\AllNodes.psd1
+
+The node role was defined as:
+
+Role = 'Client'
+
+The DSC configuration logic inside StudentConfig.ps1 contains a separate block that handles client nodes.
+
+This block performs:
+
+Domain join
+
+Placement of the computer object inside the correct OU
+
+Creation of a proof-of-life file to demonstrate that the client applied its own configuration.
+
+During the build process the configuration compiled a separate MOF file for the Windows client.
+
+This file was generated inside:
+
+DSC\Outputs\StudentBaseline\
+
+File generated:
+
+Windows10.mof
+
+This confirms that DSC compiled a separate configuration for the client node.
+
+The intended process was for the Domain Controller to push this configuration to the client automatically through WinRM.
+
+However, the push transport did not complete successfully.
+
+This was most likely caused by:
+
+WinRM configuration on the client
+
+Firewall restrictions
+
+Transport configuration limitations between the machines
+
+Because of this, the configuration was applied manually on the client.
+
+The MOF file was copied to the Windows client machine using a shared folder between the VMs.
+
+On the Windows client, the configuration was applied locally using:
+
+Start-DscConfiguration -Path C:\Temp -Wait -Verbose -Force
+
+This allowed the Local Configuration Manager (LCM) on the client to read and apply the desired state.
+
+After execution, the client successfully joined the bolton.corp domain.
+
+Validation steps included checking:
+
+whoami
+
+which returned:
+
+BOLTON\<username>
+
+confirming the machine was operating within the domain context.
+
+Group Policy application was also verified using:
+
+gpresult /r
+
+and
+
+gpresult /h gpresult.html
+
+These confirmed that the baseline GPOs applied correctly once the client was placed inside the correct OU.
+
+Evidence stored in:
+
+Evidence\Transcripts\client-session_windows10.txt
+Evidence\AD\gpresult_adam.kahan_windowsclient.txt
+Evidence\AD\gpresult.html
+
+A proof-of-life file created by DSC on the client was also verified.
+
+This file confirms that the client node applied its own configuration.
+
+Evidence stored in:
+
+Evidence\HealthChecks\03-DSC-Applied.txt
+
+This stage demonstrated that DSC can manage multiple nodes using a single configuration, where each node receives its own compiled MOF file.
+
+15. Final Validation and System State
+
+After the infrastructure build and client integration were completed, the system was validated using the Pester testing framework.
+
+The tutor validation suite was executed first to confirm that the required environment state matched the assignment specification.
+
+Command executed:
+
+Invoke-Validation
+
+All tutor tests passed successfully.
+
+Additional student tests were also executed to validate specific design decisions implemented in the environment.
+
+These tests verified:
+
+OU placement
+
+RBAC group structure
+
+User creation through data-driven configuration
+
+Delegation behaviour
+
+Command executed:
+
+Invoke-Pester
+
+Both the tutor and student Pester suites returned successful results.
+
+Evidence stored in:
+
+Evidence\Pester\
+16. Final Environment Summary
+
+The final system state after completion of the build was:
+
+Active Directory forest bolton.corp successfully deployed.
+
+Single Domain Controller operational.
+
+OU governance model implemented:
+
+ControlPlane
+
+ManagementPlane
+
+UserAccessPlane
+
+Security groups provisioned for RBAC:
+
+GG-HR-Staff
+
+GG-Finance-Staff
+
+GG-IT-Admins
+
+GG-Server-Admins
+
+GG-Domain-Admins
+
+Users created and placed in the correct OU scopes.
+
+Delegation implemented and validated using RBAC groups.
+
+Fine Grained Password Policy applied to privileged group.
+
+Baseline security GPOs implemented and linked to the appropriate OUs.
+
+Windows client successfully joined to the domain.
+
+Group Policy enforcement validated using gpresult.
+
+DNS resolution stabilised through correct NIC configuration.
+
+Both tutor and student Pester suites passing.
+
+DSC configuration verified as idempotent through multiple re-runs.
+
+All evidence captured and stored inside the repository under the Evidence directory

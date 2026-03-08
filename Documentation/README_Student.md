@@ -1,7 +1,7 @@
 1. Solution Overview
 
 This solution implements an automated Active Directory forest deployment using Infrastructure as Code (IaC) principles. The environment uses Windows Server 2025 as the Domain Controller and Windows 11 as the development machine.
-Deployment is fully declarative and driven by DSC v3. According to Microsoft, (2025) DSC is a declarative framework engine which allows the user to describe the desired state for the target system for this to enforce it to automatically apply the desired state described.
+Deployment is fully declarative and driven by DSC v3. According to Microsoft (2025), DSC is a declarative framework engine which allows the user to describe the desired state for the target system, for this to automatically enforce and apply the desired state described.
 
 The current implementation is based on a single-domain forest model, aligned with the business requirements described in the BarmBuzz scenario.
 
@@ -101,7 +101,7 @@ OUs are used for management structure and policy targeting, not as security boun
 
 2.4 Delegation Model
 
-Delegation is implemented using role-based security groups rather than assigning permissions directly to individual users as suggested per (Microsoft, 2025)
+Delegation is implemented using role-based security groups rather than assigning permissions directly to individual users, as suggested by Microsoft (2025).
 
 For example:
 
@@ -131,7 +131,7 @@ Group-based permission assignment
 
 Separation between administrative and standard accounts
 
-According to Microsoft, (2025) AD Role-Based access control is when permissions are granted to security groups rather than individual users, this allows tasks that require administrative privileges to be delegated in a structured and controlled approach instead of granting single users specific permissions.
+According to Microsoft (2025), AD Role-Based Access Control is when permissions are granted to security groups rather than individual users. This allows tasks that require administrative privileges to be delegated in a structured and controlled approach instead of granting single users specific permissions.
 
 This structure supports controlled policy enforcement by tracking access through group membership rather than individual user permissions.
 
@@ -158,13 +158,13 @@ Leaving objects in default containers would bypass the governance model and weak
 
 2.7 Security Boundary Clarification
 
-Microsoft, (2025) argues that it is important to explicitly state:
+Microsoft (2025) states that it is important to explicitly state:
 
 An OU is not a security boundary.
 
 A domain is a security boundary.
 
-AD allows administrative delegation and policy scoping through OU, however the main security boundary is the domain or forest itself, where authentication and trust occur.
+AD allows administrative delegation and policy scoping through OUs; however, the main security boundary is the domain or forest itself, where authentication and trust occur.
 
 Cross-domain access:
 
@@ -177,8 +177,8 @@ This demonstrates the forest trust relationship without breaking the principle t
 
 This solution implements an idempotent and reproducible environment that can be replicated through automation.
 
-The infrastructure design approach is Infrastructure as Code, this allows the system to be configured declaratively through DSC, version controlled through Git improving scalability and consistency (Berkouwer, 2022).
-The deployment is idempotent, meaning that applying the configuration multiple times would produce the same result without causing unwanted changes, DSC resources would not duplicate. (Microsoft, 2025)
+The infrastructure design approach is Infrastructure as Code. This allows the system to be configured declaratively through DSC, and version controlled through Git, improving scalability and consistency (Berkouwer, 2022).
+The deployment is idempotent, meaning that applying the configuration multiple times would produce the same result without causing unwanted changes, and DSC resources would not duplicate (Microsoft, 2025).
 
 Manual configuration increases the risk of configuration drift and inconsistent environments. DSC reduces this risk by enforcing the desired configuration state defined for the system.
 
@@ -208,7 +208,7 @@ MOF files are treated as generated artifacts that can be checked after a compile
 
 3.2 Data Driven Configuration Model
 
-The data file is also used when objects are repetitive, likely to expand, or expected to change properties over time as it is easy to manipulate with a data-driven approach, allowing easier scalability.
+The data file is also used when objects are repetitive, likely to expand, or expected to change properties over time, as it is easy to manipulate with a data-driven approach, allowing easier scalability.
 
 Instead of hardcoding these objects directly inside the configuration logic, they are defined inside:
 
@@ -461,27 +461,26 @@ All tests should pass. A failing test indicates either a configuration drift, mi
 
 Summary (Simple Runbook After all conditions above have been met)
 
-1. Clone the repository
+Clone the repository
 
 git clone <repo-url>
 
-2. Open an Administrator PowerShell session on the Domain Controller VM.
+Open an Administrator PowerShell session on the Domain Controller VM.
 
-3. Navigate to the repository root.
+Navigate to the repository root.
 
 cd COM5411-BarmBuzz
 
-4. Run the orchestrator.
+Run the orchestrator.
 
 .\Run_BuildMain.ps1
 
-5. Validate the environment.
+Validate the environment.
 
 Invoke-Validation
 
 Expected outcome:
 The Domain Controller is promoted, OUs and RBAC objects are created, policies are applied and validation tests pass.
-
 
 6. Idempotence and Re-Run Behaviour
 
@@ -635,17 +634,17 @@ Evidence\AD\fgpp_policy.txt
 
 8.7 GPO Implementation Approach
 
-GPO were not applied via DSC intentionally, this is because According to Morris, (2016) Normally in production environments policy governance is usually handled separately through different operational layers. GPOs are enforced in the AD environment itself using an imperative approach; however DSC is still the primary control plane for the infrastructure layer of the environment, including:
+GPOs were not applied via DSC intentionally. According to Morris (2016), in production environments policy governance is usually handled separately through different operational layers. GPOs are enforced in the AD environment itself using an imperative approach; however DSC is still the primary control plane for the infrastructure layer of the environment, including:
 
 DC Deployment
 
-Networking Configurations
+- Networking Configurations
+- Users
+- Security Groups 
+- OU Implementation
+- Windows Client Domain Join
 
-Users, Security Groups and OU Implementation
-
-Windows Client Domain Join
-
-This logical separation allows administrators to easily implement policies throughout the environment using the AD GUI or PowerShell cmdlets, or scripts that run on the Domain Controller. This therefore increases operational manageability and troubleshooting capability Morris, (2016) argues.
+This logical separation allows administrators to easily implement policies throughout the environment using the AD GUI or PowerShell cmdlets, or scripts that run on the Domain Controller. This therefore increases operational manageability and troubleshooting capability, as argued by Morris (2016).
 
 Although the GPOs of this environment are not declarative and automated via DSC, they can be reused and implemented easily on a clean Domain Controller with the following scripts:
 
@@ -662,16 +661,14 @@ Invoke-Pester Tests\Pester\Student-Pester_ProofOfLife.Tests.ps1
 
 Outcome:
 
-The GPOs should exist and be linked correctly
+The GPOs should exist and be linked correctly.
 
-This mantains DSC as the declarative infrastructure allowing at the same time for policies to be managed by the native Group Policy subsytem inside the DC.
-
-
+This maintains DSC as the declarative infrastructure layer while allowing policies to be managed by the native Group Policy subsystem inside the DC.
 
 9. Security Considerations
 9.1 Credentials Hardening
 
-Credential management should not be handled directly by DSC in the deployment of any production environment. This decision aligns with best security practices, as sensitive data such as passwords should never be stored in plain text within configuration files. Instead, PSCredential objects are used to pass password values during Active Directory setup, but these credentials are not hardcoded anywhere, however due to the requirements for this lab no MOF encryption has not been used which caused the client MOF files to include the username and password for domain join in plain text
+Credential management should not be handled directly by DSC in the deployment of any production environment. This decision aligns with best security practices, as sensitive data such as passwords should never be stored in plain text within configuration files. Instead, PSCredential objects are used to pass password values during Active Directory setup, but these credentials are not hardcoded anywhere. However, due to the requirements for this lab, no MOF encryption was used, which caused the client MOF files to include the username and password for domain join in plain text.
 
 MOF files are generated artifacts that should not contain or expose any credentials in a production environment. If exposed, these could allow a threat actor to modify, disrupt, or compromise the system.
 
@@ -735,9 +732,9 @@ This ensures access is specific and controlled, keeping the environment secure w
 
 Delegation in an Active Directory infrastructure has to respect least privilege. Users must be granted privileges only to the minimum level required to carry out a specific task.
 
-According to Microsoft, (2025) the Least Privilege principle consists of users only receiving the minimum amount of permissions required for them to perform their role, this helps mitigate attack surface in the AD environment.
+According to Microsoft (2025), the Least Privilege principle consists of users only receiving the minimum amount of permissions required for them to perform their role, this helps mitigate attack surface in the AD environment.
 
-Additionally Stallings, (2018) argues that the least privileged model is a fundamental rather than optional security practice in an enterprise environment.
+Additionally, Stallings (2018) argues that the least privileged model is a fundamental rather than optional security practice in an enterprise environment.
 
 A security group is defined where users inside that group receive delegated privileges. Delegation means a user from one OU can perform specific actions within another OU scope. This works because permissions are assigned to the security group at the OU level, not to the individual user.
 
@@ -845,10 +842,10 @@ Evidence\HealthChecks\ou_listing.txt
 
 GPO backups captured (backup artefacts + manifest)
 Evidence\GPOBackups\manifest.xml
-Evidence\GPOBackups\{05B4C64E-4D1B-4348-AF29-6B81BF6616A0}\
-Evidence\GPOBackups\{29DFEE28-2CC0-4AC0-8A1B-EDBE2F59DA35}\
-Evidence\GPOBackups\{CA6E22F5-602C-471B-AB79-58C99372844C}\
-Evidence\GPOBackups\{FEEAF7CE-2AD2-4A9C-AC1B-4106CF497563}\
+Evidence\GPOBackups{05B4C64E-4D1B-4348-AF29-6B81BF6616A0}\
+Evidence\GPOBackups{29DFEE28-2CC0-4AC0-8A1B-EDBE2F59DA35}\
+Evidence\GPOBackups{CA6E22F5-602C-471B-AB79-58C99372844C}\
+Evidence\GPOBackups{FEEAF7CE-2AD2-4A9C-AC1B-4106CF497563}\
 
 Baseline policy application evidence (computer/user)
 Evidence\HealthChecks\gpresult_computer.txt
@@ -859,7 +856,6 @@ Evidence\GPOBackups\02-GPO-Proof.txt
 
 FGPP Application
 Evidence\AD\fgpp_policy.txt
-
 
 10.5 Windows Client Domain Join and OU-Scoped Policy Proof
 
@@ -1037,11 +1033,11 @@ In a production environment, Kerberos dependencies and required authentication p
 
 11.5 MOF Encryption
 
-For simplicity and demostration purposes this lab deployement does not include MOF encryption which leaves credentials exposed to threat actors, this is not a good security practice and shoud be pointed out. In a production environment encryption would have been enabled to avoid potential threats, however the AD environment does not include harcoded passwords for the users belonging to the environment, as these are passed directly in the AD environment rather than hardcoded in configuration files.
+For simplicity and demonstration purposes this lab deployment does not include MOF encryption, which leaves credentials exposed to threat actors. This is not a good security practice and should be pointed out. In a production environment encryption would have been enabled to avoid potential threats. However, the AD environment does not include hardcoded passwords for the users belonging to the environment, as these are passed directly in the AD environment rather than hardcoded in configuration files.
 
 11.6 Reflection
 
-From a technical perspective this automated AD deployment sits within Band A. The implementation has successfully achieved all outcomes expected from Bands D through A. This Active Directory deployment is data-driven and fully automated, and can be replicated from clean VMs using the provided documentation and runbook.
+From a technical perspective this automated AD deployment sits within Band A. The implementation has successfully achieved all outcomes expected from Bands D through A. This Active Directory deployment is data-driven and highly automated, and can be replicated from clean VMs using the provided documentation and runbook.
 
 The work was AI assisted during development; however student knowledge and understanding were prioritised throughout the process. Each command or configuration step was first understood by the student before execution, ensuring the infrastructure remained reliable and reproducible rather than blindly generated.
 
@@ -1052,22 +1048,27 @@ Overall the deployment demonstrates a reproducible Infrastructure as Code Active
 12. References
 
 Microsoft (2025) Desired State Configuration overview. Available at: https://learn.microsoft.com/en-us/powershell/dsc/overview
- (Accessed: 6 March 2026).
+
+(Accessed: 6 March 2026).
 
 Microsoft (2025) Desired State Configuration resources and idempotent operations. Available at: https://learn.microsoft.com/en-us/powershell/dsc/concepts/resources/overview
- (Accessed: 6 March 2026).
+
+(Accessed: 6 March 2026).
 
 Microsoft (2025) Implementing least-privilege administrative models in Active Directory. Available at: https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/implementing-least-privilege-administrative-models
- (Accessed: 6 March 2026).
+
+(Accessed: 6 March 2026).
 
 Microsoft (2025) Reducing the Active Directory attack surface. Available at: https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/reducing-the-active-directory-attack-surface
- (Accessed: 6 March 2026).
 
- Morris, K. (2016) Infrastructure as Code: Managing Servers in the Cloud. 2nd edn. Sebastopol: O’Reilly Media.
+(Accessed: 6 March 2026).
+
+Morris, K. (2016) Infrastructure as Code: Managing Servers in the Cloud. 2nd edn. Sebastopol: O’Reilly Media.
 
 Sander Berkouwer (2022) Active Directory Administration Cookbook. Birmingham: Packt Publishing.
 
 Stallings, W. (2018) Effective Cybersecurity: A Guide to Using Best Practices and Standards. Boston: Pearson.
 
 National Cyber Security Centre (2023) Practitioner guidance for securing Microsoft Active Directory services. Available at: https://www.cyber.gc.ca/en/guidance/practitioner-guidance-securing-microsoft-active-directory-services-your-organization-itsp60100
- (Accessed: 23rd February 2026).
+
+(Accessed: 23rd February 2026).
