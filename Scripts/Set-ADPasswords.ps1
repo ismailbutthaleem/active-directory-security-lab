@@ -1,3 +1,4 @@
+#Post-Promotion, sets passwords and enables accounts for the users created during the lab. This script should be run on the DC after the configuration has been applied and the domain is functional.
 # Create secure password once
 $SecurePass = ConvertTo-SecureString "Bolton!1" -AsPlainText -Force
 
