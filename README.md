@@ -1,6 +1,27 @@
 Github Repository Link:
 https://github.com/ismailbutthaleem/COM5411-BarmBuzz
 
+# Active Directory Security Lab
+
+An automated Active Directory lab developed as part of my BSc Cyber Security coursework using Windows Server 2025, Windows 11 and PowerShell DSC.
+
+The project focuses on deploying and securing a reproducible Active Directory environment using Infrastructure as Code principles, with role-based access control, OU tiering, Group Policy, delegated administration and automated validation.
+
+Key parts of the project include:
+
+- Automated Domain Controller deployment with DSC
+- Data-driven creation of OUs, users and security groups
+- RBAC and least-privilege delegation
+- Group Policy hardening
+- Fine-Grained Password Policy for privileged accounts
+- Windows and Ubuntu domain integration
+- Pester validation and health checks
+- Troubleshooting of DNS, Kerberos, WinRM and PowerShell compatibility issues
+- Evidence-based validation of successful and denied administrative actions
+
+The full technical implementation, runbook, validation evidence, security considerations and limitations are documented below.
+
+---
 1. Solution Overview
 
 This solution implements an automated Active Directory forest deployment using Infrastructure as Code (IaC) principles. The environment uses Windows Server 2025 as the Domain Controller and Windows 11 as the development machine.
